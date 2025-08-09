@@ -1,0 +1,39 @@
+{
+  "HomePage": {
+    "title": "Colorsitos"
+  },
+  "generator": {
+    "title": "Generador de paletas",
+    "baseHex": { "label": "Color base (hex)" },
+    "name": { "label": "Nombre (opcional)", "placeholder": "Mi paleta" },
+    "error": {
+      "invalidHex": "Color inválido. Usa un hex de 3 o 6 dígitos.",
+      "generate": "No se pudo generar la paleta para el color ingresado."
+    },
+    "preview": {
+      "placeholder": "Escribe un color hex válido para generar y previsualizar la paleta."
+    },
+    "save": "Guardar",
+    "generatedTitle": "Generada",
+    "createNewTheme": "Crear nuevo theme"
+  },
+  "export": {
+    "title": "Exportar códigos de color",
+    "brandKey": "Nombre de la clave (brand)",
+    "copy": "Copiar",
+    "justCodes": "Solo los códigos",
+    "copyCodes": "Copiar códigos"
+  },
+  "saved": {
+    "title": "Paletas guardadas",
+    "empty": "No hay paletas guardadas.",
+    "load": "Cargar",
+    "delete": "Eliminar"
+  },
+  "palette": {
+    "copy": {
+      "title": "Copiar código hex",
+      "error": "Error al copiar el color"
+    }
+  }
+}
