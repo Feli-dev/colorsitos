@@ -35,8 +35,8 @@ function generateRandomPosition(
 ): { x: number; y: number } {
   const centerX = containerWidth / 2;
   const centerY = containerHeight / 2;
-  const textZoneWidth = 300;
-  const textZoneHeight = 100;
+  const textZoneWidth = 600;
+  const textZoneHeight = 200;
 
   let x, y;
   do {
@@ -121,7 +121,7 @@ export function ColorfulTitle({ children }: ColorfulTitleProps) {
         ))}
 
         <div className="relative z-10 text-center">
-          <h1 className="font-grotesk font-bold text-6xl lg:text-8xl text-shadow-lg/30">
+          <h1 className="font-grotesk font-bold text-6xl lg:text-7xl text-shadow-lg/30 select-none">
             {children}
           </h1>
         </div>

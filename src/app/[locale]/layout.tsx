@@ -35,8 +35,8 @@ export default async function LocaleLayout({
         className={`${GeistSans.className} ${GeistMono.className} ${spaceGrotesk.variable} antialiased`}
       >
         <NextIntlClientProvider>
-          <div className="fixed top-3 right-3 z-50 flex items-center justify-center size-10 border-2 rounded-lg">
-            <AnimatedThemeToggler />
+          <div className="cursor-pointer fixed top-3 right-3 z-50 flex items-center justify-center size-10 border-2 rounded-lg">
+            <AnimatedThemeToggler className="cursor-pointer" />
           </div>
           {children}
         </NextIntlClientProvider>

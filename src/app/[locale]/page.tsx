@@ -11,7 +11,7 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-neutral-950 dark:to-neutral-900">
       <div className="max-w-4xl mx-auto flex flex-col items-center justify-center min-h-lvh">
         {/* Header */}
-        <div className="text-center mb-10">
+        <div className="text-center my-10">
           <ColorfulTitle>{t("title")}</ColorfulTitle>
         </div>
 
