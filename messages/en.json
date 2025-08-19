@@ -35,5 +35,9 @@
       "title": "Copy hex code",
       "error": "Error copying color"
     }
+  },
+  "support": {
+    "buyMeCoffee": "Buy me a coffee",
+    "ariaLabel": "Support options"
   }
 }

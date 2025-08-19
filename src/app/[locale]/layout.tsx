@@ -1,4 +1,5 @@
 import { AnimatedThemeToggler } from "@/components/magicui/animated-theme-toggler";
+import SupportButton from "@/components/support-button";
 import { routing } from "@/i18n/routing";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
@@ -39,6 +40,7 @@ export default async function LocaleLayout({
             <AnimatedThemeToggler className="cursor-pointer" />
           </div>
           {children}
+          <SupportButton />
         </NextIntlClientProvider>
       </body>
     </html>
