@@ -7,6 +7,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { rgbToHex } from "@/utils/color-utils";
+import { Check, Copy } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 interface ColorSquare {
@@ -16,6 +18,7 @@ interface ColorSquare {
   y: number;
   size: number;
   rotation: number;
+  animationDuration: number;
 }
 
 interface ColorfulTitleProps {
@@ -54,10 +57,41 @@ function generateRandomPosition(
 
 export function ColorfulTitle({ children }: ColorfulTitleProps) {
   const [colorSquares, setColorSquares] = useState<ColorSquare[]>([]);
+  const [copiedColor, setCopiedColor] = useState<string | null>(null);
+  const [openTooltips, setOpenTooltips] = useState<Record<number, boolean>>({});
   const [containerSize] = useState({
     width: 900,
     height: 250,
   });
+  const t = useTranslations();
+
+  const handleCopyColor = async (hex: string, squareId: number) => {
+    try {
+      await navigator.clipboard.writeText(hex);
+      setCopiedColor(hex);
+
+      // Mantener el tooltip abierto para mostrar feedback
+      setOpenTooltips((prev) => ({ ...prev, [squareId]: true }));
+
+      // Cerrar tooltip y limpiar estado después de 2.5 segundos
+      setTimeout(() => {
+        setCopiedColor(null);
+        setOpenTooltips((prev) => ({ ...prev, [squareId]: false }));
+      }, 2500);
+    } catch (err) {
+      console.error(t("palette.copy.error"), err);
+    }
+  };
+
+  const handleTooltipOpenChange = (open: boolean, squareId: number) => {
+    // Solo permitir el control natural del tooltip si no estamos mostrando feedback de copiado
+    if (
+      copiedColor === null ||
+      copiedColor !== colorSquares.find((s) => s.id === squareId)?.color
+    ) {
+      setOpenTooltips((prev) => ({ ...prev, [squareId]: open }));
+    }
+  };
 
   useEffect(() => {
     const squares: ColorSquare[] = [];
@@ -75,6 +109,7 @@ export function ColorfulTitle({ children }: ColorfulTitleProps) {
         y: position.y,
         size: Math.random() * 15 + 35,
         rotation: Math.random() * 360,
+        animationDuration: 2 + Math.random() * 2,
       });
     }
 
@@ -92,10 +127,14 @@ export function ColorfulTitle({ children }: ColorfulTitleProps) {
         }}
       >
         {colorSquares.map((square) => (
-          <Tooltip key={square.id}>
+          <Tooltip
+            key={square.id}
+            open={openTooltips[square.id] ?? false}
+            onOpenChange={(open) => handleTooltipOpenChange(open, square.id)}
+          >
             <TooltipTrigger asChild>
               <div
-                className="absolute rounded-lg transition-all duration-300 hover:scale-110 hover:shadow-lg cursor-pointer animate-pulse"
+                className="absolute rounded-lg transition-all duration-300 hover:scale-110 hover:shadow-lg hover:animate-none cursor-pointer animate-pulse"
                 style={{
                   left: `${square.x}px`,
                   top: `${square.y}px`,
@@ -104,17 +143,34 @@ export function ColorfulTitle({ children }: ColorfulTitleProps) {
                   backgroundColor: square.color,
                   transform: `rotate(${square.rotation}deg)`,
                   animationDelay: `${square.id * 0.1}s`,
-                  animationDuration: `${2 + Math.random() * 2}s`,
+                  animationDuration: `${square.animationDuration}s`,
                 }}
+                onClick={() => handleCopyColor(square.color, square.id)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleCopyColor(square.color, square.id);
+                  }
+                }}
+                aria-label={`${t("palette.copy.title")}: ${square.color}`}
               />
             </TooltipTrigger>
-            <TooltipContent>
+            <TooltipContent className="bg-gray-900 dark:bg-gray-200">
               <div className="flex items-center gap-2">
                 <div
-                  className="w-4 h-4 rounded border border-gray-300"
+                  className="size-4 rounded"
                   style={{ backgroundColor: square.color }}
                 />
-                <span className="font-mono text-xs">{square.color}</span>
+                <span className="font-bold text-xs">{square.color}</span>
+                {copiedColor === square.color ? (
+                  <div className="flex items-center gap-1">
+                    <Check className="h-3 w-3 text-green-300 dark:text-green-700" />
+                  </div>
+                ) : (
+                  <Copy className="h-3 w-3 text-muted-foreground dark:text-black" />
+                )}
               </div>
             </TooltipContent>
           </Tooltip>

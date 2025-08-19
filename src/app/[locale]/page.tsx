@@ -8,8 +8,8 @@ export default function Home() {
   const t = useTranslations("HomePage");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-neutral-950 dark:to-neutral-900">
-      <div className="max-w-4xl mx-auto flex flex-col items-center justify-center min-h-lvh">
+    <div>
+      <div className="max-w-4xl mx-auto flex flex-col items-center justify-center">
         {/* Header */}
         <div className="text-center my-10">
           <ColorfulTitle>{t("title")}</ColorfulTitle>

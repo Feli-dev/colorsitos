@@ -33,11 +33,17 @@
   "palette": {
     "copy": {
       "title": "Copy hex code",
-      "error": "Error copying color"
+      "error": "Error copying color",
+      "success": "Copied!"
     }
   },
   "support": {
     "buyMeCoffee": "Buy me a coffee",
     "ariaLabel": "Support options"
+  },
+  "footer": {
+    "copyright": "© {year} Colorsitos. All rights reserved.",
+    "tagline": "Crafting beautiful themes 💙",
+    "createdBy": "Project created by"
   }
 }

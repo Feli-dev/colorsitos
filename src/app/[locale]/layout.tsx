@@ -1,3 +1,4 @@
+import { Footer } from "@/components/footer";
 import { AnimatedThemeToggler } from "@/components/magicui/animated-theme-toggler";
 import SupportButton from "@/components/support-button";
 import { routing } from "@/i18n/routing";
@@ -33,7 +34,10 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body
-        className={`${GeistSans.className} ${GeistMono.className} ${spaceGrotesk.variable} antialiased`}
+        className={`${GeistSans.className} ${GeistMono.className} ${spaceGrotesk.variable} antialiased
+          bg-gradient-to-br from-slate-50 to-slate-100 dark:from-neutral-950 dark:to-neutral-900
+          min-h-screen
+          `}
       >
         <NextIntlClientProvider>
           <div className="cursor-pointer fixed top-3 right-3 z-50 flex items-center justify-center size-10 border-2 rounded-lg">
@@ -41,6 +45,7 @@ export default async function LocaleLayout({
           </div>
           {children}
           <SupportButton />
+          <Footer />
         </NextIntlClientProvider>
       </body>
     </html>
