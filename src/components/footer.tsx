@@ -8,7 +8,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full py-6 transition-colors duration-300">
+    <footer className="fixed bottom-0 w-full py-6 transition-colors duration-300">
       <div className="mx-auto text-center">
         <div className="mt-3 flex items-center justify-center gap-2">
           <Image
