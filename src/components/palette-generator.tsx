@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useDynamicFavicon } from "@/hooks/use-dynamic-favicon";
 import {
   useSavedPalettes,
   type SavedPalette,
@@ -41,6 +42,7 @@ export function PaletteGenerator() {
   const [error, setError] = useState<string>("");
   const [palette, setPalette] = useState<ColorPalette | null>(null);
   const { saved, save, remove } = useSavedPalettes();
+  const { setColorFavicon } = useDynamicFavicon();
   const isClient = useIsClient();
   const [loadedFromSaved, setLoadedFromSaved] = useState<boolean>(false);
   const baseHexInputRef = useRef<HTMLInputElement | null>(null);
@@ -83,6 +85,9 @@ export function PaletteGenerator() {
         const colorPalette = createColorPalette(id, displayName, shades);
         setPalette(colorPalette);
         setError("");
+
+        // Update the favicon with the base color of the palette (tone 500)
+        setColorFavicon(generated[500]);
       } catch {
         setPalette(null);
         setError(t("generator.error.generate"));
@@ -90,7 +95,7 @@ export function PaletteGenerator() {
     }, 350);
 
     return () => clearTimeout(handle);
-  }, [baseHex, name, t]);
+  }, [baseHex, name, t, setColorFavicon]);
 
   return (
     <div className="w-full space-y-6 h-full">

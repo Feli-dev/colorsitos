@@ -1,4 +1,9 @@
 {
+  "metadata": {
+    "title": "Colorsitos - Generador de Paletas de Colores",
+    "description": "Genera hermosas paletas de colores y obtén el código para usarlas en tus proyectos. Exporta a Tailwind CSS, Chakra UI y más frameworks.",
+    "keywords": "paleta de colores, generador de colores, herramientas de diseño, desarrollo web, tailwind css, chakra ui, esquemas de color, generador de gradientes"
+  },
   "HomePage": {
     "title": "Colorsitos"
   },

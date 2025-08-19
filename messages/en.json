@@ -1,4 +1,9 @@
 {
+  "metadata": {
+    "title": "Colorsitos - Color Palette Generator",
+    "description": "Generate beautiful color themes and get the code to use them in your projects. Export to Tailwind CSS, Chakra UI, and more frameworks.",
+    "keywords": "color theme, color generator, design tools, web development, tailwind css, chakra ui, color schemes, gradient generator"
+  },
   "HomePage": {
     "title": "Colorsitos"
   },

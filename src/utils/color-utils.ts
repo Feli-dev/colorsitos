@@ -263,3 +263,16 @@ export function hexToHslString(hex: string): string {
   const l = Math.round(hsl.l);
   return `hsl(${h} ${s}% ${l}%)`;
 }
+
+/**
+ * Generates a vibrant random color in hex format
+ */
+export function generateRandomColor(): string {
+  // Generate HSL values that produce vibrant colors
+  const h = Math.floor(Math.random() * 360); // Any hue
+  const s = Math.floor(Math.random() * 50) + 50; // Saturation between 50-100%
+  const l = Math.floor(Math.random() * 40) + 30; // Lightness between 30-70%
+
+  const rgb = hslToRgb(h, s, l);
+  return rgbToHex(rgb.r, rgb.g, rgb.b);
+}
