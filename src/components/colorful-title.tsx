@@ -7,7 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { rgbToHex } from "@/utils/color-utils";
-import { Check, Copy } from "lucide-react";
+import { Copy } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
@@ -77,7 +77,7 @@ export function ColorfulTitle({ children }: ColorfulTitleProps) {
       setTimeout(() => {
         setCopiedColor(null);
         setOpenTooltips((prev) => ({ ...prev, [squareId]: false }));
-      }, 2500);
+      }, 12500);
     } catch (err) {
       console.error(t("palette.copy.error"), err);
     }
@@ -157,7 +157,7 @@ export function ColorfulTitle({ children }: ColorfulTitleProps) {
                 aria-label={`${t("palette.copy.title")}: ${square.color}`}
               />
             </TooltipTrigger>
-            <TooltipContent className="bg-gray-900 dark:bg-gray-200">
+            <TooltipContent className="bg-gray-900 dark:bg-gray-200 p-2 rounded-lg">
               <div className="flex items-center gap-2">
                 <div
                   className="size-4 rounded"
@@ -165,8 +165,9 @@ export function ColorfulTitle({ children }: ColorfulTitleProps) {
                 />
                 <span className="font-bold text-xs">{square.color}</span>
                 {copiedColor === square.color ? (
-                  <div className="flex items-center gap-1">
-                    <Check className="h-3 w-3 text-green-300 dark:text-green-700" />
+                  <div className="flex items-center">
+                    {/* <Check className="h-3 w-3 text-green-300 dark:text-green-700" /> */}
+                    <Copy className="h-3 w-3 text-muted-foreground dark:text-black" />
                   </div>
                 ) : (
                   <Copy className="h-3 w-3 text-muted-foreground dark:text-black" />
