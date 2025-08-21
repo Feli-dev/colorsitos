@@ -7,7 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { rgbToHex } from "@/utils/color-utils";
-import { Copy } from "lucide-react";
+import { Check, Copy } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
@@ -70,21 +70,18 @@ export function ColorfulTitle({ children }: ColorfulTitleProps) {
       await navigator.clipboard.writeText(hex);
       setCopiedColor(hex);
 
-      // Mantener el tooltip abierto para mostrar feedback
       setOpenTooltips((prev) => ({ ...prev, [squareId]: true }));
 
-      // Cerrar tooltip y limpiar estado después de 2.5 segundos
       setTimeout(() => {
         setCopiedColor(null);
         setOpenTooltips((prev) => ({ ...prev, [squareId]: false }));
-      }, 12500);
+      }, 2500);
     } catch (err) {
       console.error(t("palette.copy.error"), err);
     }
   };
 
   const handleTooltipOpenChange = (open: boolean, squareId: number) => {
-    // Solo permitir el control natural del tooltip si no estamos mostrando feedback de copiado
     if (
       copiedColor === null ||
       copiedColor !== colorSquares.find((s) => s.id === squareId)?.color
@@ -166,8 +163,7 @@ export function ColorfulTitle({ children }: ColorfulTitleProps) {
                 <span className="font-bold text-xs">{square.color}</span>
                 {copiedColor === square.color ? (
                   <div className="flex items-center">
-                    {/* <Check className="h-3 w-3 text-green-300 dark:text-green-700" /> */}
-                    <Copy className="h-3 w-3 text-muted-foreground dark:text-black" />
+                    <Check className="h-3 w-3 text-green-300 dark:text-green-700" />
                   </div>
                 ) : (
                   <Copy className="h-3 w-3 text-muted-foreground dark:text-black" />
