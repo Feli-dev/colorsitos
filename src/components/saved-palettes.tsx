@@ -1,12 +1,8 @@
 "use client";
 
+import { ColorTooltip } from "@/components/color-tooltip";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import type { SavedPalette } from "@/hooks/use-saved-palettes";
 import { Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -22,29 +18,19 @@ interface SavedPalettePreviewProps {
 function SavedPalettePreview({ shades }: SavedPalettePreviewProps) {
   return (
     <TooltipProvider>
-      <div className="grid grid-cols-4 gap-1 p-1 rounded-md border bg-background">
+      <div className="grid grid-cols-4 gap-1 p-1 rounded-md border bg-gray-50 dark:bg-background">
         {SHADE_ORDER.map((value) => (
-          <Tooltip key={value}>
-            <TooltipTrigger asChild>
-              <span
-                className="h-4 w-4 md:h-5 md:w-5 rounded-sm cursor-pointer transition-all duration-200 hover:scale-110"
-                style={{ backgroundColor: shades[value] }}
-                aria-label={`shade ${value}`}
-              />
-            </TooltipTrigger>
-            <TooltipContent>
-              <div className="flex items-center gap-2">
-                <div
-                  className="w-4 h-4 rounded border border-gray-300"
-                  style={{ backgroundColor: shades[value] }}
-                />
-                <div className="flex flex-col">
-                  <span className="font-mono text-xs">{shades[value]}</span>
-                  <span className="text-xs text-muted-foreground">{value}</span>
-                </div>
-              </div>
-            </TooltipContent>
-          </Tooltip>
+          <ColorTooltip
+            key={value}
+            colorValue={shades[value]}
+            showCopyIcon={false}
+          >
+            <span
+              className="h-4 w-4 md:h-5 md:w-5 rounded-sm cursor-pointer transition-all duration-200 hover:scale-110"
+              style={{ backgroundColor: shades[value] }}
+              aria-label={`shade ${value}: ${shades[value]}`}
+            />
+          </ColorTooltip>
         ))}
       </div>
     </TooltipProvider>

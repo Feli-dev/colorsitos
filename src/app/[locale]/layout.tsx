@@ -1,7 +1,9 @@
 import { DynamicFavicon } from "@/components/dynamic-favicon";
-import { Footer } from "@/components/footer";
-import { AnimatedThemeToggler } from "@/components/magicui/animated-theme-toggler";
-import SupportButton from "@/components/support-button";
+import { Footer } from "@/components/layout/footer";
+import Navbar from "@/components/layout/navbar";
+import { SupportButton } from "@/components/support-button";
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
+import { Toaster } from "@/components/ui/sonner";
 import { routing } from "@/i18n/routing";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
@@ -117,12 +119,25 @@ export default async function LocaleLayout({
       >
         <NextIntlClientProvider>
           <DynamicFavicon />
+          <Navbar />
           <div className="cursor-pointer fixed top-3 right-3 z-50 flex items-center justify-center size-10 border-2 rounded-lg">
             <AnimatedThemeToggler className="cursor-pointer" />
           </div>
           {children}
           <SupportButton />
           <Footer />
+          <Toaster
+            position="bottom-left"
+            expand={true}
+            toastOptions={{
+              classNames: {
+                toast:
+                  "!shadow-none !bg-card !text-card-foreground !rounded-lg !w-fit !px-4 !py-2",
+                title: "!text-foreground font-medium !text-base",
+                description: "!text-muted-foreground font-mono !text-sm",
+              },
+            }}
+          />
         </NextIntlClientProvider>
       </body>
     </html>
