@@ -2,7 +2,6 @@ import { DynamicFavicon } from "@/components/dynamic-favicon";
 import { Footer } from "@/components/layout/footer";
 import Navbar from "@/components/layout/navbar";
 import { SupportButton } from "@/components/support-button";
-import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import { Toaster } from "@/components/ui/sonner";
 import { routing } from "@/i18n/routing";
 import { GeistMono } from "geist/font/mono";
@@ -120,9 +119,6 @@ export default async function LocaleLayout({
         <NextIntlClientProvider>
           <DynamicFavicon />
           <Navbar />
-          <div className="cursor-pointer fixed top-3 right-3 z-50 flex items-center justify-center size-10 border-2 rounded-lg">
-            <AnimatedThemeToggler className="cursor-pointer" />
-          </div>
           {children}
           <SupportButton />
           <Footer />
