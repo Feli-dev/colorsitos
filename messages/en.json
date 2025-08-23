@@ -39,12 +39,13 @@
     "copy": {
       "title": "Copy hex code",
       "error": "Error copying color",
-      "success": "Copied!"
+      "success": "Copied to clipboard"
     }
   },
   "support": {
     "buyMeCoffee": "Buy me a coffee",
-    "ariaLabel": "Support options"
+    "ariaLabel": "Support options",
+    "title": "Support project"
   },
   "footer": {
     "copyright": "© {year} Colorsitos. All rights reserved.",

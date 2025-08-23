@@ -1,10 +1,10 @@
 "use client";
 
-import { ChevronUp, Coffee, Heart } from "lucide-react";
+import { ChevronDown, Coffee, Heart } from "lucide-react";
 import { useTranslations } from "next-intl";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const SupportButton: React.FC = () => {
+function SupportButton() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const t = useTranslations();
@@ -43,11 +43,11 @@ const SupportButton: React.FC = () => {
   return (
     <div
       ref={dropdownRef}
-      className="cursor-pointer fixed bottom-3 right-3 flex items-center justify-center size-10 rounded-lg z-50"
+      className="cursor-pointer fixed bottom-4 right-20 flex items-center justify-center size-10 rounded-lg z-50"
     >
       <div
         className={`
-          absolute bottom-16 right-0 mb-2 w-[calc(100vw-2rem)] max-w-xs sm:w-72 md:w-64 lg:w-[18rem] rounded-lg backdrop-blur-md border shadow-xl
+          absolute bottom-10 -right-16 mb-2 w-[calc(100vw-2rem)] max-w-xs sm:w-72 md:w-64 lg:w-[18rem] rounded-lg backdrop-blur-md border shadow-xl
           transform transition-all duration-300 ease-out origin-bottom-right
           bg-white border-gray-300 dark:bg-black/40 dark:border-white/10
           ${
@@ -68,7 +68,7 @@ const SupportButton: React.FC = () => {
             <div className="size-7 sm:size-8 bg-yellow-500 rounded-lg flex items-center justify-center">
               <Coffee className="text-white" />
             </div>
-            <span className="font-medium text-sm sm:text-base">
+            <span className="font-grotesk font-bold text-sm sm:text-base">
               {t("support.buyMeCoffee")}
             </span>
           </button>
@@ -79,21 +79,24 @@ const SupportButton: React.FC = () => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`
-           size-10 rounded-lg backdrop-blur-md border-2 shadow-xl
+          size-fit rounded-lg backdrop-blur-md border-2 shadow-xl gap-2 p-2
           flex items-center justify-center transition-all duration-300
           hover:bg-gray-50 dark:hover:bg-black/40
-          ${isOpen ? "rotate-180" : "rotate-0"}
+          cursor-pointer
         `}
         aria-label={t("support.ariaLabel")}
       >
+        <h1 className="font-grotesk font-bold text-sm sm:text-base text-nowrap">
+          {t("support.title")}
+        </h1>
         {isOpen ? (
-          <ChevronUp className="text-gray-600 dark:text-white/80" />
+          <ChevronDown className="text-gray-600 dark:text-white/80" />
         ) : (
           <Heart className="text-red-600" />
         )}
       </button>
     </div>
   );
-};
+}
 
-export default SupportButton;
+export { SupportButton };

@@ -39,12 +39,13 @@
     "copy": {
       "title": "Copiar código hex",
       "error": "Error al copiar el color",
-      "success": "¡Copiado!"
+      "success": "Copiado al portapapeles"
     }
   },
   "support": {
     "buyMeCoffee": "Invitame un cafecito",
-    "ariaLabel": "Opciones de apoyo"
+    "ariaLabel": "Opciones de apoyo",
+    "title": "Apoya el proyecto"
   },
   "footer": {
     "copyright": "© {year} Colorsitos. Todos los derechos reservados.",
