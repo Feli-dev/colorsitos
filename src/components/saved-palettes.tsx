@@ -23,7 +23,7 @@ function SavedPalettePreview({ shades }: SavedPalettePreviewProps) {
           <ColorTooltip
             key={value}
             colorValue={shades[value]}
-            showCopyIcon={true}
+            showCopyIcon={false}
           >
             <span
               className="h-4 w-4 md:h-5 md:w-5 rounded-sm cursor-pointer transition-all duration-200 hover:scale-110"
