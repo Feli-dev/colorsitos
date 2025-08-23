@@ -43,11 +43,11 @@ function SupportButton() {
   return (
     <div
       ref={dropdownRef}
-      className="cursor-pointer fixed bottom-4 right-20 flex items-center justify-center size-10 rounded-lg z-50"
+      className="cursor-pointer fixed bottom-4 right-[5.5rem] flex items-center justify-center size-10 rounded-lg z-50"
     >
       <div
         className={`
-          absolute bottom-10 -right-16 mb-2 w-[calc(100vw-2rem)] max-w-xs sm:w-72 md:w-64 lg:w-[18rem] rounded-lg backdrop-blur-md border shadow-xl
+          absolute bottom-10 -right-18 mb-2 w-[calc(100vw-2rem)] max-w-xs sm:w-72 md:w-64 lg:w-[18rem] rounded-lg backdrop-blur-md border shadow-xl
           transform transition-all duration-300 ease-out origin-bottom-right
           bg-white border-gray-300 dark:bg-black/40 dark:border-white/10
           ${
