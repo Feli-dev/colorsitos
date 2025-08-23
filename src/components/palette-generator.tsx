@@ -5,6 +5,7 @@ import { ExportersPanel } from "@/components/exporters-panel";
 import { SavedPalettes } from "@/components/saved-palettes";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ColorInputWithPicker } from "@/components/ui/color-input-with-picker";
 import {
   Dialog,
   DialogContent,
@@ -109,11 +110,11 @@ export function PaletteGenerator() {
               >
                 {t("generator.baseHex.label")}
               </label>
-              <Input
+              <ColorInputWithPicker
                 id="baseHex"
                 placeholder="#3182CE"
                 value={baseHex}
-                onChange={(e) => setBaseHex(e.target.value)}
+                onChange={setBaseHex}
                 inputMode="text"
                 autoComplete="off"
                 autoCorrect="off"
@@ -121,6 +122,7 @@ export function PaletteGenerator() {
                 aria-invalid={error ? true : undefined}
                 aria-describedby={error ? "hex-error" : undefined}
                 ref={baseHexInputRef}
+                colorPickerTitle={t("generator.colorPicker.title")}
               />
               {error ? (
                 <p

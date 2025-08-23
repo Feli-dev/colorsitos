@@ -20,7 +20,12 @@
     },
     "save": "Guardar",
     "generatedTitle": "Generada",
-    "createNewTheme": "Crear nuevo theme"
+    "createNewTheme": "Crear nuevo theme",
+    "colorPicker": {
+      "title": "Selector de Color",
+      "cancel": "Cancelar",
+      "apply": "Aplicar"
+    }
   },
   "export": {
     "title": "Exportar códigos de color",
