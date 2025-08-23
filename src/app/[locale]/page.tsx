@@ -12,7 +12,7 @@ export default function Home() {
       <div className="max-w-4xl mx-auto flex flex-col items-center justify-center">
         {/* Header */}
         <div className="text-center my-10">
-          <ColorfulTitle>{t("title")}</ColorfulTitle>
+          <ColorfulTitle> {/* {t("title")} */}</ColorfulTitle>
         </div>
 
         {/* Palette Generator */}
