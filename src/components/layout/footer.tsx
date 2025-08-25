@@ -21,12 +21,12 @@ export function Footer() {
           <p className="text-sm text-muted-foreground">
             {t("createdBy")}{" "}
             <a
-              href="https://x.com/felidev_"
+              href="https://www.felipetau.dev/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors font-medium"
             >
-              @felidev_
+              Felipe Tau
             </a>
           </p>
         </div>
