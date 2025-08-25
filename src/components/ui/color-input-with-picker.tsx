@@ -20,9 +20,10 @@ import {
 } from "@/components/ui/shadcn-io/color-picker";
 import { cn } from "@/lib/utils";
 import Color from "color";
-import { Palette } from "lucide-react";
+import { ImageIcon, Palette } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { forwardRef, useState } from "react";
+import { forwardRef, useCallback, useEffect, useState } from "react";
+import { ImageColorPicker } from "./image-color-picker";
 
 export interface ColorInputWithPickerProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
@@ -48,6 +49,8 @@ export const ColorInputWithPicker = forwardRef<
     const t = useTranslations();
     const [isOpen, setIsOpen] = useState(false);
     const [tempColor, setTempColor] = useState(value);
+    const [imagePickerOpen, setImagePickerOpen] = useState(false);
+    const [pastedImage, setPastedImage] = useState<string | null>(null);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const newValue = e.target.value;
@@ -76,12 +79,60 @@ export const ColorInputWithPicker = forwardRef<
       setIsOpen(false);
     };
 
+    // Handle global paste events
+    const handleGlobalPaste = useCallback(
+      (e: ClipboardEvent) => {
+        // Only handle if no input is focused and modals are closed
+        const activeElement = document.activeElement;
+        const isInputFocused =
+          activeElement?.tagName === "INPUT" ||
+          activeElement?.tagName === "TEXTAREA" ||
+          activeElement?.hasAttribute("contenteditable");
+
+        if (!isInputFocused && !isOpen && !imagePickerOpen) {
+          const items = Array.from(e.clipboardData?.items || []);
+          const imageItem = items.find((item) =>
+            item.type.startsWith("image/")
+          );
+
+          if (imageItem) {
+            e.preventDefault();
+            const file = imageItem.getAsFile();
+            if (file) {
+              // Convert file to data URL and open image picker
+              const reader = new FileReader();
+              reader.onload = (event) => {
+                setPastedImage(event.target?.result as string);
+                setImagePickerOpen(true);
+              };
+              reader.readAsDataURL(file);
+            }
+          }
+        }
+      },
+      [isOpen, imagePickerOpen]
+    );
+
+    // Listen for global paste events
+    useEffect(() => {
+      document.addEventListener("paste", handleGlobalPaste);
+      return () => document.removeEventListener("paste", handleGlobalPaste);
+    }, [handleGlobalPaste]);
+
     // Initialize temp color when dialog opens
     const handleOpenChange = (open: boolean) => {
       if (open) {
         setTempColor(value);
       }
       setIsOpen(open);
+    };
+
+    // Handle image picker changes
+    const handleImagePickerChange = (open: boolean) => {
+      if (!open) {
+        setPastedImage(null);
+      }
+      setImagePickerOpen(open);
     };
 
     return (
@@ -91,8 +142,25 @@ export const ColorInputWithPicker = forwardRef<
           ref={ref}
           value={value}
           onChange={handleInputChange}
-          className={cn("pr-10", className)}
+          className={cn("pr-20", className)}
         />
+        <ImageColorPicker
+          title={t("generator.imagePicker.title")}
+          onColorSelect={onChange}
+          open={imagePickerOpen}
+          onOpenChange={handleImagePickerChange}
+          initialImage={pastedImage || undefined}
+        >
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="absolute right-10 top-0 h-full w-10 rounded-none hover:bg-muted/50 border-r"
+            aria-label="Extract color from image"
+          >
+            <ImageIcon className="h-4 w-4 text-muted-foreground" />
+          </Button>
+        </ImageColorPicker>
         <Dialog open={isOpen} onOpenChange={handleOpenChange}>
           <DialogTrigger asChild>
             <Button

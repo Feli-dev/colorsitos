@@ -1,0 +1,270 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
+import { ImageIcon, Upload, X } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
+
+export interface ImageColorPickerProps {
+  children?: React.ReactNode;
+  onColorSelect?: (color: string) => void;
+  title?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  initialImage?: string;
+}
+
+export const ImageColorPicker = forwardRef<
+  HTMLButtonElement,
+  ImageColorPickerProps
+>(
+  (
+    {
+      children,
+      onColorSelect,
+      title = "Image Color Picker",
+      open: controlledOpen,
+      onOpenChange: controlledOnOpenChange,
+      initialImage,
+    },
+    ref
+  ) => {
+    const t = useTranslations();
+    const [internalOpen, setInternalOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState<string | null>(
+      initialImage || null
+    );
+    const [isDragActive, setIsDragActive] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const imageRef = useRef<HTMLImageElement>(null);
+
+    // Use controlled or uncontrolled state
+    const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
+    const setIsOpen = controlledOnOpenChange || setInternalOpen;
+
+    // Process selected file
+    const handleFileSelect = useCallback((file: File) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setSelectedImage(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }, []);
+
+    // Handle paste from clipboard
+    const handlePaste = useCallback(
+      (e: ClipboardEvent) => {
+        const items = Array.from(e.clipboardData?.items || []);
+        const imageItem = items.find((item) => item.type.startsWith("image/"));
+
+        if (imageItem) {
+          e.preventDefault();
+          const file = imageItem.getAsFile();
+          if (file) {
+            handleFileSelect(file);
+          }
+        }
+      },
+      [handleFileSelect]
+    );
+
+    // Listen for paste events when modal is open
+    useEffect(() => {
+      if (isOpen) {
+        document.addEventListener("paste", handlePaste);
+        return () => document.removeEventListener("paste", handlePaste);
+      }
+    }, [isOpen, handlePaste]);
+
+    // Update selected image when initialImage changes
+    useEffect(() => {
+      if (initialImage) {
+        setSelectedImage(initialImage);
+      }
+    }, [initialImage]);
+
+    // Handle file drop
+    const handleDrop = useCallback(
+      (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        setIsDragActive(false);
+
+        const files = Array.from(e.dataTransfer.files);
+        const imageFile = files.find((file) => file.type.startsWith("image/"));
+
+        if (imageFile) {
+          handleFileSelect(imageFile);
+        }
+      },
+      [handleFileSelect]
+    );
+
+    // Handle file input change
+    const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        handleFileSelect(file);
+      }
+    };
+
+    // Extract color from image at clicked position
+    const handleImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
+      const img = imageRef.current;
+      const canvas = canvasRef.current;
+
+      if (!img || !canvas) return;
+
+      const rect = img.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      // Scale coordinates to match actual image dimensions
+      const scaleX = img.naturalWidth / rect.width;
+      const scaleY = img.naturalHeight / rect.height;
+      const actualX = x * scaleX;
+      const actualY = y * scaleY;
+
+      // Draw image to canvas and extract pixel color
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      ctx.drawImage(img, 0, 0);
+
+      const pixelData = ctx.getImageData(actualX, actualY, 1, 1).data;
+      const hex = `#${[pixelData[0], pixelData[1], pixelData[2]]
+        .map((x) => x.toString(16).padStart(2, "0"))
+        .join("")}`;
+
+      onColorSelect?.(hex);
+      setIsOpen(false);
+      resetState();
+    };
+
+    // Reset component state
+    const resetState = () => {
+      setSelectedImage(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    };
+
+    const handleOpenChange = (open: boolean) => {
+      if (!open) {
+        resetState();
+      }
+      setIsOpen(open);
+    };
+
+    const handleClearImage = () => {
+      resetState();
+    };
+
+    const handleSelectFile = () => {
+      fileInputRef.current?.click();
+    };
+
+    return (
+      <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+        <DialogTrigger asChild ref={ref}>
+          {children || (
+            <Button type="button" variant="ghost" size="icon">
+              <ImageIcon className="h-4 w-4" />
+            </Button>
+          )}
+        </DialogTrigger>
+        <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
+          <DialogHeader className="flex-shrink-0">
+            <DialogTitle>{title}</DialogTitle>
+          </DialogHeader>
+
+          <div className="flex-1 flex flex-col gap-4 overflow-hidden">
+            {!selectedImage ? (
+              <div
+                className={cn(
+                  "border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center transition-colors",
+                  isDragActive && "border-primary bg-primary/5"
+                )}
+                onDrop={handleDrop}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setIsDragActive(true);
+                }}
+                onDragLeave={() => setIsDragActive(false)}
+              >
+                <div className="flex flex-col items-center gap-4">
+                  <Upload className="h-12 w-12 text-muted-foreground" />
+                  <div className="space-y-2">
+                    <p className="text-lg font-medium">
+                      {t("generator.imagePicker.dropZone.title")}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {t("generator.imagePicker.dropZone.subtitle")}
+                    </p>
+                    <p className="text-xs text-muted-foreground/75">
+                      {t("generator.imagePicker.dropZone.pasteHint")}
+                    </p>
+                  </div>
+                  <Button type="button" onClick={handleSelectFile}>
+                    {t("generator.imagePicker.selectFile")}
+                  </Button>
+                </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileInputChange}
+                  className="hidden"
+                />
+              </div>
+            ) : (
+              <div className="flex-1 flex flex-col gap-4 overflow-hidden">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-muted-foreground">
+                    {t("generator.imagePicker.clickToSelect")}
+                  </p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleClearImage}
+                  >
+                    <X className="h-4 w-4 mr-2" />
+                    {t("generator.imagePicker.clear")}
+                  </Button>
+                </div>
+
+                <div className="flex-1 overflow-hidden rounded-lg border">
+                  <div className="relative h-full overflow-auto">
+                    <img
+                      ref={imageRef}
+                      src={selectedImage}
+                      alt="Color picker source"
+                      className="w-full h-auto cursor-crosshair"
+                      onClick={handleImageClick}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Hidden canvas for color extraction */}
+          <canvas ref={canvasRef} className="hidden" />
+        </DialogContent>
+      </Dialog>
+    );
+  }
+);
+
+ImageColorPicker.displayName = "ImageColorPicker";

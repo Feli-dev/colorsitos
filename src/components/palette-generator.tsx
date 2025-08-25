@@ -98,6 +98,24 @@ export function PaletteGenerator() {
     return () => clearTimeout(handle);
   }, [baseHex, name, t, setColorFavicon]);
 
+  // Reset form when logo is clicked
+  useEffect(() => {
+    const handleReset = () => {
+      setBaseHex("");
+      setName("");
+      setError("");
+      setPalette(null);
+      setLoadedFromSaved(false);
+      // Focus the input after reset
+      setTimeout(() => {
+        baseHexInputRef.current?.focus();
+      }, 100);
+    };
+
+    window.addEventListener("resetPaletteForm", handleReset);
+    return () => window.removeEventListener("resetPaletteForm", handleReset);
+  }, []);
+
   return (
     <div className="w-full space-y-6 h-full">
       <Card>

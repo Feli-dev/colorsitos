@@ -25,6 +25,17 @@
       "title": "Color Picker",
       "cancel": "Cancel",
       "apply": "Apply"
+    },
+    "imagePicker": {
+      "title": "Extract Color from Image",
+      "dropZone": {
+        "title": "Drop an image here",
+        "subtitle": "or click to select a file",
+        "pasteHint": "You can also paste an image with Ctrl+V"
+      },
+      "selectFile": "Select file",
+      "clickToSelect": "Click on the image to extract color",
+      "clear": "Clear"
     }
   },
   "export": {
