@@ -1,20 +1,40 @@
+"use client";
+
 import { Logo } from "@/components/logo";
 import { Twitter } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { AnimatedThemeToggler } from "../ui/animated-theme-toggler";
 
 export default function Navbar() {
   const t = useTranslations("HomePage");
+  const router = useRouter();
+
+  const handleLogoClick = () => {
+    // Navigate to home page
+    router.push("/");
+
+    // Smooth scroll to top
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    // Dispatch custom event to reset the form
+    window.dispatchEvent(new CustomEvent("resetPaletteForm"));
+  };
 
   return (
     <nav className="w-full py-6">
       <div className="container flex items-center justify-between sm:justify-around mx-auto px-4 sm:px-6 lg:px-8">
-        <span
-          className={`flex items-center gap-3 font-bold tracking-tight transition-colors duration-300 text-lg sm:text-xl text-neutral-800 dark:text-neutral-200`}
+        <button
+          onClick={handleLogoClick}
+          className={`flex items-center gap-3 font-bold tracking-tight transition-all duration-300 text-lg sm:text-xl text-neutral-800 dark:text-neutral-200 hover:text-neutral-600 dark:hover:text-neutral-400 cursor-pointer`}
+          aria-label={t("title")}
         >
           <Logo size="size-6" interactive />
           <span className="whitespace-nowrap">{t("title")}</span>
-        </span>
+        </button>
         <div className="flex items-center gap-3">
           <div className="flex gap-2">
             <a
