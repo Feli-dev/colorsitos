@@ -9,6 +9,7 @@ import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
+import { ThemeProvider } from "next-themes";
 import { Space_Grotesk } from "next/font/google";
 import { notFound } from "next/navigation";
 import "../globals.css";
@@ -109,32 +110,40 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) notFound();
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={`${GeistSans.className} ${GeistMono.className} ${spaceGrotesk.variable} antialiased
           bg-gradient-to-br from-slate-50 to-slate-100 dark:from-neutral-950 dark:to-neutral-900
           min-h-screen
           `}
       >
-        <NextIntlClientProvider>
-          <DynamicFavicon />
-          <Navbar />
-          {children}
-          <SupportButton />
-          <Footer />
-          <Toaster
-            position="bottom-left"
-            expand={true}
-            toastOptions={{
-              classNames: {
-                toast:
-                  "!shadow-none !bg-card !text-card-foreground !rounded-lg !w-fit !px-4 !py-2",
-                title: "!text-foreground font-medium !text-base",
-                description: "!text-muted-foreground font-mono !text-sm",
-              },
-            }}
-          />
-        </NextIntlClientProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange={false}
+          storageKey="colorsitos-theme"
+        >
+          <NextIntlClientProvider>
+            <DynamicFavicon />
+            <Navbar />
+            {children}
+            <SupportButton />
+            <Footer />
+            <Toaster
+              position="bottom-left"
+              expand={true}
+              toastOptions={{
+                classNames: {
+                  toast:
+                    "!shadow-none !bg-card !text-card-foreground !rounded-lg !w-fit !px-4 !py-2",
+                  title: "!text-foreground font-medium !text-base",
+                  description: "!text-muted-foreground font-mono !text-sm",
+                },
+              }}
+            />
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
