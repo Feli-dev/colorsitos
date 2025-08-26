@@ -248,7 +248,7 @@ export function PaletteGenerator() {
       {loadedFromSaved ? (
         <Button
           type="button"
-          className="fixed bottom-6 left-6 shadow-lg"
+          className="fixed bottom-4 left-4 h-10 shadow-lg rounded-lg"
           onClick={() => {
             setName("");
             setBaseHex("");

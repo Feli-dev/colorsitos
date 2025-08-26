@@ -70,7 +70,7 @@ function SupportButton() {
     <div
       ref={dropdownRef}
       className={`cursor-pointer fixed bottom-4 
-        ${isScrolled ? "right-8 " : "right-18"} md:right-[5.5rem] 
+        ${isScrolled ? "right-4" : "right-18"} md:right-[5.5rem] 
         flex items-center justify-center size-10 rounded-lg z-50`}
     >
       <div

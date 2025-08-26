@@ -173,7 +173,7 @@ export const ColorInputWithPicker = forwardRef<
               <Palette className="h-4 w-4 text-muted-foreground" />
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-md max-h-[90vh] flex flex-col">
+          <DialogContent className="max-w-[90vw] md:max-w-md max-h-[90vh] flex flex-col">
             <DialogHeader className="flex-shrink-0">
               <DialogTitle>{colorPickerTitle}</DialogTitle>
             </DialogHeader>
