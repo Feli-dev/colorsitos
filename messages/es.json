@@ -40,6 +40,7 @@
   },
   "export": {
     "title": "Exportar códigos de color",
+    "type": "Modo de exportación",
     "brandKey": "Nombre de la clave (brand)",
     "copy": "Copiar",
     "justCodes": "Solo los códigos",

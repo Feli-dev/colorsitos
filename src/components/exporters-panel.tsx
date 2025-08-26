@@ -3,6 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { ColorPalette } from "@/types/colors";
 import {
   hexToHslString,
@@ -16,10 +23,16 @@ import {
   exportTailwindV4CssVars,
   exportTailwindV4Usage,
 } from "@/utils/exporters/tailwind-v4";
+import { Check, Copy } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 type ExportKind = "tw4" | "tw3" | "chakra3" | "chakra2" | "codes";
+
+interface ExportOption {
+  value: ExportKind;
+  label: string;
+}
 
 interface ExportersPanelProps {
   palette: ColorPalette;
@@ -28,10 +41,19 @@ interface ExportersPanelProps {
 export function ExportersPanel({ palette }: ExportersPanelProps) {
   const t = useTranslations();
   const [brandKey, setBrandKey] = useState<string>("brand");
-  const [active, setActive] = useState<ExportKind>("tw4");
+  const [active, setActive] = useState<ExportKind>("codes");
   const [format, setFormat] = useState<"hex" | "rgb" | "hsl" | "oklch">("hex");
-  const [prefix, setPrefix] = useState<string>("");
-  const [useIndex, setUseIndex] = useState<boolean>(false);
+  const [prefix] = useState<string>("");
+  const [useIndex] = useState<boolean>(false);
+  const [copied, setCopied] = useState<boolean>(false);
+
+  const exportOptions: ExportOption[] = [
+    { value: "tw4", label: "Tailwind v4" },
+    { value: "tw3", label: "Tailwind v3" },
+    { value: "chakra3", label: "Chakra v3" },
+    { value: "chakra2", label: "Chakra v2" },
+    { value: "codes", label: t("export.justCodes") },
+  ];
 
   function fmt(hex: string): string {
     switch (format) {
@@ -77,7 +99,7 @@ export function ExportersPanel({ palette }: ExportersPanelProps) {
       50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 950
     >;
     return keys.map((k) => fmt(shades[k])).join("\n");
-  }, [shades, format]);
+  }, [shades, format, fmt]);
 
   const code = useMemo(() => {
     switch (active) {
@@ -110,11 +132,23 @@ export function ExportersPanel({ palette }: ExportersPanelProps) {
       default:
         return "";
     }
-  }, [active, brandKey, shades, format, justTheCodes]);
+  }, [active, brandKey, shades, format, justTheCodes, fmt, prefix, useIndex]);
 
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // no-op
+    }
+  }
+
+  async function handleCopyCodes() {
+    try {
+      await navigator.clipboard.writeText(justTheCodes);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch {
       // no-op
     }
@@ -122,162 +156,112 @@ export function ExportersPanel({ palette }: ExportersPanelProps) {
 
   return (
     <Card className="w-full">
-      <CardContent className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-4">
-        {/* Left nav */}
-        <div className="flex md:flex-col gap-2">
+      <CardContent className="space-y-4 p-4 sm:p-6">
+        <div
+          className={`grid items-center justify-between gap-2 ${
+            active === "codes" ? "grid-cols-1" : "grid-cols-2"
+          }`}
+        >
+          {/* Export type selector */}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+            <label className="text-sm text-muted-foreground whitespace-nowrap">
+              {t("export.type")}
+            </label>
+            <Select
+              value={active}
+              onValueChange={(value: ExportKind) => setActive(value)}
+            >
+              <SelectTrigger
+                size="default"
+                className="w-full sm:w-auto sm:min-w-[200px]"
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {exportOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Controls section */}
+          <div>
+            {active !== "codes" && (
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                <label
+                  htmlFor="brand"
+                  className="text-sm text-muted-foreground whitespace-nowrap"
+                >
+                  {t("export.brandKey")}
+                </label>
+                <Input
+                  id="brand"
+                  value={brandKey}
+                  onChange={(e) => setBrandKey(e.target.value)}
+                  className="w-full sm:max-w-xs"
+                />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Format buttons */}
+        <div className="grid grid-cols-4 md:flex flex-wrap gap-1">
           <Button
             type="button"
-            variant={active === "tw4" ? "default" : "outline"}
-            onClick={() => setActive("tw4")}
+            variant={format === "hex" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setFormat("hex")}
           >
-            Tailwind v4
+            Hex
           </Button>
           <Button
             type="button"
-            variant={active === "tw3" ? "default" : "outline"}
-            onClick={() => setActive("tw3")}
+            variant={format === "rgb" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setFormat("rgb")}
           >
-            Tailwind v3
+            RGB
           </Button>
           <Button
             type="button"
-            variant={active === "chakra3" ? "default" : "outline"}
-            onClick={() => setActive("chakra3")}
+            variant={format === "hsl" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setFormat("hsl")}
           >
-            Chakra v3
+            HSL
           </Button>
           <Button
             type="button"
-            variant={active === "chakra2" ? "default" : "outline"}
-            onClick={() => setActive("chakra2")}
+            variant={format === "oklch" ? "default" : "outline"}
+            size="sm"
+            onClick={() => setFormat("oklch")}
           >
-            Chakra v2
-          </Button>
-          <Button
-            type="button"
-            variant={active === "codes" ? "default" : "outline"}
-            onClick={() => setActive("codes")}
-          >
-            {t("export.justCodes")}
+            OKLCH
           </Button>
         </div>
 
-        {/* Right content */}
-        <div className="space-y-3">
-          {active !== "codes" && (
-            <div className="flex items-center gap-2">
-              <label htmlFor="brand" className="text-sm text-muted-foreground">
-                {t("export.brandKey")}
-              </label>
-              <Input
-                id="brand"
-                value={brandKey}
-                onChange={(e) => setBrandKey(e.target.value)}
-                className="max-w-xs"
-              />
-              <div className="flex items-center gap-1 ml-2">
-                <Button
-                  type="button"
-                  variant={format === "hex" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setFormat("hex")}
-                >
-                  Hex
-                </Button>
-                <Button
-                  type="button"
-                  variant={format === "rgb" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setFormat("rgb")}
-                >
-                  RGB
-                </Button>
-                <Button
-                  type="button"
-                  variant={format === "hsl" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setFormat("hsl")}
-                >
-                  HSL
-                </Button>
-                <Button
-                  type="button"
-                  variant={format === "oklch" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setFormat("oklch")}
-                >
-                  OKLCH
-                </Button>
-              </div>
-              <div className="ml-auto">
-                <Button type="button" onClick={handleCopy} variant="outline">
-                  {t("export.copy")}
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {active !== "codes" && (
-            <pre className="rounded-md border bg-card p-4 overflow-auto text-sm">
-              <code>{code}</code>
-            </pre>
-          )}
-          {active === "codes" ? (
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <div className="flex items-center gap-1">
-                  <Button
-                    type="button"
-                    variant={format === "hex" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setFormat("hex")}
-                  >
-                    Hex
-                  </Button>
-                  <Button
-                    type="button"
-                    variant={format === "rgb" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setFormat("rgb")}
-                  >
-                    RGB
-                  </Button>
-                  <Button
-                    type="button"
-                    variant={format === "hsl" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setFormat("hsl")}
-                  >
-                    HSL
-                  </Button>
-                  <Button
-                    type="button"
-                    variant={format === "oklch" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setFormat("oklch")}
-                  >
-                    OKLCH
-                  </Button>
-                </div>
-                <div className="ml-auto">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={async () => {
-                      try {
-                        await navigator.clipboard.writeText(justTheCodes);
-                      } catch {}
-                    }}
-                  >
-                    {t("export.copyCodes")}
-                  </Button>
-                </div>
-              </div>
-              <pre className="rounded-md border bg-card p-4 overflow-auto text-sm">
-                <code>{justTheCodes}</code>
-              </pre>
-            </div>
-          ) : null}
+        {/* Code display with copy button */}
+        <div className="relative">
+          <Button
+            type="button"
+            onClick={active === "codes" ? handleCopyCodes : handleCopy}
+            variant="outline"
+            size="sm"
+            className="absolute top-2 right-2 z-10 h-8 w-8 p-0 hover:bg-background/80 transition-colors duration-200"
+          >
+            {copied ? (
+              <Check className="h-4 w-4 text-green-600 animate-in zoom-in-75 fade-in duration-300 ease-out scale-105" />
+            ) : (
+              <Copy className="h-4 w-4 animate-in zoom-in-95 fade-in duration-200 ease-out" />
+            )}
+          </Button>
+          <pre className="rounded-md border bg-card p-3 sm:p-4 pr-12 overflow-auto text-xs sm:text-sm">
+            <code>{active === "codes" ? justTheCodes : code}</code>
+          </pre>
         </div>
       </CardContent>
     </Card>

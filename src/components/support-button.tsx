@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 function SupportButton() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const t = useTranslations();
 
@@ -32,6 +33,31 @@ function SupportButton() {
     return () => document.removeEventListener("keydown", handleEscape);
   }, []);
 
+  // Handle scroll behavior for mobile
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollThreshold = 100; // pixels to scroll before hiding text
+      const isMobile = window.innerWidth < 768; // mobile breakpoint
+
+      if (isMobile) {
+        setIsScrolled(window.scrollY > scrollThreshold);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    // Check initial scroll position
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
+
   const handleBuyMeCoffee = () => {
     window.open(
       "https://www.cafecito.app/feli-dev",
@@ -43,7 +69,9 @@ function SupportButton() {
   return (
     <div
       ref={dropdownRef}
-      className="cursor-pointer fixed bottom-4 right-[5.5rem] flex items-center justify-center size-10 rounded-lg z-50"
+      className={`cursor-pointer fixed bottom-4 
+        ${isScrolled ? "right-8 " : "right-18"} md:right-[5.5rem] 
+        flex items-center justify-center size-10 rounded-lg z-50`}
     >
       <div
         className={`
@@ -79,21 +107,42 @@ function SupportButton() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`
-          size-fit rounded-lg backdrop-blur-md border-2 shadow-xl gap-2 p-2
-          flex items-center justify-center transition-all duration-300
+          rounded-lg backdrop-blur-md border-2 shadow-xl p-2
+          flex items-center justify-center transition-all duration-500 ease-in-out
           hover:bg-gray-50 dark:hover:bg-black/40
-          cursor-pointer
+          cursor-pointer overflow-clip
+          ${isScrolled ? "gap-0 size-12" : "gap-2 size-fit"}
         `}
         aria-label={t("support.ariaLabel")}
       >
-        <h1 className="font-grotesk font-bold text-sm sm:text-base text-nowrap">
-          {t("support.title")}
-        </h1>
-        {isOpen ? (
-          <ChevronDown className="text-gray-600 dark:text-white/80" />
-        ) : (
-          <Heart className="text-red-600" />
-        )}
+        <div
+          className={`
+          flex items-center gap-2 transition-all duration-200 ease-in-out
+          ${isScrolled ? "opacity-0 w-0" : "opacity-100 w-auto"}
+        `}
+        >
+          <h1 className="font-grotesk font-bold text-sm sm:text-base text-nowrap whitespace-nowrap">
+            {t("support.title")}
+          </h1>
+        </div>
+
+        <div
+          className={`
+          transition-all duration-500 ease-in-out flex items-center justify-center
+          ${isScrolled ? "transform-none" : ""}
+        `}
+        >
+          {isOpen ? (
+            <ChevronDown className="text-gray-600 dark:text-white/80 transition-transform duration-300" />
+          ) : (
+            <Heart
+              className={`
+              text-red-600 transition-all duration-500 ease-in-out
+              ${isScrolled ? "transform scale-110" : "transform scale-100"}
+            `}
+            />
+          )}
+        </div>
       </button>
     </div>
   );

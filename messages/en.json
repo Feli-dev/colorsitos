@@ -40,6 +40,7 @@
   },
   "export": {
     "title": "Export color codes",
+    "type": "Export type",
     "brandKey": "Brand key name",
     "copy": "Copy",
     "justCodes": "Just the codes",
