@@ -117,7 +117,7 @@ export function PaletteGenerator() {
   }, []);
 
   return (
-    <div className="w-full space-y-6 h-full">
+    <div className="w-full space-y-6 h-full px-6 md:px-0">
       <Card>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

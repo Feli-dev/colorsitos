@@ -129,13 +129,32 @@ export function ColorSquareDisplay() {
   const [colorSquares, setColorSquares] = useState<ColorSquare[]>([]);
   /** Track which tooltips are open for each square */
   const [openTooltips, setOpenTooltips] = useState<Record<number, boolean>>({});
-  /** Fixed container dimensions for consistent layout */
-  const [containerSize] = useState({
+  /** Responsive container dimensions that adapt to screen size */
+  const [containerSize, setContainerSize] = useState({
     width: 900,
     height: 100,
   });
   /** Translation function for internationalization */
   const t = useTranslations();
+
+  /**
+   * Updates container size based on window dimensions
+   * Uses full width on mobile devices (< 768px) with padding
+   */
+  const updateContainerSize = () => {
+    if (typeof window !== "undefined") {
+      const windowWidth = window.innerWidth;
+      const isMobile = windowWidth < 768;
+      const padding = 40; // 20px padding on each side
+
+      setContainerSize({
+        width: isMobile
+          ? windowWidth - padding
+          : Math.min(900, windowWidth - padding),
+        height: isMobile ? 120 : 100, // Slightly taller on mobile for better spacing
+      });
+    }
+  };
 
   /**
    * Handles color copy event - keeps tooltip open for 2.5 seconds
@@ -161,9 +180,23 @@ export function ColorSquareDisplay() {
     setOpenTooltips((prev) => ({ ...prev, [squareId]: open }));
   };
 
+  // Initialize container size and handle window resize
+  useEffect(() => {
+    updateContainerSize();
+
+    const handleResize = () => {
+      updateContainerSize();
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   // Initialize color squares with collision-free positioning
   useEffect(() => {
-    const numSquares = 15; // Total number of squares to display
+    // Responsive number of squares based on container width
+    const isMobile = containerSize.width < 500; // Use a threshold based on actual container size
+    const numSquares = isMobile ? 8 : 15; // Fewer squares on mobile for better UX
 
     // Generate sizes first to calculate optimal positions
     const sizes = Array.from(
@@ -198,9 +231,9 @@ export function ColorSquareDisplay() {
 
   return (
     <TooltipProvider>
-      {/* Main container for color squares with fixed dimensions */}
+      {/* Main container for color squares with responsive dimensions */}
       <div
-        className="relative flex items-center justify-center"
+        className="relative flex items-center justify-center w-full mx-auto"
         style={{
           width: containerSize.width,
           height: containerSize.height,
