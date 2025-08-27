@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { ImageIcon, Upload, X } from "lucide-react";
+import { Check, ImageIcon, Upload, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 
@@ -43,9 +43,24 @@ export const ImageColorPicker = forwardRef<
       initialImage || null
     );
     const [isDragActive, setIsDragActive] = useState(false);
+
+    // Color selection states
+    const [isSelecting, setIsSelecting] = useState(false);
+    const [cursorPosition, setCursorPosition] = useState<{
+      x: number;
+      y: number;
+    } | null>(null);
+    const [selectedColor, setSelectedColor] = useState<string | null>(null);
+    const [selectedPosition, setSelectedPosition] = useState<{
+      x: number;
+      y: number;
+    } | null>(null);
+    const [isMobile, setIsMobile] = useState(false);
+
     const fileInputRef = useRef<HTMLInputElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const imageRef = useRef<HTMLImageElement>(null);
+    const magnifierCanvasRef = useRef<HTMLCanvasElement>(null);
 
     // Use controlled or uncontrolled state
     const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
@@ -92,6 +107,18 @@ export const ImageColorPicker = forwardRef<
       }
     }, [initialImage]);
 
+    // Detect mobile device
+    useEffect(() => {
+      const checkMobile = () => {
+        setIsMobile(window.innerWidth < 768 || "ontouchstart" in window);
+      };
+
+      checkMobile();
+      window.addEventListener("resize", checkMobile);
+
+      return () => window.removeEventListener("resize", checkMobile);
+    }, []);
+
     // Handle file drop
     const handleDrop = useCallback(
       (e: React.DragEvent<HTMLDivElement>) => {
@@ -116,44 +143,145 @@ export const ImageColorPicker = forwardRef<
       }
     };
 
-    // Extract color from image at clicked position
-    const handleImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
-      const img = imageRef.current;
-      const canvas = canvasRef.current;
+    // Extract color from image at specific coordinates
+    const extractColorAtPosition = useCallback(
+      (x: number, y: number): string | null => {
+        const img = imageRef.current;
+        const canvas = canvasRef.current;
 
-      if (!img || !canvas) return;
+        if (!img || !canvas) return null;
+
+        const rect = img.getBoundingClientRect();
+
+        // Scale coordinates to match actual image dimensions
+        const scaleX = img.naturalWidth / rect.width;
+        const scaleY = img.naturalHeight / rect.height;
+        const actualX = x * scaleX;
+        const actualY = y * scaleY;
+
+        // Ensure coordinates are within bounds
+        if (
+          actualX < 0 ||
+          actualY < 0 ||
+          actualX >= img.naturalWidth ||
+          actualY >= img.naturalHeight
+        ) {
+          return null;
+        }
+
+        // Draw image to canvas and extract pixel color
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return null;
+
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        ctx.drawImage(img, 0, 0);
+
+        const pixelData = ctx.getImageData(actualX, actualY, 1, 1).data;
+        const hex = `#${[pixelData[0], pixelData[1], pixelData[2]]
+          .map((x) => x.toString(16).padStart(2, "0"))
+          .join("")}`;
+
+        return hex;
+      },
+      []
+    );
+
+    // Update color from cursor position (simplified approach)
+    const updateColorFromCursor = useCallback(
+      (cursorX: number, cursorY: number) => {
+        // Extract color directly from the cursor position
+        const color = extractColorAtPosition(cursorX, cursorY);
+        if (color) {
+          setSelectedColor(color);
+          setSelectedPosition({ x: cursorX, y: cursorY });
+        }
+      },
+      [extractColorAtPosition]
+    );
+
+    // Handle mouse/touch start
+    const handlePointerStart = (
+      e: React.MouseEvent<HTMLImageElement> | React.TouchEvent<HTMLImageElement>
+    ) => {
+      e.preventDefault();
+      const img = imageRef.current;
+      if (!img) return;
+
+      setIsSelecting(true);
 
       const rect = img.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      let clientX: number, clientY: number;
 
-      // Scale coordinates to match actual image dimensions
-      const scaleX = img.naturalWidth / rect.width;
-      const scaleY = img.naturalHeight / rect.height;
-      const actualX = x * scaleX;
-      const actualY = y * scaleY;
+      if ("touches" in e) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+      } else {
+        clientX = e.clientX;
+        clientY = e.clientY;
+      }
 
-      // Draw image to canvas and extract pixel color
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
 
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
-      ctx.drawImage(img, 0, 0);
+      setCursorPosition({ x, y });
 
-      const pixelData = ctx.getImageData(actualX, actualY, 1, 1).data;
-      const hex = `#${[pixelData[0], pixelData[1], pixelData[2]]
-        .map((x) => x.toString(16).padStart(2, "0"))
-        .join("")}`;
+      // Extract color directly from cursor position
+      updateColorFromCursor(x, y);
+    };
 
-      onColorSelect?.(hex);
-      setIsOpen(false);
-      resetState();
+    // Handle mouse/touch move
+    const handlePointerMove = (
+      e: React.MouseEvent<HTMLImageElement> | React.TouchEvent<HTMLImageElement>
+    ) => {
+      if (!isSelecting) return;
+
+      e.preventDefault();
+      const img = imageRef.current;
+      if (!img) return;
+
+      const rect = img.getBoundingClientRect();
+      let clientX: number, clientY: number;
+
+      if ("touches" in e) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+      } else {
+        clientX = e.clientX;
+        clientY = e.clientY;
+      }
+
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+
+      setCursorPosition({ x, y });
+
+      // Extract color directly from cursor position
+      updateColorFromCursor(x, y);
+    };
+
+    // Handle mouse/touch end
+    const handlePointerEnd = () => {
+      setIsSelecting(false);
+      setCursorPosition(null);
+    };
+
+    // Confirm color selection
+    const handleConfirmColor = () => {
+      if (selectedColor) {
+        onColorSelect?.(selectedColor);
+        setIsOpen(false);
+        resetState();
+      }
     };
 
     // Reset component state
     const resetState = () => {
       setSelectedImage(null);
+      setIsSelecting(false);
+      setCursorPosition(null);
+      setSelectedColor(null);
+      setSelectedPosition(null);
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
@@ -172,6 +300,80 @@ export const ImageColorPicker = forwardRef<
 
     const handleSelectFile = () => {
       fileInputRef.current?.click();
+    };
+
+    // Create magnifier component (simplified based on DEV.to article)
+    const renderMagnifier = () => {
+      if (!cursorPosition || !selectedImage || !imageRef.current) return null;
+
+      const img = imageRef.current;
+      const rect = img.getBoundingClientRect();
+      const magnifierSize = isMobile ? 100 : 150;
+      const zoomLevel = 3;
+      const { x, y } = cursorPosition;
+
+      // Calculate magnifier position
+      let magnifierX = x - magnifierSize / 2;
+      let magnifierY = y - magnifierSize / 2;
+
+      // Adjust position for mobile (above finger)
+      if (isMobile) {
+        magnifierY = y - magnifierSize - 20;
+      }
+
+      // Keep magnifier within image bounds
+      magnifierX = Math.max(
+        0,
+        Math.min(magnifierX, rect.width - magnifierSize)
+      );
+      magnifierY = Math.max(
+        0,
+        Math.min(magnifierY, rect.height - magnifierSize)
+      );
+
+      // Calculate background position (simplified approach from article)
+      const backgroundPositionX = -x * zoomLevel + magnifierSize / 2;
+      const backgroundPositionY = -y * zoomLevel + magnifierSize / 2;
+      const backgroundSizeX = rect.width * zoomLevel;
+      const backgroundSizeY = rect.height * zoomLevel;
+
+      return (
+        <div
+          className="absolute border-2 border-white shadow-lg rounded-full overflow-hidden pointer-events-none z-10"
+          style={{
+            left: magnifierX,
+            top: magnifierY,
+            width: magnifierSize,
+            height: magnifierSize,
+            backgroundImage: `url(${selectedImage})`,
+            backgroundPosition: `${backgroundPositionX}px ${backgroundPositionY}px`,
+            backgroundSize: `${backgroundSizeX}px ${backgroundSizeY}px`,
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          {/* Smaller crosshair in the center */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-2 h-2 border-2 border-gray-800 rounded-full bg-white shadow-sm" />
+          </div>
+        </div>
+      );
+    };
+
+    // Create color indicator circle (smaller and cleaner)
+    const renderColorIndicator = () => {
+      if (!selectedPosition || !imageRef.current) return null;
+
+      return (
+        <div
+          className="absolute w-3 h-3 border-2 border-white rounded-full pointer-events-none shadow-lg z-10"
+          style={{
+            left: selectedPosition.x - 6,
+            top: selectedPosition.y - 6,
+            backgroundColor: selectedColor || "transparent",
+            boxShadow: "0 0 0 1px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.2)",
+          }}
+        />
+      );
     };
 
     return (
@@ -251,16 +453,65 @@ export const ImageColorPicker = forwardRef<
                       src={selectedImage}
                       alt="Color picker source"
                       className="w-full h-auto cursor-crosshair"
-                      onClick={handleImageClick}
+                      onMouseDown={handlePointerStart}
+                      onMouseMove={handlePointerMove}
+                      onMouseUp={handlePointerEnd}
+                      onMouseLeave={handlePointerEnd}
+                      onTouchStart={handlePointerStart}
+                      onTouchMove={handlePointerMove}
+                      onTouchEnd={handlePointerEnd}
+                      style={{ touchAction: "none" }}
                     />
+                    {renderColorIndicator()}
+                    {renderMagnifier()}
                   </div>
                 </div>
               </div>
             )}
           </div>
 
+          {/* Color confirmation panel */}
+          {selectedColor && selectedPosition && (
+            <div className="flex-shrink-0 border-t p-4 bg-muted/30">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-8 h-8 rounded border border-muted-foreground/20"
+                    style={{ backgroundColor: selectedColor }}
+                  />
+                  <div className="text-sm">
+                    <div className="font-medium">
+                      {selectedColor.toUpperCase()}
+                    </div>
+                    <div className="text-muted-foreground text-xs">
+                      {t("generator.imagePicker.selectedColor")}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setSelectedColor(null);
+                      setSelectedPosition(null);
+                    }}
+                  >
+                    {t("generator.imagePicker.cancel")}
+                  </Button>
+                  <Button type="button" size="sm" onClick={handleConfirmColor}>
+                    <Check className="h-4 w-4 mr-2" />
+                    {t("generator.imagePicker.confirm")}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Hidden canvas for color extraction */}
           <canvas ref={canvasRef} className="hidden" />
+          <canvas ref={magnifierCanvasRef} className="hidden" />
         </DialogContent>
       </Dialog>
     );

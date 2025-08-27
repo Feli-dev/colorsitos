@@ -35,7 +35,10 @@
       },
       "selectFile": "Select file",
       "clickToSelect": "Click on the image to extract color",
-      "clear": "Clear"
+      "clear": "Clear",
+      "selectedColor": "Selected color",
+      "cancel": "Cancel",
+      "confirm": "Confirm"
     }
   },
   "export": {
