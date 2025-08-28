@@ -46,7 +46,7 @@ export function PaletteGenerator() {
   const { saved, save, remove } = useSavedPalettes();
   const { setColorFavicon } = useDynamicFavicon();
   const isClient = useIsClient();
-  const [colorFromUrl] = useColorQuery();
+  const [colorFromUrl, updateColorUrl] = useColorQuery();
   const [loadedFromSaved, setLoadedFromSaved] = useState<boolean>(false);
   const baseHexInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -59,6 +59,17 @@ export function PaletteGenerator() {
       .replace(/(^-|-$)+/g, "")
       .slice(0, 50);
   }
+
+  // Handler para actualizar tanto el estado local como la URL
+  const handleColorChange = (newColor: string) => {
+    setBaseHex(newColor);
+    // Si newColor está vacío, limpiar la URL también
+    if (!newColor) {
+      updateColorUrl("");
+    } else if (newColor !== colorFromUrl) {
+      updateColorUrl(newColor);
+    }
+  };
 
   useEffect(() => {
     const handle = setTimeout(() => {
@@ -103,7 +114,7 @@ export function PaletteGenerator() {
   // Reset form when logo is clicked
   useEffect(() => {
     const handleReset = () => {
-      setBaseHex("");
+      handleColorChange("");
       setName("");
       setError("");
       setPalette(null);
@@ -123,7 +134,7 @@ export function PaletteGenerator() {
     if (colorFromUrl && !loadedFromSaved && colorFromUrl !== baseHex) {
       setBaseHex(colorFromUrl);
     }
-  }, [colorFromUrl, loadedFromSaved, baseHex]);
+  }, [colorFromUrl, loadedFromSaved]);
 
   return (
     <div className="w-full space-y-6 h-full px-6 md:px-0">
@@ -141,7 +152,7 @@ export function PaletteGenerator() {
                 id="baseHex"
                 placeholder="#3182CE"
                 value={baseHex}
-                onChange={setBaseHex}
+                onChange={handleColorChange}
                 inputMode="text"
                 autoComplete="off"
                 autoCorrect="off"
@@ -245,7 +256,7 @@ export function PaletteGenerator() {
               saved={saved}
               onLoad={(p) => {
                 setName(p.name);
-                setBaseHex(p.baseHex);
+                handleColorChange(p.baseHex);
                 setLoadedFromSaved(true);
               }}
               onDelete={(id) => remove(id)}
@@ -260,7 +271,7 @@ export function PaletteGenerator() {
           className="fixed bottom-4 left-4 h-10 shadow-lg rounded-lg"
           onClick={() => {
             setName("");
-            setBaseHex("");
+            handleColorChange("");
             setPalette(null);
             setError("");
             setLoadedFromSaved(false);

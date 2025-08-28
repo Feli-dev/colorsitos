@@ -11,7 +11,6 @@ import {
 import { Input } from "@/components/ui/input";
 import {
   ColorPicker,
-  ColorPickerAlpha,
   ColorPickerEyeDropper,
   ColorPickerFormat,
   ColorPickerHue,
@@ -190,7 +189,6 @@ export const ColorInputWithPicker = forwardRef<
                   <ColorPickerEyeDropper />
                   <div className="grid w-full gap-1">
                     <ColorPickerHue />
-                    <ColorPickerAlpha />
                   </div>
                 </div>
                 <div className="flex items-center gap-2">

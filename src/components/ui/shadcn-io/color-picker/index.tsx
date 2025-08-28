@@ -78,9 +78,7 @@ export const ColorPicker = ({
   const [lightness, setLightness] = useState(
     selectedColor.lightness() || defaultColor.lightness() || 50
   );
-  const [alpha, setAlpha] = useState(
-    selectedColor.alpha() * 100 || defaultColor.alpha() * 100
-  );
+  const [alpha, setAlpha] = useState(100);
   const [mode, setMode] = useState("hex");
 
   // Track if we're updating from external value to prevent infinite loops
@@ -98,7 +96,7 @@ export const ColorPicker = ({
         setHue(h || 0);
         setSaturation(s || 0);
         setLightness(l || 0);
-        setAlpha((color.alpha() || 1) * 100);
+        setAlpha(100);
         lastValueRef.current = value;
       } catch {
         console.error("Invalid color value:", value);
@@ -111,9 +109,9 @@ export const ColorPicker = ({
   useEffect(() => {
     if (onChange && !isUpdatingFromValue.current) {
       try {
-        const color = Color.hsl(hue, saturation, lightness).alpha(alpha / 100);
+        const color = Color.hsl(hue, saturation, lightness);
         const rgba = color.rgb().array();
-        onChange([rgba[0], rgba[1], rgba[2], alpha / 100]);
+        onChange([rgba[0], rgba[1], rgba[2], 1]);
       } catch {
         console.error("Error creating color from HSL values");
       }
@@ -237,17 +235,17 @@ export const ColorPickerHue = ({
 
   return (
     <Slider.Root
-      className={cn("relative flex h-4 w-full touch-none", className)}
+      className={cn("relative flex h-6 w-full touch-none", className)}
       max={360}
       onValueChange={([hue]) => setHue(hue)}
       step={1}
       value={[hue]}
       {...props}
     >
-      <Slider.Track className="relative my-0.5 h-3 w-full grow rounded-full bg-[linear-gradient(90deg,#FF0000,#FFFF00,#00FF00,#00FFFF,#0000FF,#FF00FF,#FF0000)]">
+      <Slider.Track className="relative my-1 h-4 w-full grow rounded-full bg-[linear-gradient(90deg,#FF0000,#FFFF00,#00FF00,#00FFFF,#0000FF,#FF00FF,#FF0000)]">
         <Slider.Range className="absolute h-full" />
       </Slider.Track>
-      <Slider.Thumb className="block h-4 w-4 rounded-full border border-primary/50 bg-background shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50" />
+      <Slider.Thumb className="block h-6 w-6 rounded-full border border-primary/50 bg-background shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50" />
     </Slider.Root>
   );
 };
@@ -346,54 +344,26 @@ export const ColorPickerOutput = ({ ...props }: ColorPickerOutputProps) => {
   );
 };
 
-type PercentageInputProps = ComponentProps<typeof Input>;
-
-const PercentageInput = ({ className, ...props }: PercentageInputProps) => {
-  return (
-    <div className="relative">
-      <Input
-        readOnly
-        type="text"
-        {...props}
-        className={cn(
-          "h-8 w-[3.25rem] rounded-l-none bg-secondary px-2 text-xs shadow-none",
-          className
-        )}
-      />
-      <span className="-translate-y-1/2 absolute top-1/2 right-2 text-muted-foreground text-xs">
-        %
-      </span>
-    </div>
-  );
-};
-
 export type ColorPickerFormatProps = HTMLAttributes<HTMLDivElement>;
 
 export const ColorPickerFormat = ({
   className,
   ...props
 }: ColorPickerFormatProps) => {
-  const { hue, saturation, lightness, alpha, mode } = useColorPicker();
-  const color = Color.hsl(hue, saturation, lightness, alpha / 100);
+  const { hue, saturation, lightness, mode } = useColorPicker();
+  const color = Color.hsl(hue, saturation, lightness);
 
   if (mode === "hex") {
     const hex = color.hex();
 
     return (
-      <div
-        className={cn(
-          "-space-x-px relative flex w-full items-center rounded-md shadow-sm",
-          className
-        )}
-        {...props}
-      >
+      <div className={cn("w-full rounded-md shadow-sm", className)} {...props}>
         <Input
-          className="h-8 rounded-r-none bg-secondary px-2 text-xs shadow-none"
+          className="h-8 w-full bg-secondary px-2 text-xs shadow-none"
           readOnly
           type="text"
           value={hex}
         />
-        <PercentageInput value={alpha} />
       </div>
     );
   }
@@ -405,27 +375,13 @@ export const ColorPickerFormat = ({
       .map((value) => Math.round(value));
 
     return (
-      <div
-        className={cn(
-          "-space-x-px flex items-center rounded-md shadow-sm",
-          className
-        )}
-        {...props}
-      >
-        {rgb.map((value, index) => (
-          <Input
-            className={cn(
-              "h-8 rounded-r-none bg-secondary px-2 text-xs shadow-none",
-              index && "rounded-l-none",
-              className
-            )}
-            key={index}
-            readOnly
-            type="text"
-            value={value}
-          />
-        ))}
-        <PercentageInput value={alpha} />
+      <div className={cn("w-full rounded-md shadow-sm", className)} {...props}>
+        <Input
+          className="h-8 w-full bg-secondary px-2 text-xs shadow-none"
+          readOnly
+          type="text"
+          value={`rgb(${rgb.join(", ")})`}
+        />
       </div>
     );
   }
@@ -442,8 +398,7 @@ export const ColorPickerFormat = ({
           className="h-8 w-full bg-secondary px-2 text-xs shadow-none"
           readOnly
           type="text"
-          value={`rgba(${rgb.join(", ")}, ${alpha}%)`}
-          {...props}
+          value={`rgb(${rgb.join(", ")})`}
         />
       </div>
     );
@@ -456,27 +411,13 @@ export const ColorPickerFormat = ({
       .map((value) => Math.round(value));
 
     return (
-      <div
-        className={cn(
-          "-space-x-px flex items-center rounded-md shadow-sm",
-          className
-        )}
-        {...props}
-      >
-        {hsl.map((value, index) => (
-          <Input
-            className={cn(
-              "h-8 rounded-r-none bg-secondary px-2 text-xs shadow-none",
-              index && "rounded-l-none",
-              className
-            )}
-            key={index}
-            readOnly
-            type="text"
-            value={value}
-          />
-        ))}
-        <PercentageInput value={alpha} />
+      <div className={cn("w-full rounded-md shadow-sm", className)} {...props}>
+        <Input
+          className="h-8 w-full bg-secondary px-2 text-xs shadow-none"
+          readOnly
+          type="text"
+          value={`hsl(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%)`}
+        />
       </div>
     );
   }
