@@ -14,6 +14,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useColorQuery } from "@/hooks/use-color-query";
 import { useDynamicFavicon } from "@/hooks/use-dynamic-favicon";
 import {
   useSavedPalettes,
@@ -45,6 +46,7 @@ export function PaletteGenerator() {
   const { saved, save, remove } = useSavedPalettes();
   const { setColorFavicon } = useDynamicFavicon();
   const isClient = useIsClient();
+  const [colorFromUrl] = useColorQuery();
   const [loadedFromSaved, setLoadedFromSaved] = useState<boolean>(false);
   const baseHexInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -115,6 +117,13 @@ export function PaletteGenerator() {
     window.addEventListener("resetPaletteForm", handleReset);
     return () => window.removeEventListener("resetPaletteForm", handleReset);
   }, []);
+
+  // Load color from URL query parameter whenever it changes
+  useEffect(() => {
+    if (colorFromUrl && !loadedFromSaved && colorFromUrl !== baseHex) {
+      setBaseHex(colorFromUrl);
+    }
+  }, [colorFromUrl, loadedFromSaved, baseHex]);
 
   return (
     <div className="w-full space-y-6 h-full px-6 md:px-0">

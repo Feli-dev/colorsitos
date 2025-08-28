@@ -17,6 +17,7 @@
 
 import { ColorTooltip } from "@/components/color-tooltip";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { useColorQuery } from "@/hooks/use-color-query";
 import { rgbToHex } from "@/utils/color-utils";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
@@ -136,6 +137,8 @@ export function ColorSquareDisplay() {
   });
   /** Translation function for internationalization */
   const t = useTranslations();
+  /** Hook for managing color query parameter */
+  const [, setColorQuery] = useColorQuery();
 
   /**
    * Updates container size based on window dimensions
@@ -158,10 +161,14 @@ export function ColorSquareDisplay() {
 
   /**
    * Handles color copy event - keeps tooltip open for 2.5 seconds
+   * Also updates the URL query parameter with the selected color
    * @param colorValue - The color value that was copied
    * @param squareId - ID of the square whose color was copied
    */
   const handleColorCopy = (colorValue: string, squareId: number) => {
+    // Update the URL with the selected color
+    setColorQuery(colorValue);
+
     // Show tooltip immediately
     setOpenTooltips((prev) => ({ ...prev, [squareId]: true }));
 

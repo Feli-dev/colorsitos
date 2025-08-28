@@ -12,6 +12,7 @@ import { getTranslations } from "next-intl/server";
 import { ThemeProvider } from "next-themes";
 import { Space_Grotesk } from "next/font/google";
 import { notFound } from "next/navigation";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "../globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -125,23 +126,25 @@ export default async function LocaleLayout({
           storageKey="colorsitos-theme"
         >
           <NextIntlClientProvider>
-            <DynamicFavicon />
-            <Navbar />
-            {children}
-            <SupportButton />
-            <Footer />
-            <Toaster
-              position="bottom-left"
-              expand={true}
-              toastOptions={{
-                classNames: {
-                  toast:
-                    "!shadow-none !bg-card !text-card-foreground !rounded-lg !w-fit !px-4 !py-2",
-                  title: "!text-foreground font-medium !text-base",
-                  description: "!text-muted-foreground font-mono !text-sm",
-                },
-              }}
-            />
+            <NuqsAdapter>
+              <DynamicFavicon />
+              <Navbar />
+              {children}
+              <SupportButton />
+              <Footer />
+              <Toaster
+                position="bottom-left"
+                expand={true}
+                toastOptions={{
+                  classNames: {
+                    toast:
+                      "!shadow-none !bg-card !text-card-foreground !rounded-lg !w-fit !px-4 !py-2",
+                    title: "!text-foreground font-medium !text-base",
+                    description: "!text-muted-foreground font-mono !text-sm",
+                  },
+                }}
+              />
+            </NuqsAdapter>
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
