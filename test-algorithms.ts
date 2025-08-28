@@ -25,7 +25,12 @@ testColors.forEach((color) => {
       console.log(`  ${shade}: ${hex}`);
     });
   } catch (error) {
-    console.error(`Error generating palette for ${color}:`, error.message);
+    // Ensure error is handled safely if not an Error instance
+    if (error instanceof Error) {
+      console.error(`Error generating palette for ${color}:`, error.message);
+    } else {
+      console.error(`Error generating palette for ${color}:`, String(error));
+    }
   }
 });
 
