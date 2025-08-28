@@ -71,5 +71,126 @@
     "copyright": "© {year} Colorsitos. Todos los derechos reservados.",
     "tagline": "Creando paletas hermosas 💙",
     "createdBy": "Proyecto creado por"
+  },
+  "playground": {
+    "title": "Zona de Pruebas",
+    "description": "Prueba y explora tus paletas de colores con componentes interactivos y visualizaciones",
+    "colorInput": {
+      "title": "Entrada de Color",
+      "label": "Color base (hex)",
+      "pickerTitle": "Selector de Color"
+    },
+    "presets": {
+      "blue": "Azul",
+      "green": "Verde",
+      "amber": "Ámbar",
+      "red": "Rojo",
+      "purple": "Morado"
+    },
+    "placeholder": "Ingresa un color hex para comenzar a explorar tu paleta",
+    "visualizer": {
+      "title": "Visualizador de Paleta",
+      "modes": {
+        "bars": "Barras",
+        "circles": "Círculos",
+        "spectrum": "Espectro"
+      },
+      "showLabels": "Mostrar Etiquetas",
+      "hideLabels": "Ocultar Etiquetas",
+      "download": "Descargar"
+    },
+    "showcase": {
+      "title": "Muestra de Componentes",
+      "buttons": {
+        "title": "Botones",
+        "primary": "Primario",
+        "secondary": "Secundario",
+        "ghost": "Fantasma",
+        "link": "Enlace"
+      },
+      "cards": {
+        "title": "Tarjetas",
+        "light": {
+          "title": "Tarjeta Clara",
+          "description": "Fondo claro con texto oscuro"
+        },
+        "medium": {
+          "title": "Tarjeta Media",
+          "description": "Fondo medio con texto oscuro"
+        },
+        "dark": {
+          "title": "Tarjeta Oscura",
+          "description": "Fondo oscuro con texto claro"
+        }
+      },
+      "forms": {
+        "title": "Elementos de Formulario",
+        "input": {
+          "label": "Campo de Texto",
+          "placeholder": "Ingresa texto..."
+        },
+        "select": {
+          "label": "Campo Select",
+          "placeholder": "Elige opción..."
+        },
+        "slider": {
+          "label": "Control Deslizante"
+        },
+        "switch": {
+          "on": "Interruptor Encendido",
+          "off": "Interruptor Apagado"
+        }
+      },
+      "misc": {
+        "title": "Misceláneos",
+        "progress": {
+          "label": "Barra de Progreso"
+        },
+        "badges": {
+          "label": "Insignias",
+          "primary": "Primaria",
+          "secondary": "Secundaria",
+          "outline": "Contorno"
+        }
+      },
+      "guide": {
+        "title": "Guía de Uso",
+        "light": {
+          "title": "Colores Claros (50-200)",
+          "description": "Ideales para fondos, acentos sutiles y elementos delicados"
+        },
+        "dark": {
+          "title": "Colores Oscuros (700-950)",
+          "description": "Ideales para texto, bordes y acentos fuertes"
+        }
+      }
+    },
+    "scale": {
+      "title": "Escala de Color",
+      "shades": "tonos",
+      "view": {
+        "detailed": "Vista Detallada",
+        "compact": "Vista Compacta"
+      },
+      "showHex": "Mostrar Hex",
+      "hideHex": "Ocultar Hex",
+      "stats": {
+        "title": "Estadísticas de Escala",
+        "totalShades": "Tonos Totales",
+        "lightest": "Más Claro",
+        "darkest": "Más Oscuro"
+      },
+      "usage": {
+        "title": "Ejemplos de Uso",
+        "backgrounds": {
+          "title": "Colores de Fondo",
+          "description": "Usa tonos claros (50-200) para fondos"
+        },
+        "text": {
+          "title": "Colores de Texto",
+          "description": "Usa tonos oscuros (700-950) para texto"
+        }
+      }
+    }
   }
 }
