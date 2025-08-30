@@ -348,5 +348,13 @@ export const CoolMode: React.FC<CoolModeProps> = ({ children, options }) => {
     }
   }, [options]);
 
-  return React.cloneElement(children as React.ReactElement, { ref });
+  // Only attach ref if the child supports it (i.e., is a function or class component or a DOM element)
+  if (!React.isValidElement(children)) return null;
+
+  // Use React.cloneElement with proper typing to avoid TS error with ref
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return React.cloneElement(children as React.ReactElement<any>, {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ref: ref as React.Ref<any>,
+  });
 };
