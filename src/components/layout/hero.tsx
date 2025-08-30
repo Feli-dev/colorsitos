@@ -73,7 +73,7 @@ const Hero = () => {
 
   return (
     <section className="font-grotesk h-[100dvh] py-16 md:py-24 flex items-center justify-center">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-screen md:max-w-6xl mx-auto px-4 md:px-0">
         {/* Main content */}
         <div className="text-center mb-12 md:mb-16">
           {/* Title */}
@@ -125,7 +125,7 @@ const Hero = () => {
           </h1>
 
           {/* Description */}
-          <p className="text-lg sm:text-xl text-neutral-600 dark:text-neutral-300 max-w-3xl mx-auto mb-8 leading-relaxed">
+          <p className="hidden md:block text-lg sm:text-xl text-neutral-600 dark:text-neutral-300 max-w-3xl mx-auto mb-8 leading-relaxed">
             {t("description")}
           </p>
 
@@ -133,7 +133,7 @@ const Hero = () => {
           <CoolMode>
             <Button
               size="lg"
-              className="font-semibold px-8 py-4 text-lg rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105"
+              className="mt-4 md:mt-0 font-semibold px-8 py-4 text-lg rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105"
               onClick={() => {
                 // Smooth scroll to the generator section
                 const generatorSection =
@@ -191,7 +191,7 @@ const Hero = () => {
                   <p className="text-sm md:text-base font-medium text-neutral-700 dark:text-neutral-300 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors duration-300 mb-1">
                     {feature.text}
                   </p>
-                  <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-tight">
+                  <p className="text-[10px] md:text-xs text-neutral-500 dark:text-neutral-400 leading-tight">
                     {feature.description}
                   </p>
                 </div>
@@ -202,13 +202,13 @@ const Hero = () => {
 
         {/* Decorative background elements with animated blur effects */}
         <div
-          className="absolute top-1/4 -left-4 w-24 h-24 rounded-full blur-2xl animate-pulse"
+          className="hidden md:block absolute top-1/4 -left-4 w-24 h-24 rounded-full blur-2xl animate-pulse"
           style={{
             backgroundColor: isDarkTheme ? lightColors[2] : darkColors[1],
           }}
         />
         <div
-          className="absolute top-3/4 -right-4 w-32 h-32 rounded-full blur-2xl animate-pulse delay-1000"
+          className="hidden md:block absolute top-3/4 -right-4 w-32 h-32 rounded-full blur-2xl animate-pulse delay-1000"
           style={{
             backgroundColor: isDarkTheme ? lightColors[1] : darkColors[1],
           }}
