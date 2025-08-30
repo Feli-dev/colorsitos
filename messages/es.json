@@ -7,6 +7,23 @@
   "HomePage": {
     "title": "Colorsitos"
   },
+  "hero": {
+    "title": "Crea hermosas",
+    "subtitle": "Paletas de Colores",
+    "description": "Genera paletas de colores impactantes y obtén el código para usarlas en tus proyectos. Exporta a Tailwind CSS, Chakra UI y más frameworks.",
+    "cta": "Comenzar a Crear",
+    "features": {
+      "oneClick": "Exportación Rápida",
+      "oneClickDesc": "Copia el código con un solo clic",
+      "multipleFormats": "Múltiples Formatos",
+      "multipleFormatsDesc": "Tailwind CSS, Chakra UI y más",
+      "imageExtraction": "Extracción de Imágenes",
+      "imageExtractionDesc": "Extrae colores de tus fotos",
+      "preview": "Vista Previa",
+      "previewDesc": "Ve tu paleta en componentes reales",
+      "comingSoon": "Próximamente"
+    }
+  },
   "generator": {
     "title": "Generador de paletas",
     "baseHex": { "label": "Color base (hex)" },

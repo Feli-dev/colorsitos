@@ -5,7 +5,6 @@ import { SupportButton } from "@/components/support-button";
 import { Toaster } from "@/components/ui/sonner";
 import { routing } from "@/i18n/routing";
 import { GeistMono } from "geist/font/mono";
-import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
@@ -15,12 +14,25 @@ import { notFound } from "next/navigation";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "../globals.css";
 
+/**
+ * Space Grotesk font configuration with specified weights and subsets.
+ * Used as the primary font for the application with CSS variable assignment.
+ */
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-grotesk",
   weight: ["300", "400", "500", "600", "700"],
 });
 
+/**
+ * Generates dynamic metadata for the application based on the current locale.
+ * This includes SEO metadata, Open Graph tags, Twitter cards, and other
+ * metadata required for proper social media sharing and search engine optimization.
+ *
+ * @param params - Route parameters containing the current locale
+ * @param params.locale - The locale string (e.g., 'en', 'es')
+ * @returns Promise resolving to Next.js Metadata object with all necessary meta tags
+ */
 export async function generateMetadata({
   params,
 }: {
@@ -100,6 +112,17 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * Main layout component for localized pages. Handles locale validation,
+ * provides internationalization context, theme management, and renders
+ * the core application structure including navigation, footer, and global UI elements.
+ *
+ * @param props - Component props
+ * @param props.children - Child components to render within the layout
+ * @param props.params - Route parameters containing the current locale
+ * @param props.params.locale - The locale string for the current page
+ * @returns The complete page layout with all providers and UI components
+ */
 export default async function LocaleLayout({
   children,
   params,
@@ -113,9 +136,9 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
-        className={`${GeistSans.className} ${GeistMono.className} ${spaceGrotesk.variable} antialiased
+        className={`${spaceGrotesk.className} ${GeistMono.className} antialiased
           bg-gradient-to-br from-slate-50 to-slate-100 dark:from-neutral-950 dark:to-neutral-900
-          min-h-screen
+          min-h-screen max-w-screen overflow-x-hidden
           `}
       >
         <ThemeProvider

@@ -7,6 +7,23 @@
   "HomePage": {
     "title": "Colorsitos"
   },
+  "hero": {
+    "title": "Craft Beautiful",
+    "subtitle": "Color Themes",
+    "description": "Generate stunning color palettes and get the code to use them in your projects. Export to Tailwind CSS, Chakra UI, and more frameworks.",
+    "cta": "Start Creating",
+    "features": {
+      "oneClick": "One-Click Export",
+      "oneClickDesc": "Copy code with a single click",
+      "multipleFormats": "Multiple Formats",
+      "multipleFormatsDesc": "Tailwind CSS, Chakra UI and more",
+      "imageExtraction": "Image Extraction",
+      "imageExtractionDesc": "Extract colors from your photos",
+      "preview": "Live Preview",
+      "previewDesc": "See your palette in real components",
+      "comingSoon": "Coming Soon"
+    }
+  },
   "generator": {
     "title": "Palette Generator",
     "baseHex": { "label": "Base color (hex)" },

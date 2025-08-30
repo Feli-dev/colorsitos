@@ -6,26 +6,37 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { AnimatedThemeToggler } from "../ui/animated-theme-toggler";
 
+/**
+ * Navigation bar component that provides site navigation, branding, and theme toggle.
+ * Includes social media links, logo click handling for navigation, and responsive design.
+ * Handles smooth scrolling to top and form reset events when logo is clicked.
+ *
+ * @returns The navigation bar JSX element with branding and controls
+ */
 export default function Navbar() {
   const t = useTranslations("HomePage");
   const router = useRouter();
 
+  /**
+   * Handles logo click events to navigate to home page and reset application state.
+   * Performs smooth scroll to top and dispatches form reset event for palette generator.
+   */
   const handleLogoClick = () => {
     // Navigate to home page
     router.push("/");
 
-    // Smooth scroll to top
+    // Smooth scroll to top of the page
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
 
-    // Dispatch custom event to reset the form
+    // Dispatch custom event to reset the palette form
     window.dispatchEvent(new CustomEvent("resetPaletteForm"));
   };
 
   return (
-    <nav className="w-full py-6">
+    <nav className="fixed top-0 left-0 right-0 z-50 w-full py-6">
       <div className="container flex items-center justify-between sm:justify-around mx-auto px-4 sm:px-6 lg:px-8">
         <button
           onClick={handleLogoClick}
@@ -49,7 +60,7 @@ export default function Navbar() {
                 strokeWidth={2}
               />
             </a>
-            {/* TODO: Add GitHub link when the project is open source */}
+            {/* TODO: Add GitHub link when the project becomes open source */}
             {/* <a
               href={"https://github.com/Feli-dev/colorsitos"}
               target="_blank"
