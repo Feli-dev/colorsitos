@@ -17,7 +17,7 @@ export default function Home() {
       {/* Hero Section */}
       <Hero />
 
-      <div className="max-w-4xl mx-auto flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto min-h-[90dvh] md:min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center my-10" data-generator>
           <ColorSquareDisplay />
