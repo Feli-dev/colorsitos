@@ -67,7 +67,7 @@ const Hero = () => {
       description: t("features.previewDesc"),
       iconColor: isDarkTheme ? lightColors[2] : darkColors[0],
       bgColor: isDarkTheme ? darkColors[2] : lightColors[1],
-      isComingSoon: true,
+      isComingSoon: false,
     },
   ];
 
