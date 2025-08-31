@@ -73,10 +73,6 @@ export default function Navbar() {
                 strokeWidth={2}
               />
             </a> */}
-            <span
-              aria-hidden="true"
-              className="h-6 w-0.5 bg-neutral-700 dark:bg-neutral-700 rounded self-center"
-            />
             <div className="cursor-pointer size-10 flex items-center justify-center">
               <AnimatedThemeToggler className="cursor-pointer h-5 w-5 sm:h-6 sm:w-6 transition-colors duration-300 text-neutral-800 hover:text-neutral-600 dark:text-neutral-200 dark:hover:text-neutral-400" />
             </div>

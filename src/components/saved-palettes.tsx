@@ -1,10 +1,13 @@
 "use client";
 
 import { ColorTooltip } from "@/components/color-tooltip";
+import { PlaygroundDrawer } from "@/components/playground-drawer";
 import { Button } from "@/components/ui/button";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import type { SavedPalette } from "@/hooks/use-saved-palettes";
-import { Trash } from "lucide-react";
+import type { ColorPalette } from "@/types/colors";
+import { createColorPalette } from "@/utils/color-utils";
+import { Sparkles, Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 const SHADE_ORDER = [
@@ -46,24 +49,48 @@ interface SavedPalettesProps {
 export function SavedPalettes({ saved, onLoad, onDelete }: SavedPalettesProps) {
   const t = useTranslations();
 
+  // Convert SavedPalette to ColorPalette for playground drawer
+  const convertToColorPalette = (savedPalette: SavedPalette): ColorPalette => {
+    const shades = SHADE_ORDER.map((value) => ({
+      value,
+      hex: savedPalette.shades[value],
+      name: `${savedPalette.id}-${value}`,
+    }));
+
+    return createColorPalette(savedPalette.id, savedPalette.name, shades);
+  };
+
   if (saved.length === 0)
     return <p className="text-sm text-muted-foreground">{t("saved.empty")}</p>;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
       {saved.map((p) => (
-        <div
-          key={p.id}
-          className="flex items-start justify-between gap-3 rounded-md border p-2"
-        >
-          <div className="shrink-0">
-            <SavedPalettePreview shades={p.shades} />
-          </div>
-          <div className="flex flex-col items-end justify-between h-full">
+        <div key={p.id} className="rounded-md border p-2">
+          <div className="flex flex-col items-center justify-center h-full gap-2">
+            <div className="shrink-0">
+              <SavedPalettePreview shades={p.shades} />
+            </div>
             <p className="text-sm font-semibold truncate max-w-[10rem]">
               {p.name}
             </p>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center gap-2">
+              <PlaygroundDrawer
+                palette={convertToColorPalette(p)}
+                trigger={
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    className="gap-2"
+                  >
+                    <Sparkles className="h-4 w-4" />
+                    <span className="hidden sm:inline">
+                      {t("playground.viewInAction")}
+                    </span>
+                  </Button>
+                }
+              />
               <Button
                 type="button"
                 size="sm"

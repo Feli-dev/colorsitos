@@ -2,6 +2,7 @@
 
 import { ColorPaletteComponent } from "@/components/color-palette";
 import { ExportersPanel } from "@/components/exporters-panel";
+import { PlaygroundDrawer } from "@/components/playground-drawer";
 import { SavedPalettes } from "@/components/saved-palettes";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -194,9 +195,8 @@ export function PaletteGenerator() {
               <ColorPaletteComponent
                 palette={palette}
                 title={t("generator.generatedTitle")}
-                layout="inline"
               />
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button type="button" variant="outline">
@@ -210,7 +210,8 @@ export function PaletteGenerator() {
                     <ExportersPanel palette={palette} />
                   </DialogContent>
                 </Dialog>
-                <div className="flex justify-end">
+                <div className="flex items-center gap-2">
+                  <PlaygroundDrawer palette={palette} />
                   <Button
                     type="button"
                     onClick={() => {

@@ -88,5 +88,125 @@
     "copyright": "© {year} Colorsitos. All rights reserved.",
     "tagline": "Crafting beautiful themes 💙",
     "createdBy": "Project created by"
+  },
+  "playground": {
+    "title": "Color Playground",
+    "description": "Test and explore your color palettes with interactive components and visualizations",
+    "colorInput": {
+      "title": "Color Input",
+      "label": "Base color (hex)",
+      "pickerTitle": "Color Picker"
+    },
+    "presets": {
+      "blue": "Blue",
+      "green": "Green",
+      "amber": "Amber",
+      "red": "Red",
+      "purple": "Purple"
+    },
+    "placeholder": "Enter a hex color to start exploring your palette",
+    "visualizer": {
+      "modes": {
+        "bars": "Bars",
+        "spectrum": "Spectrum"
+      },
+      "showLabels": "Show Labels",
+      "hideLabels": "Hide Labels",
+      "download": "Download"
+    },
+    "showcase": {
+      "title": "Component Showcase",
+      "buttons": {
+        "title": "Buttons",
+        "primary": "Primary",
+        "secondary": "Secondary",
+        "ghost": "Ghost",
+        "link": "Link"
+      },
+      "cards": {
+        "title": "Cards",
+        "light": {
+          "title": "Light Card",
+          "description": "Light background with dark text"
+        },
+        "medium": {
+          "title": "Medium Card",
+          "description": "Medium background with dark text"
+        },
+        "dark": {
+          "title": "Dark Card",
+          "description": "Dark background with light text"
+        }
+      },
+      "forms": {
+        "title": "Form Elements",
+        "input": {
+          "label": "Input Field",
+          "placeholder": "Enter text..."
+        },
+        "select": {
+          "label": "Select Field",
+          "placeholder": "Choose option..."
+        },
+        "slider": {
+          "label": "Slider Control"
+        },
+        "switch": {
+          "on": "Switch On",
+          "off": "Switch Off"
+        }
+      },
+      "misc": {
+        "title": "Miscellaneous",
+        "progress": {
+          "label": "Progress Bar"
+        },
+        "badges": {
+          "label": "Badges",
+          "primary": "Primary",
+          "secondary": "Secondary",
+          "outline": "Outline"
+        }
+      },
+      "guide": {
+        "title": "Usage Guide",
+        "light": {
+          "title": "Light Colors (50-200)",
+          "description": "Best for backgrounds, light accents, and subtle elements"
+        },
+        "dark": {
+          "title": "Dark Colors (700-950)",
+          "description": "Best for text, borders, and strong accents"
+        }
+      }
+    },
+    "scale": {
+      "title": "Color Scale",
+      "shades": "shades",
+      "view": {
+        "detailed": "Detailed View",
+        "compact": "Compact View"
+      },
+      "showHex": "Show Hex",
+      "hideHex": "Hide Hex",
+      "stats": {
+        "title": "Scale Statistics",
+        "totalShades": "Total Shades",
+        "lightest": "Lightest",
+        "darkest": "Darkest"
+      },
+      "usage": {
+        "title": "Usage Examples",
+        "backgrounds": {
+          "title": "Background Colors",
+          "description": "Use lighter shades (50-200) for backgrounds"
+        },
+        "text": {
+          "title": "Text Colors",
+          "description": "Use darker shades (700-950) for text"
+        }
+      }
+    },
+    "viewInAction": "Demo"
   }
 }
