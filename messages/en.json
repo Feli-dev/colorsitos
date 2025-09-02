@@ -11,6 +11,7 @@
     "title": "Craft Beautiful",
     "subtitle": "Color Themes",
     "description": "Generate stunning color palettes and get the code to use them in your projects. Export to Tailwind CSS, Chakra UI, and more frameworks.",
+    "refreshTooltip": "Press me!",
     "cta": "Start Creating",
     "features": {
       "oneClick": "One-Click Export",

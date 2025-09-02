@@ -3,6 +3,11 @@
 import { CoolMode } from "@/components/magicui/cool-mode";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useRandomTextColors } from "@/hooks/use-random-colors";
 import { Download, Eye, Image, Layers, Palette, RefreshCw } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -116,10 +121,24 @@ const Hero = () => {
                     </ColorTooltip>
                   )
                 )}
-                <RefreshCw
-                  className="inline-block ml-2 h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
-                  onClick={regenerate}
-                />
+                <Tooltip open={true}>
+                  <TooltipTrigger asChild>
+                    <RefreshCw
+                      className="inline-block ml-2 h-5 w-5 cursor-pointer"
+                      onClick={regenerate}
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent
+                    className="rotate-10"
+                    side="top"
+                    align="start"
+                    sideOffset={4}
+                  >
+                    <p className="text-xs text-center font-semibold">
+                      {t("refreshTooltip")}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
               </span>
             </span>
           </h1>

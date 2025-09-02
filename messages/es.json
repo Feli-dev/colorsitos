@@ -11,6 +11,7 @@
     "title": "Crea hermosas",
     "subtitle": "Paletas de Colores",
     "description": "Genera paletas de colores impactantes y obtén el código para usarlas en tus proyectos. Exporta a Tailwind CSS, Chakra UI y más frameworks.",
+    "refreshTooltip": "Clickeame!",
     "cta": "Comenzar a Crear",
     "features": {
       "oneClick": "Exportación Rápida",
