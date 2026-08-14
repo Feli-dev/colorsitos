@@ -21,6 +21,7 @@ import {
   useSavedPalettes,
   type SavedPalette,
 } from "@/hooks/use-saved-palettes";
+import { onPaletteReset } from "@/lib/palette-reset-channel";
 import type { ColorPalette } from "@/types/colors";
 import {
   createColorPalette,
@@ -28,6 +29,7 @@ import {
   validateHex,
 } from "@/utils/color-utils";
 import { generateColorPalette } from "@/utils/palette-generator";
+import { toPaletteShades } from "@/utils/palette-shades";
 import { Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
@@ -48,8 +50,17 @@ export function PaletteGenerator() {
   const { setColorFavicon } = useDynamicFavicon();
   const isClient = useIsClient();
   const [colorFromUrl, updateColorUrl] = useColorQuery();
+  // Drives the floating "create a new theme" button only. It deliberately does
+  // not gate URL syncing any more; one flag doing both jobs is what kept
+  // back/forward broken after loading a saved palette.
   const [loadedFromSaved, setLoadedFromSaved] = useState<boolean>(false);
   const baseHexInputRef = useRef<HTMLInputElement | null>(null);
+  // The last colour this component observed in the URL, so the effect below can
+  // tell a real URL change from a re-render. Starts as null rather than the
+  // current value, because the colour present on first render still has to be
+  // adopted — seeding it with colorFromUrl makes the first pass a no-op and the
+  // form never picks up a pasted link.
+  const lastUrlColor = useRef<string | null>(null);
 
   function toSlug(text: string): string {
     return text
@@ -112,10 +123,13 @@ export function PaletteGenerator() {
     return () => clearTimeout(handle);
   }, [baseHex, name, t, setColorFavicon]);
 
-  // Reset form when logo is clicked
+  // Reset form when logo is clicked. Clears state directly rather than going
+  // through handleColorChange, so this effect does not depend on a handler that
+  // is recreated every render.
   useEffect(() => {
     const handleReset = () => {
-      handleColorChange("");
+      setBaseHex("");
+      updateColorUrl("");
       setName("");
       setError("");
       setPalette(null);
@@ -126,16 +140,22 @@ export function PaletteGenerator() {
       }, 100);
     };
 
-    window.addEventListener("resetPaletteForm", handleReset);
-    return () => window.removeEventListener("resetPaletteForm", handleReset);
-  }, []);
+    return onPaletteReset(handleReset);
+  }, [updateColorUrl]);
 
-  // Load color from URL query parameter whenever it changes
+  // Adopt the colour from the URL whenever the URL itself changes: a pasted
+  // link, a locale switch, or browser back/forward.
+  //
+  // This reacts to URL *changes* rather than to any divergence between the URL
+  // and local state. Comparing the two would fight the user mid-edit, and the
+  // previous guard needed loadedFromSaved to suppress it — which permanently
+  // disabled back/forward, because nothing ever cleared that flag.
   useEffect(() => {
-    if (colorFromUrl && !loadedFromSaved && colorFromUrl !== baseHex) {
-      setBaseHex(colorFromUrl);
-    }
-  }, [colorFromUrl, loadedFromSaved]);
+    if (colorFromUrl === lastUrlColor.current) return;
+    lastUrlColor.current = colorFromUrl;
+
+    if (colorFromUrl) setBaseHex(colorFromUrl);
+  }, [colorFromUrl]);
 
   return (
     <div className="w-full space-y-6 h-full px-6 md:px-0">
@@ -219,16 +239,11 @@ export function PaletteGenerator() {
                       const normalized = validateHex(
                         baseHex.trim().startsWith("#") ? baseHex : `#${baseHex}`
                       );
-                      const shadesRecord = palette.shades.reduce((acc, s) => {
-                        // @ts-expect-error: índice restringido a las claves conocidas
-                        acc[s.value] = s.hex;
-                        return acc;
-                      }, {} as SavedPalette["shades"]);
                       const entry: SavedPalette = {
                         id: palette.id,
                         name: palette.name,
                         baseHex: normalized,
-                        shades: shadesRecord,
+                        shades: toPaletteShades(palette.shades),
                         createdAt: new Date().toISOString(),
                       };
                       save(entry);

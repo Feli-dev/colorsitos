@@ -11,6 +11,7 @@ import {
   hslToRgb,
   isLightColor,
   isValidHex,
+  LIGHT_COLOR_LUMINANCE_PIVOT,
   rgbToHex,
   rgbToHsl,
   validateHex,
@@ -69,15 +70,51 @@ describe("getContrastRatio", () => {
 });
 
 describe("isLightColor", () => {
+  /**
+   * The question isLightColor answers is "which foreground contrasts better on
+   * this colour". So instead of asserting a threshold number, these assert that
+   * its verdict agrees with which foreground actually wins on WCAG contrast.
+   * That way the test explains the pivot rather than memorising it.
+   */
+  const blackWinsOn = (hex: string) =>
+    getContrastRatio(hex, "#000000") > getContrastRatio(hex, "#FFFFFF");
+
   it("treats white as light and black as dark", () => {
     expect(isLightColor("#FFFFFF")).toBe(true);
     expect(isLightColor("#000000")).toBe(false);
   });
 
-  it("treats mid grey as dark because it uses relative luminance, not lightness", () => {
-    // #808080 sits at 50% HSL lightness but only ~0.216 relative luminance.
+  it("agrees with whichever foreground gives more contrast", () => {
+    for (const hex of ["#FFFFFF", "#000000", "#808080", ...SAMPLE_HEXES]) {
+      expect(isLightColor(hex), `${hex}`).toBe(blackWinsOn(hex));
+    }
+  });
+
+  it("switches between two adjacent greys, pinning the pivot to 1/255", () => {
+    // #757575 is luminance 0.17789, #767676 is 0.18116; the pivot is ~0.17913.
+    expect(isLightColor("#757575")).toBe(false);
+    expect(isLightColor("#767676")).toBe(true);
+
+    expect(blackWinsOn("#757575")).toBe(false);
+    expect(blackWinsOn("#767676")).toBe(true);
+  });
+
+  it("calls mid grey light, which the old 0.5 threshold got wrong", () => {
+    // #808080 is 50% HSL lightness but 0.216 relative luminance — above the
+    // pivot, so black text contrasts better (5.32 against 3.95).
     expect(rgbToHsl(128, 128, 128).l).toBeCloseTo(50.2, 1);
-    expect(isLightColor("#808080")).toBe(false);
+    expect(isLightColor("#808080")).toBe(true);
+    expect(getContrastRatio("#808080", "#000000")).toBeGreaterThan(
+      getContrastRatio("#808080", "#FFFFFF")
+    );
+  });
+
+  it("derives the pivot from equal contrast against white and black", () => {
+    expect(LIGHT_COLOR_LUMINANCE_PIVOT).toBeCloseTo(0.17913, 5);
+
+    // At the pivot both ratios coincide, which is what makes it the crossover.
+    const l = LIGHT_COLOR_LUMINANCE_PIVOT;
+    expect(1.05 / (l + 0.05)).toBeCloseTo((l + 0.05) / 0.05, 10);
   });
 
   it("returns false for unparseable input", () => {

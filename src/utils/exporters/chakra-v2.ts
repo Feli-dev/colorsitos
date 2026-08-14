@@ -1,17 +1,12 @@
-export type PaletteShades = Record<
-  50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900,
-  string
->;
+import type { ChakraV2Shades, PaletteShades } from "@/types/colors";
 
 export function exportChakraV2(
   brandKey: string,
-  shades: Record<
-    50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 950,
-    string
-  >
+  shades: PaletteShades
 ): string {
-  // Chakra v2 no utiliza 950; filtramos si existiera
-  const filtered: PaletteShades = {
+  // Chakra v2 has no 950 stop, so it is dropped on the way out. The narrower
+  // return shape is what makes that omission checked rather than incidental.
+  const filtered: ChakraV2Shades = {
     50: shades[50],
     100: shades[100],
     200: shades[200],
@@ -22,7 +17,7 @@ export function exportChakraV2(
     700: shades[700],
     800: shades[800],
     900: shades[900],
-  } as const;
+  };
 
   const entries = Object.entries(filtered)
     .map(([k, v]) => `      ${k}: '${v}',`)

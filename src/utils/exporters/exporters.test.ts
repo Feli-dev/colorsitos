@@ -2,11 +2,11 @@ import { describe, expect, it } from "vitest";
 
 import { exportChakraV2 } from "./chakra-v2";
 import { exportChakraV3 } from "./chakra-v3";
+import type { PaletteShades } from "@/types/colors";
 import { exportTailwindV3 } from "./tailwind-v3";
 import {
   exportTailwindV4CssVars,
   exportTailwindV4Usage,
-  type PaletteShades,
 } from "./tailwind-v4";
 
 const SHADES: PaletteShades = {
