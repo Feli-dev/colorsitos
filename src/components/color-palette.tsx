@@ -3,10 +3,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ColorPalette } from "@/types/colors";
+import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { isLightColor } from "@/utils/color-utils";
 import { Check, Copy } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
 
 interface ColorPaletteProps {
   palette: ColorPalette;
@@ -15,18 +15,8 @@ interface ColorPaletteProps {
 }
 
 export function ColorPaletteComponent({ palette, title }: ColorPaletteProps) {
-  const [copiedColor, setCopiedColor] = useState<string | null>(null);
   const t = useTranslations();
-
-  const handleCopyColor = async (hex: string) => {
-    try {
-      await navigator.clipboard.writeText(hex);
-      setCopiedColor(hex);
-      setTimeout(() => setCopiedColor(null), 2000);
-    } catch (err) {
-      console.error(t("palette.copy.error"), err);
-    }
-  };
+  const { copy, isCopied } = useCopyToClipboard();
 
   return (
     <div className="w-full space-y-2">
@@ -38,31 +28,31 @@ export function ColorPaletteComponent({ palette, title }: ColorPaletteProps) {
       <div className="grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {palette.shades.map((shade) => {
           const isLight = isLightColor(shade.hex);
-          const isCopied = copiedColor === shade.hex;
+          const copied = isCopied(shade.hex);
 
           return (
             <div
               key={shade.value}
               role="button"
               tabIndex={0}
-              onClick={() => handleCopyColor(shade.hex)}
+              onClick={() => copy(shade.hex)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
-                  handleCopyColor(shade.hex);
+                  copy(shade.hex);
                 }
               }}
               className="relative group w-full rounded-xl border cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-ring overflow-hidden"
               title={`${shade.value} ${shade.hex}`}
               aria-label={`${shade.value} ${shade.hex}`}
             >
-              {/* Swatch de color */}
+              {/* Colour swatch */}
               <div
                 className="h-20 w-full"
                 style={{ backgroundColor: shade.hex }}
               />
 
-              {/* Footer blanco con hex y valor */}
+              {/* Footer showing the hex value and its stop */}
               <div className="p-2 bg-background">
                 <div className="flex items-center justify-between">
                   <span className="font-medium text-xs md:text-sm">
@@ -77,20 +67,20 @@ export function ColorPaletteComponent({ palette, title }: ColorPaletteProps) {
                 </div>
               </div>
 
-              {/* Botón copiar sobre el swatch (hover) */}
+              {/* Copy button, revealed on hover over the swatch */}
               <div className="absolute top-2 right-2 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                 <Button
                   variant={isLight ? "secondary" : "outline"}
                   size="sm"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleCopyColor(shade.hex);
+                    copy(shade.hex);
                   }}
                   className="h-7 w-7 p-0"
                   title={t("palette.copy.title")}
                   aria-label={t("palette.copy.title")}
                 >
-                  {isCopied ? (
+                  {copied ? (
                     <Check className="h-3 w-3" />
                   ) : (
                     <Copy className="h-3 w-3" />

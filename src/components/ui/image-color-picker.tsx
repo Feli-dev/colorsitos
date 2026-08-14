@@ -11,6 +11,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Check, ImageIcon, Upload, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useMediaQuery } from "usehooks-ts";
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 
 export interface ImageColorPickerProps {
@@ -55,7 +56,19 @@ export const ImageColorPicker = forwardRef<
       x: number;
       y: number;
     } | null>(null);
-    const [isMobile, setIsMobile] = useState(false);
+    /*
+      "(pointer: coarse)" replaces the previous `"ontouchstart" in window`
+      check. That property is present on some non-touch browsers and missing on
+      some touch devices, so it was never a reliable signal; the media feature
+      asks the question directly.
+
+      initializeWithValue: false keeps the first render false, matching the old
+      useState(false) + effect ordering, and avoids reading matchMedia during
+      render — which is unsafe while prerendering.
+    */
+    const isMobile = useMediaQuery("(max-width: 767px), (pointer: coarse)", {
+      initializeWithValue: false,
+    });
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -108,16 +121,6 @@ export const ImageColorPicker = forwardRef<
     }, [initialImage]);
 
     // Detect mobile device
-    useEffect(() => {
-      const checkMobile = () => {
-        setIsMobile(window.innerWidth < 768 || "ontouchstart" in window);
-      };
-
-      checkMobile();
-      window.addEventListener("resize", checkMobile);
-
-      return () => window.removeEventListener("resize", checkMobile);
-    }, []);
 
     // Handle file drop
     const handleDrop = useCallback(
