@@ -1,7 +1,7 @@
 "use client";
 
-import { ColorTooltip } from "@/components/color-tooltip";
-import { PlaygroundDrawer } from "@/components/playground-drawer";
+import { ColorTooltip } from "@/components/shared/color-tooltip";
+import { PlaygroundDrawer } from "@/features/playground/playground-drawer";
 import { Button } from "@/components/ui/button";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import type { SavedPalette } from "@/hooks/use-saved-palettes";

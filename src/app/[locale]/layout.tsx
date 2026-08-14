@@ -1,7 +1,7 @@
-import { DynamicFavicon } from "@/components/dynamic-favicon";
+import { DynamicFavicon } from "@/components/shared/dynamic-favicon";
 import { Footer } from "@/components/layout/footer";
 import Navbar from "@/components/layout/navbar";
-import { SupportButton } from "@/components/support-button";
+import { SupportButton } from "@/components/layout/support-button";
 import { Toaster } from "@/components/ui/sonner";
 import { routing } from "@/i18n/routing";
 import { getSiteUrl } from "@/utils/site-url";

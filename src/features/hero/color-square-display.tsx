@@ -15,7 +15,7 @@
 
 "use client";
 
-import { ColorTooltip } from "@/components/color-tooltip";
+import { ColorTooltip } from "@/components/shared/color-tooltip";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useColorQuery } from "@/hooks/use-color-query";
 import { rgbToHex } from "@/utils/color-utils";

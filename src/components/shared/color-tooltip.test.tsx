@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { ColorTooltip } from "./color-tooltip";
+import { ColorTooltip } from "@/components/shared/color-tooltip";
 
 vi.mock("next-intl", () => ({
   useTranslations: () => (key: string) => key,
