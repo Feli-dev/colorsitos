@@ -21,6 +21,7 @@ import {
   useSavedPalettes,
   type SavedPalette,
 } from "@/hooks/use-saved-palettes";
+import { onPaletteReset } from "@/lib/palette-reset-channel";
 import type { ColorPalette } from "@/types/colors";
 import {
   createColorPalette,
@@ -127,8 +128,7 @@ export function PaletteGenerator() {
       }, 100);
     };
 
-    window.addEventListener("resetPaletteForm", handleReset);
-    return () => window.removeEventListener("resetPaletteForm", handleReset);
+    return onPaletteReset(handleReset);
   }, []);
 
   // Load color from URL query parameter whenever it changes
