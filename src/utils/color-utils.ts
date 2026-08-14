@@ -1,7 +1,7 @@
 import { ColorPalette } from "@/types/colors";
 
 /**
- * Convierte un color hex a RGB
+ * Converts a hex colour to RGB.
  */
 export function hexToRgb(
   hex: string
@@ -17,7 +17,7 @@ export function hexToRgb(
 }
 
 /**
- * Calcula el contraste entre dos colores
+ * WCAG contrast ratio between two colours. Returns 0 if either is unparseable.
  */
 export function getContrastRatio(color1: string, color2: string): number {
   const rgb1 = hexToRgb(color1);
@@ -35,7 +35,7 @@ export function getContrastRatio(color1: string, color2: string): number {
 }
 
 /**
- * Calcula la luminancia de un color RGB
+ * Relative luminance of an RGB colour, per WCAG.
  */
 function getLuminance({
   r,
@@ -69,8 +69,8 @@ function getLuminance({
 export const LIGHT_COLOR_LUMINANCE_PIVOT = Math.sqrt(1.05 * 0.05) - 0.05;
 
 /**
- * Determina si un color es claro u oscuro, en el sentido de qué primer plano
- * contrasta mejor sobre él: por encima del pivote gana el negro.
+ * Whether a colour is light, meaning which foreground contrasts better on it:
+ * above the pivot, black wins.
  */
 export function isLightColor(hex: string): boolean {
   const rgb = hexToRgb(hex);
@@ -81,7 +81,7 @@ export function isLightColor(hex: string): boolean {
 }
 
 /**
- * Crea una nueva paleta de colores
+ * Builds a palette, deriving each shade's name from the palette id and stop.
  */
 export function createColorPalette(
   id: string,
@@ -99,14 +99,14 @@ export function createColorPalette(
 }
 
 /**
- * Valida si un color hex es válido
+ * Whether a string is a valid hex colour. Requires a leading #; accepts 3 or 6 digits.
  */
 export function isValidHex(hex: string): boolean {
   return /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hex);
 }
 
 /**
- * Normaliza un color hex a formato #RRGGBB en mayúsculas. Lanza error si es inválido.
+ * Normalizes a hex colour to uppercase #RRGGBB. Throws if it is invalid.
  */
 export function validateHex(input: string): string {
   const raw = (input || "").trim();
@@ -129,7 +129,7 @@ export function validateHex(input: string): string {
 }
 
 /**
- * Convierte RGB [0-255] a HSL: h [0-360), s y l en porcentaje [0-100].
+ * Converts RGB [0-255] to HSL: h in [0-360), s and l as percentages [0-100].
  */
 export function rgbToHsl(
   r: number,
@@ -166,7 +166,7 @@ export function rgbToHsl(
 }
 
 /**
- * Convierte HSL (h en grados [0-360), s y l en porcentaje [0-100]) a RGB [0-255].
+ * Converts HSL (h in degrees [0-360), s and l as percentages [0-100]) to RGB [0-255].
  */
 export function hslToRgb(
   h: number,
@@ -219,7 +219,7 @@ export function hslToRgb(
 }
 
 /**
- * Convierte RGB [0-255] a hex #RRGGBB (mayúsculas).
+ * Converts RGB [0-255] to an uppercase #RRGGBB hex string.
  */
 export function rgbToHex(r: number, g: number, b: number): string {
   const toHex = (v: number) =>
@@ -228,7 +228,7 @@ export function rgbToHex(r: number, g: number, b: number): string {
 }
 
 /**
- * Convierte HEX a OKLCH y retorna una cadena CSS oklch(L C H)
+ * Converts hex to OKLCH and returns a CSS oklch(L C H) string.
  */
 export function hexToOklchString(hex: string): string {
   const rgb = hexToRgb(hex);
