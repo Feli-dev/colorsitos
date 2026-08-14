@@ -1,3 +1,23 @@
+<!-- HISTORICAL DOCUMENT — not a plan -->
+
+> **This is a record of finished work, not current plans.**
+>
+> It tracked the 2026 transformation of the app into a single-base-hex palette generator, and every
+> item in it has shipped. It used to live at the repository root, where a file called `roadmap.md`
+> reads as a statement of intent — which it never was.
+>
+> Its last open item, *"9. Pruebas de regresión y snapshots"*, was completed separately: the project
+> now has 12 test files, 157 tests, and 20 golden snapshots covering every exporter and colour
+> format combination.
+>
+> Current plans live in [GitHub issues](https://github.com/Feli-dev/colorsitos/issues). Kept here
+> because it explains *why* the app was reshaped, which the commit history alone does not.
+>
+> Written in Spanish, unlike the rest of the project's documentation, because it is a historical
+> artefact and rewriting it would misrepresent what was actually written at the time.
+
+---
+
 ## Roadmap — Generador de Paletas (Colorsitos)
 
 Objetivo: transformar la app en un generador de paletas a partir de un color base (hex) en la posición 500, manteniendo la lógica de generación existente, incorporando validación, guardado en localStorage, soporte multi-idioma (ES/EN), generación en tiempo real con debounce y exportadores para Chakra UI v2/v3 y Tailwind v3/v4, incluyendo el tono 950.
