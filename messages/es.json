@@ -161,7 +161,8 @@
           }
         },
         "slider": {
-          "label": "Control Deslizante"
+          "label": "Control Deslizante",
+          "value": "Valor: {value}"
         },
         "switch": {
           "on": "Interruptor Encendido",
