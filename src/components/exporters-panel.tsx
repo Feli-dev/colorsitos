@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { ColorPalette } from "@/types/colors";
+import { SHADE_STOPS, type ColorPalette } from "@/types/colors";
 import {
   hexToHslString,
   hexToOklchString,
@@ -23,6 +23,7 @@ import {
   exportTailwindV4CssVars,
   exportTailwindV4Usage,
 } from "@/utils/exporters/tailwind-v4";
+import { toPaletteShades } from "@/utils/palette-shades";
 import { Check, Copy } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
@@ -68,37 +69,10 @@ export function ExportersPanel({ palette }: ExportersPanelProps) {
     }
   }
 
-  const shades = useMemo(() => {
-    const record = {
-      50: "",
-      100: "",
-      200: "",
-      300: "",
-      400: "",
-      500: "",
-      600: "",
-      700: "",
-      800: "",
-      900: "",
-      950: "",
-    } as Record<
-      50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 950,
-      string
-    >;
-    for (const s of palette.shades) {
-      // @ts-expect-error keys limited to known shades
-      record[s.value] = s.hex;
-    }
-    return record;
-  }, [palette]);
+  const shades = useMemo(() => toPaletteShades(palette.shades), [palette]);
 
   const justTheCodes = useMemo(() => {
-    const keys = Object.keys(shades)
-      .map((k) => Number(k))
-      .sort((a, b) => a - b) as Array<
-      50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 950
-    >;
-    return keys.map((k) => fmt(shades[k])).join("\n");
+    return SHADE_STOPS.map((stop) => fmt(shades[stop])).join("\n");
   }, [shades, format, fmt]);
 
   const code = useMemo(() => {

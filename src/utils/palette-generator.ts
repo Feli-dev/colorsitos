@@ -1,3 +1,4 @@
+import type { PaletteShades } from "@/types/colors";
 import chroma from "chroma-js";
 import { Hsluv } from "hsluv";
 import { validateHex } from "./color-utils";
@@ -235,10 +236,7 @@ function createSwatches(palette: PaletteConfig): SwatchValue[] {
 function generateColorPalette(
   baseHex: string,
   options?: Partial<PaletteConfig>
-): Record<
-  50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 950,
-  string
-> {
+): PaletteShades {
   try {
     const hex = validateHex(baseHex);
     const config: PaletteConfig = {
@@ -250,10 +248,7 @@ function generateColorPalette(
     const swatches = createSwatches(config);
 
     // Convert swatches to the expected format for colorsitos
-    const palette: Record<
-      50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 950,
-      string
-    > = {
+    const palette: PaletteShades = {
       50: swatches.find((s) => s.stop === 50)?.hex || "#FFFFFF",
       100: swatches.find((s) => s.stop === 100)?.hex || "#FFFFFF",
       200: swatches.find((s) => s.stop === 200)?.hex || "#FFFFFF",

@@ -28,6 +28,7 @@ import {
   validateHex,
 } from "@/utils/color-utils";
 import { generateColorPalette } from "@/utils/palette-generator";
+import { toPaletteShades } from "@/utils/palette-shades";
 import { Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
@@ -219,16 +220,11 @@ export function PaletteGenerator() {
                       const normalized = validateHex(
                         baseHex.trim().startsWith("#") ? baseHex : `#${baseHex}`
                       );
-                      const shadesRecord = palette.shades.reduce((acc, s) => {
-                        // @ts-expect-error: índice restringido a las claves conocidas
-                        acc[s.value] = s.hex;
-                        return acc;
-                      }, {} as SavedPalette["shades"]);
                       const entry: SavedPalette = {
                         id: palette.id,
                         name: palette.name,
                         baseHex: normalized,
-                        shades: shadesRecord,
+                        shades: toPaletteShades(palette.shades),
                         createdAt: new Date().toISOString(),
                       };
                       save(entry);
