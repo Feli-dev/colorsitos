@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Check, Copy } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { ReactNode, useState } from "react";
+import { useState, type KeyboardEvent, type ReactNode } from "react";
 import { toast } from "sonner";
 
 /**
@@ -144,9 +144,28 @@ export function ColorTooltip({
     handleCopyColor(colorValue);
   };
 
+  /**
+   * Mirrors the click behaviour for keyboard users.
+   *
+   * Consumers render triggers with `role="button"`, which promises Enter and
+   * Space activation. Without this the trigger is focusable and announced as a
+   * button that does nothing — worse than not being focusable at all.
+   */
+  const handleTriggerKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+
+    // Space would otherwise scroll the page.
+    event.preventDefault();
+    handleCopyColor(colorValue);
+  };
+
   return (
     <Tooltip open={open} onOpenChange={handleTooltipOpenChange}>
-      <TooltipTrigger asChild onClick={handleTriggerClick}>
+      <TooltipTrigger
+        asChild
+        onClick={handleTriggerClick}
+        onKeyDown={handleTriggerKeyDown}
+      >
         {children}
       </TooltipTrigger>
       {/* Tooltip content with same styling as original */}

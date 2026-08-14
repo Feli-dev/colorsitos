@@ -42,24 +42,6 @@ function generateRandomHexColor(): string {
 }
 
 /**
- * Determines if a color is dark based on its luminance value.
- * Uses the relative luminance formula to calculate perceived brightness.
- * @param hexColor - Color in hex format
- * @returns true if the color is considered dark (luminance < 0.5)
- */
-function isDarkColor(hexColor: string): boolean {
-  // Convert hex to RGB values
-  const r = parseInt(hexColor.slice(1, 3), 16);
-  const g = parseInt(hexColor.slice(3, 5), 16);
-  const b = parseInt(hexColor.slice(5, 7), 16);
-
-  // Calculate luminance using relative luminance formula
-  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-
-  return luminance < 0.5;
-}
-
-/**
  * Calculates the contrast ratio between two colors using relative luminance formula.
  * Used for accessibility compliance (WCAG guidelines).
  * @param color1 - First color in hex format
@@ -226,8 +208,7 @@ export function useRandomColors(): RandomTextColors & {
  */
 export function createColoredText(
   text: string,
-  colors: string[],
-  isDarkMode: boolean
+  colors: string[]
 ): Array<{ letter: string; color: string }> {
   if (!text || colors.length === 0) return [];
 
@@ -261,7 +242,7 @@ export function useRandomTextColors(): RandomTextColors & {
   const createColoredTextFn = (text: string, isDarkMode?: boolean) => {
     const useDarkMode = isDarkMode !== undefined ? isDarkMode : isDarkTheme;
     const colorArray = useDarkMode ? colors.lightColors : colors.darkColors;
-    return createColoredText(text, colorArray, useDarkMode);
+    return createColoredText(text, colorArray);
   };
 
   return {

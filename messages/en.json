@@ -23,7 +23,8 @@
       "preview": "Live Preview",
       "previewDesc": "See your palette in real components",
       "comingSoon": "Coming Soon"
-    }
+    },
+    "copyColorLabel": "Color {color}, activate to copy"
   },
   "generator": {
     "title": "Palette Generator",
