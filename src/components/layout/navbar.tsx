@@ -1,6 +1,7 @@
 "use client";
 
 import { Logo } from "@/components/logo";
+import { requestPaletteReset } from "@/lib/palette-reset-channel";
 import { Twitter } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -31,8 +32,7 @@ export default function Navbar() {
       behavior: "smooth",
     });
 
-    // Dispatch custom event to reset the palette form
-    window.dispatchEvent(new CustomEvent("resetPaletteForm"));
+    requestPaletteReset();
   };
 
   return (

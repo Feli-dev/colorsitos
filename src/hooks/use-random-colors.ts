@@ -3,6 +3,7 @@
  * Provides coherent colors for the hero section text with good contrast and accessibility.
  */
 
+import type { PaletteShades } from "@/types/colors";
 import { rgbToHex } from "@/utils/color-utils";
 import { generateColorPalette } from "@/utils/palette-generator";
 import { useTheme } from "next-themes";
@@ -22,10 +23,7 @@ interface RandomTextColors {
   /** Color for light text when needed */
   light: string;
   /** Complete color palette with all shade variations */
-  palette: Record<
-    50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 950,
-    string
-  >;
+  palette: PaletteShades;
   /** Light colors optimized for dark mode backgrounds */
   lightColors: string[];
   /** Dark colors optimized for light mode backgrounds */

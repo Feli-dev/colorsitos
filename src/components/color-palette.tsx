@@ -8,15 +8,11 @@ import { useState } from "react";
 
 interface ColorPaletteProps {
   palette: ColorPalette;
+  /** Optional heading above the swatch grid. Omit it to render no heading. */
   title?: string;
-  position?: "left" | "right";
 }
 
-export function ColorPaletteComponent({
-  palette,
-  title,
-  position = "left",
-}: ColorPaletteProps) {
+export function ColorPaletteComponent({ palette, title }: ColorPaletteProps) {
   const [copiedColor, setCopiedColor] = useState<string | null>(null);
   const t = useTranslations();
 
@@ -31,7 +27,12 @@ export function ColorPaletteComponent({
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full space-y-2">
+      {title ? (
+        // Same type scale as the field labels in this card, so the heading reads
+        // as part of the existing form rather than a new visual element.
+        <h2 className="text-sm text-muted-foreground">{title}</h2>
+      ) : null}
       <div className="grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {palette.shades.map((shade) => {
           const isLight = isLightColor(shade.hex);

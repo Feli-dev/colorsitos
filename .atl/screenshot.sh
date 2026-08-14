@@ -37,8 +37,13 @@ capture() {
   local tmp
   tmp=$(mktemp)
 
+  # Set the scheme first, then reload, so the page renders straight into the
+  # target theme. Switching the scheme on an already-painted page animates
+  # (next-themes runs with disableTransitionOnChange={false}) and the capture
+  # lands mid-transition: grey cards, half-faded buttons.
   orca set media --color-scheme "$scheme" >/dev/null 2>&1 || true
-  orca wait --timeout 1500 >/dev/null 2>&1 || true
+  orca reload >/dev/null 2>&1 || true
+  orca wait --timeout 5000 >/dev/null 2>&1 || true
   orca screenshot --format png --json >"$tmp"
 
   node -e '
