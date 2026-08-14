@@ -16,6 +16,7 @@
 # agent-local tooling: share only the scripts, not the generated indexes
 /.atl/*
 !/.atl/screenshot.sh
+!/.atl/generate-favicon.mjs
 
 # next.js
 /.next/

@@ -27,8 +27,13 @@
   },
   "generator": {
     "title": "Palette Generator",
-    "baseHex": { "label": "Base color (hex)" },
-    "name": { "label": "Name (optional)", "placeholder": "My palette" },
+    "baseHex": {
+      "label": "Base color (hex)"
+    },
+    "name": {
+      "label": "Name (optional)",
+      "placeholder": "My palette"
+    },
     "error": {
       "invalidHex": "Invalid color. Use a 3 or 6-digit hex.",
       "generate": "Could not generate a palette for the given color."
@@ -209,5 +214,13 @@
       }
     },
     "viewInAction": "Demo"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "The page could not be displayed. Try again.",
+    "action": "Try again"
+  },
+  "loading": {
+    "label": "Loading"
   }
 }
