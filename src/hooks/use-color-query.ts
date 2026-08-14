@@ -3,32 +3,32 @@ import { useQueryState } from "nuqs";
 import { useCallback } from "react";
 
 /**
- * Hook personalizado para manejar el query param 'color'
- * Permite leer y actualizar el color seleccionado desde la URL
+ * Reads and writes the `color` query parameter.
  *
- * @returns Un array con [color, setColor] similar a useState
+ * @returns A [color, setColor] tuple, shaped like useState
  */
 export function useColorQuery() {
   const [color, setColor] = useQueryState("color", {
     defaultValue: "",
     parse: (value: string) => {
-      // Validar que sea un color hex válido
+      // Only accept a valid hex colour
       if (!value) return "";
       const normalized = value.startsWith("#") ? value : `#${value}`;
       return isValidHex(normalized) ? normalized : "";
     },
     serialize: (value: string) => {
-      // Remover el # si existe para la URL
+      // Drop the leading # so the URL stays readable
       return value.startsWith("#") ? value.slice(1) : value;
     },
   });
 
   /**
-   * Función para actualizar el color que también valida el formato.
-   * Memoizada para que pueda declararse como dependencia de un efecto sin
-   * volver a suscribirlo en cada render.
+   * Updates the colour, validating the format first.
    *
-   * @param newColor - El nuevo color en formato hex
+   * Memoized so it can be declared as an effect dependency without
+   * resubscribing that effect on every render.
+   *
+   * @param newColor - The new colour in hex form
    */
   const updateColor = useCallback(
     (newColor: string) => {

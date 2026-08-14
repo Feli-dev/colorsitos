@@ -131,7 +131,7 @@
   }
 }
 
-/* Animación para gradientes dinámicos */
+/* Animation for dynamic gradients */
 @keyframes gradient-shift {
   0% {
     background-position: 0% 50%;

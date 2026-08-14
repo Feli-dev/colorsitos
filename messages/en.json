@@ -153,7 +153,12 @@
         },
         "select": {
           "label": "Select Field",
-          "placeholder": "Choose option..."
+          "placeholder": "Choose option...",
+          "options": {
+            "one": "Option 1",
+            "two": "Option 2",
+            "three": "Option 3"
+          }
         },
         "slider": {
           "label": "Slider Control"
