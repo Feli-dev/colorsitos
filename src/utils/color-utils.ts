@@ -55,14 +55,29 @@ function getLuminance({
 }
 
 /**
- * Determina si un color es claro u oscuro
+ * Relative luminance at which a colour contrasts equally against white and
+ * black, i.e. where the better foreground switches from white to black.
+ *
+ * Derived rather than chosen. Setting the two WCAG contrast ratios equal,
+ *   1.05 / (L + 0.05) = (L + 0.05) / 0.05
+ * gives L = sqrt(1.05 * 0.05) - 0.05 ≈ 0.1791.
+ *
+ * The previous threshold was 0.5, which is the midpoint of *lightness*, not of
+ * perceived contrast. It classified anything below half luminance as dark,
+ * including colours that plainly read as light — #808080 sits at 0.216.
+ */
+export const LIGHT_COLOR_LUMINANCE_PIVOT = Math.sqrt(1.05 * 0.05) - 0.05;
+
+/**
+ * Determina si un color es claro u oscuro, en el sentido de qué primer plano
+ * contrasta mejor sobre él: por encima del pivote gana el negro.
  */
 export function isLightColor(hex: string): boolean {
   const rgb = hexToRgb(hex);
   if (!rgb) return false;
 
   const luminance = getLuminance(rgb);
-  return luminance > 0.5;
+  return luminance > LIGHT_COLOR_LUMINANCE_PIVOT;
 }
 
 /**
