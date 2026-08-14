@@ -10,7 +10,17 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  { ignores: ["coverage/**"] },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    // Test files render components in isolation, so the App Router rules about
+    // pages, navigation and image optimization do not apply to them.
+    files: ["**/*.{test,spec}.{ts,tsx}", "src/test/**/*.{ts,tsx}"],
+    rules: {
+      "@next/next/no-html-link-for-pages": "off",
+      "@next/next/no-img-element": "off",
+    },
+  },
 ];
 
 export default eslintConfig;
