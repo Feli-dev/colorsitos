@@ -10,25 +10,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SHADE_STOPS, type ColorPalette } from "@/types/colors";
+import type { ColorPalette } from "@/types/colors";
 import {
-  hexToHslString,
-  hexToOklchString,
-  hexToRgbString,
-} from "@/utils/color-utils";
-import { exportChakraV2 } from "@/utils/exporters/chakra-v2";
-import { exportChakraV3 } from "@/utils/exporters/chakra-v3";
-import { exportTailwindV3 } from "@/utils/exporters/tailwind-v3";
-import {
-  exportTailwindV4CssVars,
-  exportTailwindV4Usage,
-} from "@/utils/exporters/tailwind-v4";
+  buildExportCode,
+  exportJustTheCodes,
+  type ColorFormat,
+  type ExportKind,
+} from "@/utils/export-code";
 import { toPaletteShades } from "@/utils/palette-shades";
 import { Check, Copy } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
-
-type ExportKind = "tw4" | "tw3" | "chakra3" | "chakra2" | "codes";
 
 interface ExportOption {
   value: ExportKind;
@@ -43,7 +35,7 @@ export function ExportersPanel({ palette }: ExportersPanelProps) {
   const t = useTranslations();
   const [brandKey, setBrandKey] = useState<string>("brand");
   const [active, setActive] = useState<ExportKind>("codes");
-  const [format, setFormat] = useState<"hex" | "rgb" | "hsl" | "oklch">("hex");
+  const [format, setFormat] = useState<ColorFormat>("hex");
   const [prefix] = useState<string>("");
   const [useIndex] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
@@ -56,57 +48,21 @@ export function ExportersPanel({ palette }: ExportersPanelProps) {
     { value: "codes", label: t("export.justCodes") },
   ];
 
-  function fmt(hex: string): string {
-    switch (format) {
-      case "rgb":
-        return hexToRgbString(hex);
-      case "hsl":
-        return hexToHslString(hex);
-      case "oklch":
-        return hexToOklchString(hex);
-      default:
-        return hex.toUpperCase();
-    }
-  }
-
   const shades = useMemo(() => toPaletteShades(palette.shades), [palette]);
 
-  const justTheCodes = useMemo(() => {
-    return SHADE_STOPS.map((stop) => fmt(shades[stop])).join("\n");
-  }, [shades, format, fmt]);
+  const justTheCodes = useMemo(
+    () => exportJustTheCodes(shades, format),
+    [shades, format]
+  );
 
-  const code = useMemo(() => {
-    switch (active) {
-      case "tw4":
-        // map shades to the selected format
-        const v4 = Object.fromEntries(
-          Object.entries(shades).map(([k, v]) => [k, fmt(v as string)])
-        ) as typeof shades;
-        return `${exportTailwindV4CssVars(brandKey, v4, {
-          prefix: prefix || undefined,
-          useIndex,
-        })}\n\n${exportTailwindV4Usage(brandKey)}`;
-      case "tw3":
-        const v3 = Object.fromEntries(
-          Object.entries(shades).map(([k, v]) => [k, fmt(v as string)])
-        ) as typeof shades;
-        return exportTailwindV3(brandKey, v3);
-      case "chakra3":
-        const c3 = Object.fromEntries(
-          Object.entries(shades).map(([k, v]) => [k, fmt(v as string)])
-        ) as typeof shades;
-        return exportChakraV3(brandKey, c3);
-      case "chakra2":
-        const c2 = Object.fromEntries(
-          Object.entries(shades).map(([k, v]) => [k, fmt(v as string)])
-        ) as typeof shades;
-        return exportChakraV2(brandKey, c2);
-      case "codes":
-        return justTheCodes;
-      default:
-        return "";
-    }
-  }, [active, brandKey, shades, format, justTheCodes, fmt, prefix, useIndex]);
+  const code = useMemo(
+    () =>
+      buildExportCode(active, shades, brandKey, format, {
+        prefix: prefix || undefined,
+        useIndex,
+      }),
+    [active, brandKey, shades, format, prefix, useIndex]
+  );
 
   async function handleCopy() {
     try {
