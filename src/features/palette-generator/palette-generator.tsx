@@ -1,12 +1,12 @@
 "use client";
 
-import { ColorPaletteComponent } from "@/components/color-palette";
-import { ExportersPanel } from "@/components/exporters-panel";
-import { PlaygroundDrawer } from "@/components/playground-drawer";
-import { SavedPalettes } from "@/components/saved-palettes";
+import { ColorPaletteComponent } from "@/components/shared/color-palette";
+import { ExportersPanel } from "@/features/palette-generator/exporters-panel";
+import { PlaygroundDrawer } from "@/features/playground/playground-drawer";
+import { SavedPalettes } from "@/features/palette-generator/saved-palettes";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ColorInputWithPicker } from "@/components/ui/color-input-with-picker";
+import { ColorInputWithPicker } from "@/features/palette-generator/color-input-with-picker";
 import {
   Dialog,
   DialogContent,

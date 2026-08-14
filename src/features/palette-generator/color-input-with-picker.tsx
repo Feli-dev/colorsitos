@@ -16,13 +16,13 @@ import {
   ColorPickerHue,
   ColorPickerOutput,
   ColorPickerSelection,
-} from "@/components/ui/shadcn-io/color-picker";
+} from "@/components/vendor/shadcn-io/color-picker";
 import { cn } from "@/lib/utils";
 import Color from "color";
 import { ImageIcon, Palette } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { forwardRef, useCallback, useEffect, useState } from "react";
-import { ImageColorPicker } from "./image-color-picker";
+import { ImageColorPicker } from "@/features/palette-generator/image-color-picker";
 
 export interface ColorInputWithPickerProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {

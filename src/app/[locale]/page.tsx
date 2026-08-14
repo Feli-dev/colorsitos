@@ -1,8 +1,8 @@
 "use client";
 
-import { ColorSquareDisplay } from "@/components/color-square-display";
-import Hero from "@/components/layout/hero";
-import { PaletteGenerator } from "@/components/palette-generator";
+import { ColorSquareDisplay } from "@/features/hero/color-square-display";
+import Hero from "@/features/hero/hero";
+import { PaletteGenerator } from "@/features/palette-generator/palette-generator";
 
 /**
  * Main home page component that renders the complete user interface.

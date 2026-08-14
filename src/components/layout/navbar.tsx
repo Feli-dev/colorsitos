@@ -1,11 +1,11 @@
 "use client";
 
-import { Logo } from "@/components/logo";
+import { Logo } from "@/components/layout/logo";
 import { requestPaletteReset } from "@/lib/palette-reset-channel";
 import { Twitter } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { AnimatedThemeToggler } from "../ui/animated-theme-toggler";
+import { AnimatedThemeToggler } from "@/components/vendor/animated-theme-toggler";
 
 /**
  * Navigation bar component that provides site navigation, branding, and theme toggle.

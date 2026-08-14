@@ -6,7 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import type { ColorPalette } from "@/types/colors";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { ColorPaletteComponent } from "../color-palette";
+import { ColorPaletteComponent } from "@/components/shared/color-palette";
 
 interface PaletteVisualizerProps {
   palette: ColorPalette;
