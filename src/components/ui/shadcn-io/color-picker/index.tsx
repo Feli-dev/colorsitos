@@ -1,5 +1,17 @@
 "use client";
 
+/**
+ * Vendored from Kibo UI — "Color Picker", distributed through the shadcn.io
+ * registry.
+ *
+ * Upstream: https://www.shadcn.io/components/color-picker
+ * Source:   https://github.com/haydenbleasel/kibo
+ * License:  MIT
+ *
+ * This is third-party code adapted into this project, not original work. Prefer
+ * pulling upstream fixes over rewriting it locally, and keep local changes small
+ * so diffs against upstream stay readable.
+ */
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {

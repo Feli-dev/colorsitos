@@ -2,6 +2,31 @@
   "name": "colorsitos",
   "version": "0.1.0",
   "private": true,
+  "description": "Generate a full colour palette from one base hex, preview it, and export it to Tailwind CSS and Chakra UI.",
+  "license": "MIT",
+  "author": "Felipe Tau <felipetau0@gmail.com> (https://www.felipetau.dev/)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Feli-dev/colorsitos.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Feli-dev/colorsitos/issues"
+  },
+  "homepage": "https://github.com/Feli-dev/colorsitos#readme",
+  "keywords": [
+    "color-palette",
+    "palette-generator",
+    "design-tokens",
+    "tailwindcss",
+    "chakra-ui",
+    "oklch",
+    "hsluv",
+    "nextjs",
+    "color-tools"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",

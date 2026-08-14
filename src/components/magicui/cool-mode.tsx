@@ -1,5 +1,16 @@
 "use client";
 
+/**
+ * Vendored from Magic UI — "Cool Mode".
+ *
+ * Upstream: https://magicui.design/docs/components/cool-mode
+ * Source:   https://github.com/magicuidesign/magicui
+ * License:  MIT
+ *
+ * This is third-party code adapted into this project, not original work. Prefer
+ * pulling upstream fixes over rewriting it locally, and keep local changes small
+ * so diffs against upstream stay readable.
+ */
 import React, { ReactNode, useEffect, useRef } from "react";
 
 /**
