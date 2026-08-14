@@ -239,9 +239,15 @@ export function ColorShowcase({ palette }: ColorShowcaseProps) {
                     />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="option1">Opción 1</SelectItem>
-                    <SelectItem value="option2">Opción 2</SelectItem>
-                    <SelectItem value="option3">Opción 3</SelectItem>
+                    <SelectItem value="option1">
+                      {t("showcase.forms.select.options.one")}
+                    </SelectItem>
+                    <SelectItem value="option2">
+                      {t("showcase.forms.select.options.two")}
+                    </SelectItem>
+                    <SelectItem value="option3">
+                      {t("showcase.forms.select.options.three")}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>

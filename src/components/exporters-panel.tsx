@@ -17,6 +17,7 @@ import {
   type ColorFormat,
   type ExportKind,
 } from "@/utils/export-code";
+import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { toPaletteShades } from "@/utils/palette-shades";
 import { Check, Copy } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -35,8 +36,8 @@ export function ExportersPanel({ palette }: ExportersPanelProps) {
   const t = useTranslations();
   const [brandKey, setBrandKey] = useState<string>("brand");
   const [active, setActive] = useState<ExportKind>("codes");
+  const { copy, copiedValue } = useCopyToClipboard();
   const [format, setFormat] = useState<ColorFormat>("hex");
-  const [copied, setCopied] = useState<boolean>(false);
 
   const exportOptions: ExportOption[] = [
     { value: "tw4", label: "Tailwind v4" },
@@ -58,25 +59,8 @@ export function ExportersPanel({ palette }: ExportersPanelProps) {
     [active, brandKey, shades, format]
   );
 
-  async function handleCopy() {
-    try {
-      await navigator.clipboard.writeText(code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // no-op
-    }
-  }
-
-  async function handleCopyCodes() {
-    try {
-      await navigator.clipboard.writeText(justTheCodes);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // no-op
-    }
-  }
+  const handleCopy = () => copy(code);
+  const handleCopyCodes = () => copy(justTheCodes);
 
   return (
     <Card className="w-full">
@@ -177,7 +161,7 @@ export function ExportersPanel({ palette }: ExportersPanelProps) {
             size="sm"
             className="absolute top-2 right-2 z-10 h-8 w-8 p-0 hover:bg-background/80 transition-colors duration-200"
           >
-            {copied ? (
+            {copiedValue !== null ? (
               <Check className="h-4 w-4 text-green-600 animate-in zoom-in-75 fade-in duration-300 ease-out scale-105" />
             ) : (
               <Copy className="h-4 w-4 animate-in zoom-in-95 fade-in duration-200 ease-out" />

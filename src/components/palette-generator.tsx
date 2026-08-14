@@ -35,7 +35,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { useIsClient } from "usehooks-ts";
 
-// Orden canónico de tonos para generar la paleta
+// Canonical stop order used to build the palette
 const SHADE_ORDER = [
   50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950,
 ] as const;
@@ -72,10 +72,10 @@ export function PaletteGenerator() {
       .slice(0, 50);
   }
 
-  // Handler para actualizar tanto el estado local como la URL
+  // Updates local state and the URL together
   const handleColorChange = (newColor: string) => {
     setBaseHex(newColor);
-    // Si newColor está vacío, limpiar la URL también
+    // An empty value clears the URL too
     if (!newColor) {
       updateColorUrl("");
     } else if (newColor !== colorFromUrl) {

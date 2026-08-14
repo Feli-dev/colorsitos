@@ -19,10 +19,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { Check, Copy } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState, type KeyboardEvent, type ReactNode } from "react";
-import { toast } from "sonner";
+import { type KeyboardEvent, type ReactNode } from "react";
 
 /**
  * Props for the ColorTooltip component
@@ -85,10 +85,10 @@ export function ColorTooltip({
   onCopy,
   className,
 }: ColorTooltipProps) {
-  /** Currently copied color value for visual feedback */
-  const [copiedColor, setCopiedColor] = useState<string | null>(null);
   /** Translation function for internationalization */
   const t = useTranslations();
+  /** Shared copy behaviour; this component is the one that wants a success toast. */
+  const { copy, copiedValue } = useCopyToClipboard({ toastOnSuccess: true });
 
   // Use provided hex color or extract from color value
   const displayHexColor = hexColor ?? extractHexColor(colorValue);
@@ -98,31 +98,9 @@ export function ColorTooltip({
    * @param value - The color value to copy
    */
   const handleCopyColor = async (value: string) => {
-    try {
-      await navigator.clipboard.writeText(value);
-      setCopiedColor(value);
-
-      // Show success toast
-      toast.message(t("palette.copy.success"), {
-        description: value,
-        duration: 2000,
-      });
-
-      // Notify parent component about successful copy
-      onCopy?.(value);
-
-      // Reset copied state after 2.5 seconds (same as original)
-      setTimeout(() => {
-        setCopiedColor(null);
-      }, 2500);
-    } catch (err) {
-      console.error(t("palette.copy.error"), err);
-      // Show error toast
-      toast.error(t("palette.copy.error"), {
-        description: t("palette.copy.error"),
-        duration: 3000,
-      });
-    }
+    // This component keeps its success toast, so the hook is asked for one; the
+    // other call sites only flip an icon and stay that way.
+    if (await copy(value)) onCopy?.(value);
   };
 
   /**
@@ -131,7 +109,7 @@ export function ColorTooltip({
    */
   const handleTooltipOpenChange = (openState: boolean) => {
     // Only allow closing if we're not showing copy feedback or the copied color doesn't match
-    if (copiedColor === null || copiedColor !== colorValue) {
+    if (copiedValue === null || copiedValue !== colorValue) {
       onOpenChange?.(openState);
     }
   };
@@ -202,7 +180,7 @@ export function ColorTooltip({
               aria-label={`${t("palette.copy.title")}: ${colorValue}`}
             >
               {/* Copy status icon - check mark when copied, copy icon otherwise */}
-              {copiedColor === colorValue ? (
+              {copiedValue === colorValue ? (
                 <Check className="h-3 w-3 text-green-300 dark:text-green-700" />
               ) : (
                 <Copy className="h-3 w-3 text-muted-foreground dark:text-black" />
