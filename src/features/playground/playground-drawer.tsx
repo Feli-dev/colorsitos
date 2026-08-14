@@ -1,7 +1,7 @@
 "use client";
 
-import { ColorShowcase } from "@/components/playground/color-showcase";
-import { PaletteVisualizer } from "@/components/playground/palette-visualizer";
+import { ColorShowcase } from "@/features/playground/color-showcase";
+import { PaletteVisualizer } from "@/features/playground/palette-visualizer";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,

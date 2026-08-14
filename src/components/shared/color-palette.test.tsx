@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import type { ColorPalette } from "@/types/colors";
-import { ColorPaletteComponent } from "./color-palette";
+import { ColorPaletteComponent } from "@/components/shared/color-palette";
 
 // next-intl needs a provider; this component only reads copy-button labels.
 vi.mock("next-intl", () => ({

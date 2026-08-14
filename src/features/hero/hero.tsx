@@ -1,6 +1,6 @@
 "use client";
 
-import { CoolMode } from "@/components/magicui/cool-mode";
+import { CoolMode } from "@/components/vendor/magicui/cool-mode";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,7 +12,7 @@ import { useRandomTextColors } from "@/hooks/use-random-colors";
 import { Download, Eye, Image, Layers, Palette, RefreshCw } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
-import { ColorTooltip } from "../color-tooltip";
+import { ColorTooltip } from "@/components/shared/color-tooltip";
 
 /**
  * Hero section component that displays the main landing content.
