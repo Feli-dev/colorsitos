@@ -23,7 +23,8 @@
       "preview": "Vista Previa",
       "previewDesc": "Ve tu paleta en componentes reales",
       "comingSoon": "Próximamente"
-    }
+    },
+    "copyColorLabel": "Color {color}, activar para copiar"
   },
   "generator": {
     "title": "Generador de paletas",

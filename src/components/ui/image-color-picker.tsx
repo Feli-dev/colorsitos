@@ -448,6 +448,19 @@ export const ImageColorPicker = forwardRef<
 
                 <div className="flex-1 overflow-hidden rounded-lg border">
                   <div className="relative h-full overflow-auto">
+                    {/*
+                      Intentionally a plain <img>, not next/image.
+
+                      `selectedImage` is a data URL produced by FileReader from a
+                      file the user just picked, so there is nothing for the
+                      image optimizer to fetch, cache or resize — it never leaves
+                      the browser. On top of that, the colour picking reads
+                      `imageRef.current.naturalWidth` and
+                      `getBoundingClientRect()` to map a pointer position onto a
+                      source pixel, which needs the element itself rather than a
+                      wrapper.
+                    */}
+                    {/* eslint-disable-next-line @next/next/no-img-element -- see above */}
                     <img
                       ref={imageRef}
                       src={selectedImage}

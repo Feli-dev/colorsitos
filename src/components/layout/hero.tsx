@@ -82,7 +82,18 @@ const Hero = () => {
         {/* Main content */}
         <div className="text-center mb-12 md:mb-16">
           {/* Title */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-grotesk font-bold tracking-tight mb-4">
+          {/*
+            The subtitle is split into per-character buttons, each carrying its
+            own aria-label. A heading's accessible name is computed from its
+            descendants, so those labels were being concatenated into it and the
+            h1 announced as a list of hex codes. An explicit aria-label
+            short-circuits name-from-content, which lets the characters stay
+            individually labelled and operable without wrecking the heading.
+          */}
+          <h1
+            aria-label={`${t("title")} ${t("subtitle")}`}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-grotesk font-bold tracking-tight mb-4"
+          >
             <span className="block text-neutral-900 dark:text-neutral-100">
               {t("title")}
             </span>
@@ -114,7 +125,7 @@ const Hero = () => {
                         }}
                         role="button"
                         tabIndex={0}
-                        aria-label={`Color: ${char.color} - Haz clic para copiar`}
+                        aria-label={t("copyColorLabel", { color: char.color })}
                       >
                         {char.letter}
                       </span>

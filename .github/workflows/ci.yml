@@ -36,10 +36,12 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
-      # No --max-warnings=0: the repo carries pre-existing warnings, and failing
-      # on them here would make this workflow red on arrival. Errors still fail.
+      # The repo is at zero warnings, so this keeps it there. It was deliberately
+      # absent when CI landed: with nine warnings outstanding the workflow would
+      # have arrived red, and a CI that is red on day one teaches everyone to
+      # ignore it.
       - name: Lint
-        run: npm run lint
+        run: npm run lint -- --max-warnings=0
 
       - name: Test
         run: npm test
