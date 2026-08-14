@@ -13,6 +13,10 @@
 # testing
 /coverage
 
+# agent-local tooling: share only the scripts, not the generated indexes
+/.atl/*
+!/.atl/screenshot.sh
+
 # next.js
 /.next/
 /out/
