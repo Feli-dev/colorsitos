@@ -36,8 +36,6 @@ export function ExportersPanel({ palette }: ExportersPanelProps) {
   const [brandKey, setBrandKey] = useState<string>("brand");
   const [active, setActive] = useState<ExportKind>("codes");
   const [format, setFormat] = useState<ColorFormat>("hex");
-  const [prefix] = useState<string>("");
-  const [useIndex] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
 
   const exportOptions: ExportOption[] = [
@@ -56,12 +54,8 @@ export function ExportersPanel({ palette }: ExportersPanelProps) {
   );
 
   const code = useMemo(
-    () =>
-      buildExportCode(active, shades, brandKey, format, {
-        prefix: prefix || undefined,
-        useIndex,
-      }),
-    [active, brandKey, shades, format, prefix, useIndex]
+    () => buildExportCode(active, shades, brandKey, format),
+    [active, brandKey, shades, format]
   );
 
   async function handleCopy() {

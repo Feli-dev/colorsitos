@@ -1,4 +1,8 @@
-import { SHADE_STOPS, type PaletteShades } from "@/types/colors";
+import {
+  SHADE_STOPS,
+  type PaletteShades,
+  type ShadeStop,
+} from "@/types/colors";
 import {
   hexToHslString,
   hexToOklchString,
@@ -37,59 +41,56 @@ export function exportJustTheCodes(
   return SHADE_STOPS.map((stop) => formatHex(shades[stop], format)).join("\n");
 }
 
+/** Restates a palette with every colour rendered in the chosen format. */
+function inFormat(shades: PaletteShades, format: ColorFormat): PaletteShades {
+  const at = (stop: ShadeStop): string => formatHex(shades[stop], format);
+
+  return {
+    50: at(50),
+    100: at(100),
+    200: at(200),
+    300: at(300),
+    400: at(400),
+    500: at(500),
+    600: at(600),
+    700: at(700),
+    800: at(800),
+    900: at(900),
+    950: at(950),
+  };
+}
+
+type FrameworkExporter = (brandKey: string, shades: PaletteShades) => string;
+
+/**
+ * Every framework target takes the same arguments, so the four branches that
+ * used to differ only in which function they called collapse into a lookup.
+ * Tailwind v4 is the one that needs a wrapper, because it appends a usage
+ * example to the variable block.
+ */
+const FRAMEWORK_EXPORTERS: Record<
+  Exclude<ExportKind, "codes">,
+  FrameworkExporter
+> = {
+  tw4: (brandKey, shades) =>
+    `${exportTailwindV4CssVars(brandKey, shades)}\n\n${exportTailwindV4Usage(
+      brandKey
+    )}`,
+  tw3: exportTailwindV3,
+  chakra3: exportChakraV3,
+  chakra2: exportChakraV2,
+};
+
 export function buildExportCode(
   kind: ExportKind,
   shades: PaletteShades,
   brandKey: string,
-  format: ColorFormat,
-  opts?: { prefix?: string; useIndex?: boolean }
+  format: ColorFormat
 ): string {
-  // Moved verbatim out of exporters-panel.tsx, duplication and all, so the
-  // golden snapshots recorded against it describe today's behaviour exactly.
-  // The next commit collapses these four branches and must not change a byte.
-  switch (kind) {
-    case "tw4": {
-      const v4 = Object.fromEntries(
-        Object.entries(shades).map(([k, v]) => [
-          k,
-          formatHex(v as string, format),
-        ])
-      ) as PaletteShades;
-      return `${exportTailwindV4CssVars(brandKey, v4, {
-        prefix: opts?.prefix || undefined,
-        useIndex: opts?.useIndex,
-      })}\n\n${exportTailwindV4Usage(brandKey)}`;
-    }
-    case "tw3": {
-      const v3 = Object.fromEntries(
-        Object.entries(shades).map(([k, v]) => [
-          k,
-          formatHex(v as string, format),
-        ])
-      ) as PaletteShades;
-      return exportTailwindV3(brandKey, v3);
-    }
-    case "chakra3": {
-      const c3 = Object.fromEntries(
-        Object.entries(shades).map(([k, v]) => [
-          k,
-          formatHex(v as string, format),
-        ])
-      ) as PaletteShades;
-      return exportChakraV3(brandKey, c3);
-    }
-    case "chakra2": {
-      const c2 = Object.fromEntries(
-        Object.entries(shades).map(([k, v]) => [
-          k,
-          formatHex(v as string, format),
-        ])
-      ) as PaletteShades;
-      return exportChakraV2(brandKey, c2);
-    }
-    case "codes":
-      return exportJustTheCodes(shades, format);
-    default:
-      return "";
-  }
+  if (kind === "codes") return exportJustTheCodes(shades, format);
+
+  const exporter = FRAMEWORK_EXPORTERS[kind];
+  if (!exporter) return "";
+
+  return exporter(brandKey, inFormat(shades, format));
 }
