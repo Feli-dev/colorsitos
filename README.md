@@ -148,6 +148,18 @@ Edita las variables CSS en `src/app/globals.css` para cambiar la paleta de color
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abre un Pull Request
 
+## 🙏 Créditos
+
+Este proyecto incluye componentes de terceros, adaptados y redistribuidos bajo licencia MIT:
+
+| Componente | Proyecto | Licencia |
+| ---------- | -------- | -------- |
+| `src/components/magicui/cool-mode.tsx` | [Magic UI](https://magicui.design/docs/components/cool-mode) · [repo](https://github.com/magicuidesign/magicui) | MIT |
+| `src/components/ui/shadcn-io/color-picker/` | [Kibo UI](https://www.shadcn.io/components/color-picker) · [repo](https://github.com/haydenbleasel/kibo) | MIT |
+
+Los componentes en `src/components/ui/` que no figuran arriba provienen de
+[shadcn/ui](https://ui.shadcn.com/), también bajo licencia MIT.
+
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+Este proyecto está bajo la Licencia MIT. Ver el archivo [`LICENSE`](./LICENSE) para más detalles.
