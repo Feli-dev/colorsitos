@@ -4,6 +4,7 @@ import Navbar from "@/components/layout/navbar";
 import { SupportButton } from "@/components/support-button";
 import { Toaster } from "@/components/ui/sonner";
 import { routing } from "@/i18n/routing";
+import { getSiteUrl } from "@/utils/site-url";
 import { GeistMono } from "geist/font/mono";
 import type { Metadata } from "next";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
@@ -41,11 +42,7 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "metadata" });
 
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : process.env.NODE_ENV === "production"
-    ? "https://colorsitos.vercel.app"
-    : "http://localhost:3000";
+  const baseUrl = getSiteUrl();
 
   const title = t("title");
   const description = t("description");

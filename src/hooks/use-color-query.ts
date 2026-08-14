@@ -1,5 +1,6 @@
 import { isValidHex } from "@/utils/color-utils";
 import { useQueryState } from "nuqs";
+import { useCallback } from "react";
 
 /**
  * Hook personalizado para manejar el query param 'color'
@@ -23,21 +24,27 @@ export function useColorQuery() {
   });
 
   /**
-   * Función para actualizar el color que también valida el formato
+   * Función para actualizar el color que también valida el formato.
+   * Memoizada para que pueda declararse como dependencia de un efecto sin
+   * volver a suscribirlo en cada render.
+   *
    * @param newColor - El nuevo color en formato hex
    */
-  const updateColor = (newColor: string) => {
-    if (!newColor) {
-      setColor("");
-      return;
-    }
+  const updateColor = useCallback(
+    (newColor: string) => {
+      if (!newColor) {
+        setColor("");
+        return;
+      }
 
-    const normalized = newColor.startsWith("#") ? newColor : `#${newColor}`;
+      const normalized = newColor.startsWith("#") ? newColor : `#${newColor}`;
 
-    if (isValidHex(normalized)) {
-      setColor(normalized);
-    }
-  };
+      if (isValidHex(normalized)) {
+        setColor(normalized);
+      }
+    },
+    [setColor]
+  );
 
   return [color, updateColor] as const;
 }

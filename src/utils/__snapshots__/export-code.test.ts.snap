@@ -1,0 +1,473 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`buildExportCode > kind chakra2 > renders format hex identically 1`] = `
+"import { extendTheme } from '@chakra-ui/react';
+
+const theme = extendTheme({
+  colors: {
+    brand: {
+      50: '#EBF8FF',
+      100: '#BEE3F8',
+      200: '#90CDF4',
+      300: '#63B3ED',
+      400: '#4299E1',
+      500: '#3182CE',
+      600: '#2B6CB0',
+      700: '#2C5282',
+      800: '#2A4365',
+      900: '#1A365D',
+    }
+  }
+});
+
+export default theme;"
+`;
+
+exports[`buildExportCode > kind chakra2 > renders format hsl identically 1`] = `
+"import { extendTheme } from '@chakra-ui/react';
+
+const theme = extendTheme({
+  colors: {
+    brand: {
+      50: 'hsl(201 100% 96%)',
+      100: 'hsl(202 81% 86%)',
+      200: 'hsl(203 82% 76%)',
+      300: 'hsl(205 79% 66%)',
+      400: 'hsl(207 73% 57%)',
+      500: 'hsl(209 62% 50%)',
+      600: 'hsl(211 61% 43%)',
+      700: 'hsl(213 49% 34%)',
+      800: 'hsl(215 41% 28%)',
+      900: 'hsl(215 56% 23%)',
+    }
+  }
+});
+
+export default theme;"
+`;
+
+exports[`buildExportCode > kind chakra2 > renders format oklch identically 1`] = `
+"import { extendTheme } from '@chakra-ui/react';
+
+const theme = extendTheme({
+  colors: {
+    brand: {
+      50: 'oklch(0.971 0.0167 230.9)',
+      100: 'oklch(0.896 0.0484 232.9)',
+      200: 'oklch(0.821 0.0833 237.2)',
+      300: 'oklch(0.739 0.1154 242.1)',
+      400: 'oklch(0.663 0.1358 246.8)',
+      500: 'oklch(0.595 0.1398 250.3)',
+      600: 'oklch(0.524 0.1259 252.3)',
+      700: 'oklch(0.435 0.091 255.2)',
+      800: 'oklch(0.379 0.0663 256.4)',
+      900: 'oklch(0.333 0.0772 257.1)',
+    }
+  }
+});
+
+export default theme;"
+`;
+
+exports[`buildExportCode > kind chakra2 > renders format rgb identically 1`] = `
+"import { extendTheme } from '@chakra-ui/react';
+
+const theme = extendTheme({
+  colors: {
+    brand: {
+      50: 'rgb(235, 248, 255)',
+      100: 'rgb(190, 227, 248)',
+      200: 'rgb(144, 205, 244)',
+      300: 'rgb(99, 179, 237)',
+      400: 'rgb(66, 153, 225)',
+      500: 'rgb(49, 130, 206)',
+      600: 'rgb(43, 108, 176)',
+      700: 'rgb(44, 82, 130)',
+      800: 'rgb(42, 67, 101)',
+      900: 'rgb(26, 54, 93)',
+    }
+  }
+});
+
+export default theme;"
+`;
+
+exports[`buildExportCode > kind chakra3 > renders format hex identically 1`] = `
+"import { defineStyleConfig, extendTheme } from '@chakra-ui/react';
+
+const theme = extendTheme({
+  tokens: {
+    colors: {
+      brand: {
+      50: '#EBF8FF',
+      100: '#BEE3F8',
+      200: '#90CDF4',
+      300: '#63B3ED',
+      400: '#4299E1',
+      500: '#3182CE',
+      600: '#2B6CB0',
+      700: '#2C5282',
+      800: '#2A4365',
+      900: '#1A365D',
+      950: '#102A4C',
+      }
+    }
+  }
+});
+
+export default theme;"
+`;
+
+exports[`buildExportCode > kind chakra3 > renders format hsl identically 1`] = `
+"import { defineStyleConfig, extendTheme } from '@chakra-ui/react';
+
+const theme = extendTheme({
+  tokens: {
+    colors: {
+      brand: {
+      50: 'hsl(201 100% 96%)',
+      100: 'hsl(202 81% 86%)',
+      200: 'hsl(203 82% 76%)',
+      300: 'hsl(205 79% 66%)',
+      400: 'hsl(207 73% 57%)',
+      500: 'hsl(209 62% 50%)',
+      600: 'hsl(211 61% 43%)',
+      700: 'hsl(213 49% 34%)',
+      800: 'hsl(215 41% 28%)',
+      900: 'hsl(215 56% 23%)',
+      950: 'hsl(214 65% 18%)',
+      }
+    }
+  }
+});
+
+export default theme;"
+`;
+
+exports[`buildExportCode > kind chakra3 > renders format oklch identically 1`] = `
+"import { defineStyleConfig, extendTheme } from '@chakra-ui/react';
+
+const theme = extendTheme({
+  tokens: {
+    colors: {
+      brand: {
+      50: 'oklch(0.971 0.0167 230.9)',
+      100: 'oklch(0.896 0.0484 232.9)',
+      200: 'oklch(0.821 0.0833 237.2)',
+      300: 'oklch(0.739 0.1154 242.1)',
+      400: 'oklch(0.663 0.1358 246.8)',
+      500: 'oklch(0.595 0.1398 250.3)',
+      600: 'oklch(0.524 0.1259 252.3)',
+      700: 'oklch(0.435 0.091 255.2)',
+      800: 'oklch(0.379 0.0663 256.4)',
+      900: 'oklch(0.333 0.0772 257.1)',
+      950: 'oklch(0.285 0.0703 256.2)',
+      }
+    }
+  }
+});
+
+export default theme;"
+`;
+
+exports[`buildExportCode > kind chakra3 > renders format rgb identically 1`] = `
+"import { defineStyleConfig, extendTheme } from '@chakra-ui/react';
+
+const theme = extendTheme({
+  tokens: {
+    colors: {
+      brand: {
+      50: 'rgb(235, 248, 255)',
+      100: 'rgb(190, 227, 248)',
+      200: 'rgb(144, 205, 244)',
+      300: 'rgb(99, 179, 237)',
+      400: 'rgb(66, 153, 225)',
+      500: 'rgb(49, 130, 206)',
+      600: 'rgb(43, 108, 176)',
+      700: 'rgb(44, 82, 130)',
+      800: 'rgb(42, 67, 101)',
+      900: 'rgb(26, 54, 93)',
+      950: 'rgb(16, 42, 76)',
+      }
+    }
+  }
+});
+
+export default theme;"
+`;
+
+exports[`buildExportCode > kind codes > renders format hex identically 1`] = `
+"#EBF8FF
+#BEE3F8
+#90CDF4
+#63B3ED
+#4299E1
+#3182CE
+#2B6CB0
+#2C5282
+#2A4365
+#1A365D
+#102A4C"
+`;
+
+exports[`buildExportCode > kind codes > renders format hsl identically 1`] = `
+"hsl(201 100% 96%)
+hsl(202 81% 86%)
+hsl(203 82% 76%)
+hsl(205 79% 66%)
+hsl(207 73% 57%)
+hsl(209 62% 50%)
+hsl(211 61% 43%)
+hsl(213 49% 34%)
+hsl(215 41% 28%)
+hsl(215 56% 23%)
+hsl(214 65% 18%)"
+`;
+
+exports[`buildExportCode > kind codes > renders format oklch identically 1`] = `
+"oklch(0.971 0.0167 230.9)
+oklch(0.896 0.0484 232.9)
+oklch(0.821 0.0833 237.2)
+oklch(0.739 0.1154 242.1)
+oklch(0.663 0.1358 246.8)
+oklch(0.595 0.1398 250.3)
+oklch(0.524 0.1259 252.3)
+oklch(0.435 0.091 255.2)
+oklch(0.379 0.0663 256.4)
+oklch(0.333 0.0772 257.1)
+oklch(0.285 0.0703 256.2)"
+`;
+
+exports[`buildExportCode > kind codes > renders format rgb identically 1`] = `
+"rgb(235, 248, 255)
+rgb(190, 227, 248)
+rgb(144, 205, 244)
+rgb(99, 179, 237)
+rgb(66, 153, 225)
+rgb(49, 130, 206)
+rgb(43, 108, 176)
+rgb(44, 82, 130)
+rgb(42, 67, 101)
+rgb(26, 54, 93)
+rgb(16, 42, 76)"
+`;
+
+exports[`buildExportCode > kind tw3 > renders format hex identically 1`] = `
+"// tailwind.config.ts
+import type { Config } from 'tailwindcss';
+
+export default {
+  content: ['src/**/*.{ts,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+        50: '#EBF8FF',
+        100: '#BEE3F8',
+        200: '#90CDF4',
+        300: '#63B3ED',
+        400: '#4299E1',
+        500: '#3182CE',
+        600: '#2B6CB0',
+        700: '#2C5282',
+        800: '#2A4365',
+        900: '#1A365D',
+        950: '#102A4C',
+        }
+      }
+    }
+  }
+} satisfies Config;"
+`;
+
+exports[`buildExportCode > kind tw3 > renders format hsl identically 1`] = `
+"// tailwind.config.ts
+import type { Config } from 'tailwindcss';
+
+export default {
+  content: ['src/**/*.{ts,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+        50: 'hsl(201 100% 96%)',
+        100: 'hsl(202 81% 86%)',
+        200: 'hsl(203 82% 76%)',
+        300: 'hsl(205 79% 66%)',
+        400: 'hsl(207 73% 57%)',
+        500: 'hsl(209 62% 50%)',
+        600: 'hsl(211 61% 43%)',
+        700: 'hsl(213 49% 34%)',
+        800: 'hsl(215 41% 28%)',
+        900: 'hsl(215 56% 23%)',
+        950: 'hsl(214 65% 18%)',
+        }
+      }
+    }
+  }
+} satisfies Config;"
+`;
+
+exports[`buildExportCode > kind tw3 > renders format oklch identically 1`] = `
+"// tailwind.config.ts
+import type { Config } from 'tailwindcss';
+
+export default {
+  content: ['src/**/*.{ts,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+        50: 'oklch(0.971 0.0167 230.9)',
+        100: 'oklch(0.896 0.0484 232.9)',
+        200: 'oklch(0.821 0.0833 237.2)',
+        300: 'oklch(0.739 0.1154 242.1)',
+        400: 'oklch(0.663 0.1358 246.8)',
+        500: 'oklch(0.595 0.1398 250.3)',
+        600: 'oklch(0.524 0.1259 252.3)',
+        700: 'oklch(0.435 0.091 255.2)',
+        800: 'oklch(0.379 0.0663 256.4)',
+        900: 'oklch(0.333 0.0772 257.1)',
+        950: 'oklch(0.285 0.0703 256.2)',
+        }
+      }
+    }
+  }
+} satisfies Config;"
+`;
+
+exports[`buildExportCode > kind tw3 > renders format rgb identically 1`] = `
+"// tailwind.config.ts
+import type { Config } from 'tailwindcss';
+
+export default {
+  content: ['src/**/*.{ts,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+        50: 'rgb(235, 248, 255)',
+        100: 'rgb(190, 227, 248)',
+        200: 'rgb(144, 205, 244)',
+        300: 'rgb(99, 179, 237)',
+        400: 'rgb(66, 153, 225)',
+        500: 'rgb(49, 130, 206)',
+        600: 'rgb(43, 108, 176)',
+        700: 'rgb(44, 82, 130)',
+        800: 'rgb(42, 67, 101)',
+        900: 'rgb(26, 54, 93)',
+        950: 'rgb(16, 42, 76)',
+        }
+      }
+    }
+  }
+} satisfies Config;"
+`;
+
+exports[`buildExportCode > kind tw4 > renders format hex identically 1`] = `
+"/* globals.css */
+:root {
+  --brand-50: #EBF8FF;
+  --brand-100: #BEE3F8;
+  --brand-200: #90CDF4;
+  --brand-300: #63B3ED;
+  --brand-400: #4299E1;
+  --brand-500: #3182CE;
+  --brand-600: #2B6CB0;
+  --brand-700: #2C5282;
+  --brand-800: #2A4365;
+  --brand-900: #1A365D;
+  --brand-950: #102A4C;
+}
+
+/* Usage example (Tailwind v4) */
+.btn-brand {
+  background-color: var(--brand-500);
+  color: white;
+}
+
+.btn-brand:hover {
+  background-color: var(--brand-600);
+}"
+`;
+
+exports[`buildExportCode > kind tw4 > renders format hsl identically 1`] = `
+"/* globals.css */
+:root {
+  --brand-50: hsl(201 100% 96%);
+  --brand-100: hsl(202 81% 86%);
+  --brand-200: hsl(203 82% 76%);
+  --brand-300: hsl(205 79% 66%);
+  --brand-400: hsl(207 73% 57%);
+  --brand-500: hsl(209 62% 50%);
+  --brand-600: hsl(211 61% 43%);
+  --brand-700: hsl(213 49% 34%);
+  --brand-800: hsl(215 41% 28%);
+  --brand-900: hsl(215 56% 23%);
+  --brand-950: hsl(214 65% 18%);
+}
+
+/* Usage example (Tailwind v4) */
+.btn-brand {
+  background-color: var(--brand-500);
+  color: white;
+}
+
+.btn-brand:hover {
+  background-color: var(--brand-600);
+}"
+`;
+
+exports[`buildExportCode > kind tw4 > renders format oklch identically 1`] = `
+"/* globals.css */
+:root {
+  --brand-50: oklch(0.971 0.0167 230.9);
+  --brand-100: oklch(0.896 0.0484 232.9);
+  --brand-200: oklch(0.821 0.0833 237.2);
+  --brand-300: oklch(0.739 0.1154 242.1);
+  --brand-400: oklch(0.663 0.1358 246.8);
+  --brand-500: oklch(0.595 0.1398 250.3);
+  --brand-600: oklch(0.524 0.1259 252.3);
+  --brand-700: oklch(0.435 0.091 255.2);
+  --brand-800: oklch(0.379 0.0663 256.4);
+  --brand-900: oklch(0.333 0.0772 257.1);
+  --brand-950: oklch(0.285 0.0703 256.2);
+}
+
+/* Usage example (Tailwind v4) */
+.btn-brand {
+  background-color: var(--brand-500);
+  color: white;
+}
+
+.btn-brand:hover {
+  background-color: var(--brand-600);
+}"
+`;
+
+exports[`buildExportCode > kind tw4 > renders format rgb identically 1`] = `
+"/* globals.css */
+:root {
+  --brand-50: rgb(235, 248, 255);
+  --brand-100: rgb(190, 227, 248);
+  --brand-200: rgb(144, 205, 244);
+  --brand-300: rgb(99, 179, 237);
+  --brand-400: rgb(66, 153, 225);
+  --brand-500: rgb(49, 130, 206);
+  --brand-600: rgb(43, 108, 176);
+  --brand-700: rgb(44, 82, 130);
+  --brand-800: rgb(42, 67, 101);
+  --brand-900: rgb(26, 54, 93);
+  --brand-950: rgb(16, 42, 76);
+}
+
+/* Usage example (Tailwind v4) */
+.btn-brand {
+  background-color: var(--brand-500);
+  color: white;
+}
+
+.btn-brand:hover {
+  background-color: var(--brand-600);
+}"
+`;

@@ -27,8 +27,13 @@
   },
   "generator": {
     "title": "Generador de paletas",
-    "baseHex": { "label": "Color base (hex)" },
-    "name": { "label": "Nombre (opcional)", "placeholder": "Mi paleta" },
+    "baseHex": {
+      "label": "Color base (hex)"
+    },
+    "name": {
+      "label": "Nombre (opcional)",
+      "placeholder": "Mi paleta"
+    },
     "error": {
       "invalidHex": "Color inválido. Usa un hex de 3 o 6 dígitos.",
       "generate": "No se pudo generar la paleta para el color ingresado."
@@ -209,5 +214,13 @@
       }
     },
     "viewInAction": "Demo"
+  },
+  "error": {
+    "title": "Algo salió mal",
+    "description": "No se pudo mostrar la página. Intentá de nuevo.",
+    "action": "Intentar de nuevo"
+  },
+  "loading": {
+    "label": "Cargando"
   }
 }

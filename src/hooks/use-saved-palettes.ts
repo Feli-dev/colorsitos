@@ -1,15 +1,13 @@
 "use client";
 
+import type { PaletteShades } from "@/types/colors";
 import { useLocalStorage } from "usehooks-ts";
 
 export interface SavedPalette {
   id: string;
   name: string;
   baseHex: string;
-  shades: Record<
-    50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 950,
-    string
-  >;
+  shades: PaletteShades;
   createdAt: string;
 }
 
