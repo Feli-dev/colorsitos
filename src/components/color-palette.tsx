@@ -46,13 +46,13 @@ export function ColorPaletteComponent({ palette, title }: ColorPaletteProps) {
               title={`${shade.value} ${shade.hex}`}
               aria-label={`${shade.value} ${shade.hex}`}
             >
-              {/* Swatch de color */}
+              {/* Colour swatch */}
               <div
                 className="h-20 w-full"
                 style={{ backgroundColor: shade.hex }}
               />
 
-              {/* Footer blanco con hex y valor */}
+              {/* Footer showing the hex value and its stop */}
               <div className="p-2 bg-background">
                 <div className="flex items-center justify-between">
                   <span className="font-medium text-xs md:text-sm">
@@ -67,7 +67,7 @@ export function ColorPaletteComponent({ palette, title }: ColorPaletteProps) {
                 </div>
               </div>
 
-              {/* Botón copiar sobre el swatch (hover) */}
+              {/* Copy button, revealed on hover over the swatch */}
               <div className="absolute top-2 right-2 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                 <Button
                   variant={isLight ? "secondary" : "outline"}

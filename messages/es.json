@@ -153,7 +153,12 @@
         },
         "select": {
           "label": "Campo Select",
-          "placeholder": "Elige opción..."
+          "placeholder": "Elige opción...",
+          "options": {
+            "one": "Opción 1",
+            "two": "Opción 2",
+            "three": "Opción 3"
+          }
         },
         "slider": {
           "label": "Control Deslizante"

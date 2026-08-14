@@ -18,7 +18,7 @@ export function Logo({
   className,
   interactive = false,
 }: LogoProps) {
-  // Mapeo de tamaños para los elementos internos
+  // Size map for the nested marks
   const sizeMap = {
     "size-4": {
       container: "size-4",
