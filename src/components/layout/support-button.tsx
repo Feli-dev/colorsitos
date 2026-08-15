@@ -87,9 +87,17 @@ function SupportButton() {
         `}
         aria-label={t("support.ariaLabel")}
       >
-        <h1 className="font-grotesk font-bold text-sm sm:text-base text-nowrap whitespace-nowrap">
+        {/*
+          A span, not a heading. This is the button's visible label — it sits
+          inside the <button> and names the control, which is not what a heading
+          is for. As an <h1> it made the page announce two top-level headings and
+          put a heading inside a control, both of which break outline navigation.
+          Tailwind's preflight resets heading defaults, so the classes here
+          already carry the whole appearance.
+        */}
+        <span className="font-grotesk font-bold text-sm sm:text-base text-nowrap whitespace-nowrap">
           {t("support.title")}
-        </h1>
+        </span>
         {isOpen ? (
           <ChevronDown className="text-gray-600 dark:text-white/80" />
         ) : (
