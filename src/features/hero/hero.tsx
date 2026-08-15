@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useRandomTextColors } from "@/hooks/use-random-colors";
 import { Download, Eye, Image, Layers, Palette, RefreshCw } from "lucide-react";
+import { useRovingFocus } from "@/hooks/use-roving-focus";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import { ColorTooltip } from "@/components/shared/color-tooltip";
@@ -36,6 +37,19 @@ const Hero = () => {
     const subtitleText = t("subtitle");
     return createColoredText(subtitleText);
   }, [t, createColoredText]);
+
+  // Spaces are rendered but not focusable, so the roving index counts only the
+  // characters that are actually controls.
+  const interactiveIndex = useMemo(() => {
+    const map = new Map<number, number>();
+    let next = 0;
+    coloredSubtitle.forEach((char, index) => {
+      if (char.letter !== " ") map.set(index, next++);
+    });
+    return map;
+  }, [coloredSubtitle]);
+
+  const roving = useRovingFocus(interactiveIndex.size);
 
   /**
    * Array of feature objects that define the main product capabilities.
@@ -98,7 +112,17 @@ const Hero = () => {
               {t("title")}
             </span>
             <span className="block cursor-pointer transition-all duration-300 hover:scale-105 group">
-              <span className="relative">
+              {/*
+                A toolbar rather than twenty loose buttons: the group takes one
+                tab stop and the arrow keys move within it. Twenty presses to
+                get past a headline is not navigation, it is an obstacle.
+              */}
+              <span
+                className="relative"
+                role="toolbar"
+                aria-label={t("copyColorToolbarLabel")}
+                onKeyDown={roving.onKeyDown}
+              >
                 {coloredSubtitle.map((char, index) =>
                   char.letter === " " ? (
                     <span
@@ -124,8 +148,8 @@ const Hero = () => {
                           filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))",
                         }}
                         role="button"
-                        tabIndex={0}
                         aria-label={t("copyColorLabel", { color: char.color })}
+                        {...roving.itemProps(interactiveIndex.get(index) ?? 0)}
                       >
                         {char.letter}
                       </span>

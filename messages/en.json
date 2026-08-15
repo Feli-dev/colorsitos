@@ -24,7 +24,8 @@
       "previewDesc": "See your palette in real components",
       "comingSoon": "Coming Soon"
     },
-    "copyColorLabel": "Color {color}, activate to copy"
+    "copyColorLabel": "Color {color}, activate to copy",
+    "copyColorToolbarLabel": "Palette colours, use the arrow keys to move between them"
   },
   "generator": {
     "title": "Palette Generator",
