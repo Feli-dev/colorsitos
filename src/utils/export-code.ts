@@ -9,14 +9,24 @@ import {
   hexToRgbString,
 } from "./color-utils";
 import { exportChakraV2 } from "./exporters/chakra-v2";
+import {
+  exportCssVariables,
+  exportCssVariablesUsage,
+} from "./exporters/css-variables";
 import { exportChakraV3 } from "./exporters/chakra-v3";
 import { exportTailwindV3 } from "./exporters/tailwind-v3";
 import {
-  exportTailwindV4CssVars,
+  exportTailwindV4Theme,
   exportTailwindV4Usage,
 } from "./exporters/tailwind-v4";
 
-export type ExportKind = "tw4" | "tw3" | "chakra3" | "chakra2" | "codes";
+export type ExportKind =
+  | "tw4"
+  | "tw3"
+  | "chakra3"
+  | "chakra2"
+  | "cssvars"
+  | "codes";
 export type ColorFormat = "hex" | "rgb" | "hsl" | "oklch";
 
 /** Renders a hex colour in the format the user picked. */
@@ -73,7 +83,11 @@ const FRAMEWORK_EXPORTERS: Record<
   FrameworkExporter
 > = {
   tw4: (brandKey, shades) =>
-    `${exportTailwindV4CssVars(brandKey, shades)}\n\n${exportTailwindV4Usage(
+    `${exportTailwindV4Theme(brandKey, shades)}\n\n${exportTailwindV4Usage(
+      brandKey
+    )}`,
+  cssvars: (brandKey, shades) =>
+    `${exportCssVariables(brandKey, shades)}\n\n${exportCssVariablesUsage(
       brandKey
     )}`,
   tw3: exportTailwindV3,
