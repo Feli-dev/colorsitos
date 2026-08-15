@@ -25,7 +25,7 @@ describe("getSiteUrl", () => {
     clearVercelEnv();
     vi.stubEnv("NODE_ENV", "production");
 
-    expect(getSiteUrl()).toBe("https://colorsitos.vercel.app");
+    expect(getSiteUrl()).toBe("https://www.colorsitos.app");
   });
 
   it("returns an absolute https URL with no trailing slash", () => {
@@ -39,10 +39,10 @@ describe("getSiteUrl", () => {
 
   it("uses the project's production domain when Vercel provides it", () => {
     clearVercelEnv();
-    vi.stubEnv("VERCEL_PROJECT_PRODUCTION_URL", "colorsitos.vercel.app");
+    vi.stubEnv("VERCEL_PROJECT_PRODUCTION_URL", "www.colorsitos.app");
     vi.stubEnv("NODE_ENV", "production");
 
-    expect(getSiteUrl()).toBe("https://colorsitos.vercel.app");
+    expect(getSiteUrl()).toBe("https://www.colorsitos.app");
   });
 
   /**
@@ -57,16 +57,16 @@ describe("getSiteUrl", () => {
     vi.stubEnv("NODE_ENV", "production");
 
     expect(getSiteUrl()).not.toContain("abc123");
-    expect(getSiteUrl()).toBe("https://colorsitos.vercel.app");
+    expect(getSiteUrl()).toBe("https://www.colorsitos.app");
   });
 
   it("prefers the production domain over the deployment hostname", () => {
     clearVercelEnv();
     vi.stubEnv("VERCEL_URL", "colorsitos-git-abc123-felidev.vercel.app");
-    vi.stubEnv("VERCEL_PROJECT_PRODUCTION_URL", "colorsitos.vercel.app");
+    vi.stubEnv("VERCEL_PROJECT_PRODUCTION_URL", "www.colorsitos.app");
     vi.stubEnv("NODE_ENV", "production");
 
-    expect(getSiteUrl()).toBe("https://colorsitos.vercel.app");
+    expect(getSiteUrl()).toBe("https://www.colorsitos.app");
   });
 
   it("reports the production domain even on a preview deployment", () => {
@@ -74,9 +74,9 @@ describe("getSiteUrl", () => {
     // preview it happens to be rendered on.
     clearVercelEnv();
     vi.stubEnv("VERCEL_URL", "colorsitos-git-feature-felidev.vercel.app");
-    vi.stubEnv("VERCEL_PROJECT_PRODUCTION_URL", "colorsitos.vercel.app");
+    vi.stubEnv("VERCEL_PROJECT_PRODUCTION_URL", "www.colorsitos.app");
     vi.stubEnv("VERCEL_ENV", "preview");
 
-    expect(getSiteUrl()).toBe("https://colorsitos.vercel.app");
+    expect(getSiteUrl()).toBe("https://www.colorsitos.app");
   });
 });

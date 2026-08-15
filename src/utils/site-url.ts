@@ -12,6 +12,12 @@
  *
  * Consequence worth knowing: a preview deployment reports the production base
  * URL. That is intended. Canonicals should always name the canonical page.
+ *
+ * The hardcoded fallback is only reached when the variable is absent, which on
+ * Vercel it never is — it exists for a self-hosted production build. It names
+ * www.colorsitos.app because that is where the site actually lives; the
+ * colorsitos.vercel.app deployment sits behind Vercel's login and is not
+ * publicly reachable at all.
  */
 export function getSiteUrl(): string {
   if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
@@ -19,6 +25,6 @@ export function getSiteUrl(): string {
   }
 
   return process.env.NODE_ENV === "production"
-    ? "https://colorsitos.vercel.app"
+    ? "https://www.colorsitos.app"
     : "http://localhost:3000";
 }
