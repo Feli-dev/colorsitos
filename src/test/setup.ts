@@ -28,6 +28,30 @@ if (!globalThis.Element.prototype.scrollIntoView) {
   globalThis.Element.prototype.scrollIntoView = () => {};
 }
 
+/**
+ * jsdom ships no matchMedia at all, so `useMediaQuery` throws on mount — which
+ * takes down anything rendering the image picker, and with it the whole
+ * generator tree.
+ *
+ * Always reports "does not match". That is the desktop, fine-pointer branch,
+ * which is the one the assertions are written against; a test that cares about
+ * the coarse-pointer branch should stub matchMedia itself rather than flip this
+ * default for everyone.
+ */
+if (!globalThis.window.matchMedia) {
+  globalThis.window.matchMedia = (query: string) =>
+    ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      addListener: () => {},
+      removeListener: () => {},
+      dispatchEvent: () => false,
+    }) as MediaQueryList;
+}
+
 afterEach(() => {
   cleanup();
 });
