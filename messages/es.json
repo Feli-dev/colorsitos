@@ -24,7 +24,8 @@
       "previewDesc": "Ve tu paleta en componentes reales",
       "comingSoon": "Próximamente"
     },
-    "copyColorLabel": "Color {color}, activar para copiar"
+    "copyColorLabel": "Color {color}, activar para copiar",
+    "copyColorToolbarLabel": "Colores de la paleta, usá las flechas para moverte entre ellos"
   },
   "generator": {
     "title": "Generador de paletas",
