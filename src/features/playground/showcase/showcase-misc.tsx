@@ -4,11 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import type { ShowcaseSectionProps } from "./types";
+import { controlVars, type ShowcaseSectionProps } from "./types";
 
 export function ShowcaseMisc({ shades, resolvedTheme }: ShowcaseSectionProps) {
   const t = useTranslations("playground");
   const [progress] = useState(33);
+  const vars = controlVars(shades, resolvedTheme === "dark");
 
   return (
       <div className="space-y-4">
@@ -28,7 +29,8 @@ export function ShowcaseMisc({ shades, resolvedTheme }: ShowcaseSectionProps) {
             </label>
             <Progress
               value={progress}
-              className="w-full"
+              style={vars}
+              className="w-full bg-[var(--pg-track)] [&>*]:bg-[var(--pg-accent)]"
             />
             <div
               className="flex justify-between text-sm"

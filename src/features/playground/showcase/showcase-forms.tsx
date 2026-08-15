@@ -6,12 +6,13 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import type { ShowcaseSectionProps } from "./types";
+import { controlVars, type ShowcaseSectionProps } from "./types";
 
 export function ShowcaseForms({ shades, resolvedTheme }: ShowcaseSectionProps) {
   const t = useTranslations("playground");
   const [sliderValue, setSliderValue] = useState([50]);
   const [switchEnabled, setSwitchEnabled] = useState(true);
+  const vars = controlVars(shades, resolvedTheme === "dark");
 
   return (
       <div className="space-y-4">
@@ -109,7 +110,8 @@ export function ShowcaseForms({ shades, resolvedTheme }: ShowcaseSectionProps) {
                 onValueChange={setSliderValue}
                 max={100}
                 step={1}
-                className="w-full"
+                style={vars}
+                className="w-full [&_[data-slot=slider-track]]:bg-[var(--pg-track)] [&_[data-slot=slider-range]]:bg-[var(--pg-accent)] [&_[data-slot=slider-thumb]]:border-[var(--pg-accent)]"
               />
               <div
                 className="text-sm"
@@ -126,6 +128,8 @@ export function ShowcaseForms({ shades, resolvedTheme }: ShowcaseSectionProps) {
               <Switch
                 checked={switchEnabled}
                 onCheckedChange={setSwitchEnabled}
+                style={vars}
+                className="data-[state=checked]:bg-[var(--pg-accent)] data-[state=unchecked]:bg-[var(--pg-muted)]"
               />
               <label
                 style={{
