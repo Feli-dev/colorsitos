@@ -161,7 +161,8 @@
           }
         },
         "slider": {
-          "label": "Slider Control"
+          "label": "Slider Control",
+          "value": "Value: {value}"
         },
         "switch": {
           "on": "Switch On",

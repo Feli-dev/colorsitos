@@ -11,6 +11,8 @@ import {
 import { cn } from "@/lib/utils";
 import { Check, ImageIcon, Upload, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { rgbToHex } from "@/utils/color-utils";
+import { placeMagnifier, toSourcePixel } from "@/utils/image-picker";
 import { useMediaQuery } from "usehooks-ts";
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 
@@ -73,7 +75,6 @@ export const ImageColorPicker = forwardRef<
     const fileInputRef = useRef<HTMLInputElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const imageRef = useRef<HTMLImageElement>(null);
-    const magnifierCanvasRef = useRef<HTMLCanvasElement>(null);
 
     // Use controlled or uncontrolled state
     const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen;
@@ -156,23 +157,15 @@ export const ImageColorPicker = forwardRef<
 
         const rect = img.getBoundingClientRect();
 
-        // Scale coordinates to match actual image dimensions
-        const scaleX = img.naturalWidth / rect.width;
-        const scaleY = img.naturalHeight / rect.height;
-        const actualX = x * scaleX;
-        const actualY = y * scaleY;
+        const pixel = toSourcePixel(
+          { x, y },
+          {
+            displayed: { width: rect.width, height: rect.height },
+            natural: { width: img.naturalWidth, height: img.naturalHeight },
+          }
+        );
+        if (!pixel) return null;
 
-        // Ensure coordinates are within bounds
-        if (
-          actualX < 0 ||
-          actualY < 0 ||
-          actualX >= img.naturalWidth ||
-          actualY >= img.naturalHeight
-        ) {
-          return null;
-        }
-
-        // Draw image to canvas and extract pixel color
         const ctx = canvas.getContext("2d");
         if (!ctx) return null;
 
@@ -180,12 +173,9 @@ export const ImageColorPicker = forwardRef<
         canvas.height = img.naturalHeight;
         ctx.drawImage(img, 0, 0);
 
-        const pixelData = ctx.getImageData(actualX, actualY, 1, 1).data;
-        const hex = `#${[pixelData[0], pixelData[1], pixelData[2]]
-          .map((x) => x.toString(16).padStart(2, "0"))
-          .join("")}`;
+        const [r, g, b] = ctx.getImageData(pixel.x, pixel.y, 1, 1).data;
 
-        return hex;
+        return rgbToHex(r, g, b);
       },
       []
     );
@@ -311,34 +301,20 @@ export const ImageColorPicker = forwardRef<
 
       const img = imageRef.current;
       const rect = img.getBoundingClientRect();
-      const magnifierSize = isMobile ? 100 : 150;
-      const zoomLevel = 3;
-      const { x, y } = cursorPosition;
 
-      // Calculate magnifier position
-      let magnifierX = x - magnifierSize / 2;
-      let magnifierY = y - magnifierSize / 2;
-
-      // Adjust position for mobile (above finger)
-      if (isMobile) {
-        magnifierY = y - magnifierSize - 20;
-      }
-
-      // Keep magnifier within image bounds
-      magnifierX = Math.max(
-        0,
-        Math.min(magnifierX, rect.width - magnifierSize)
+      const {
+        size: magnifierSize,
+        position: { x: magnifierX, y: magnifierY },
+        backgroundPosition: {
+          x: backgroundPositionX,
+          y: backgroundPositionY,
+        },
+        backgroundSize: { width: backgroundSizeX, height: backgroundSizeY },
+      } = placeMagnifier(
+        cursorPosition,
+        { width: rect.width, height: rect.height },
+        { isTouch: isMobile }
       );
-      magnifierY = Math.max(
-        0,
-        Math.min(magnifierY, rect.height - magnifierSize)
-      );
-
-      // Calculate background position (simplified approach from article)
-      const backgroundPositionX = -x * zoomLevel + magnifierSize / 2;
-      const backgroundPositionY = -y * zoomLevel + magnifierSize / 2;
-      const backgroundSizeX = rect.width * zoomLevel;
-      const backgroundSizeY = rect.height * zoomLevel;
 
       return (
         <div
@@ -527,7 +503,6 @@ export const ImageColorPicker = forwardRef<
 
           {/* Hidden canvas for color extraction */}
           <canvas ref={canvasRef} className="hidden" />
-          <canvas ref={magnifierCanvasRef} className="hidden" />
         </DialogContent>
       </Dialog>
     );
