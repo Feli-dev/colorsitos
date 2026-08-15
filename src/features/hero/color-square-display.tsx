@@ -18,7 +18,7 @@
 import { ColorTooltip } from "@/components/shared/color-tooltip";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useColorQuery } from "@/hooks/use-color-query";
-import { rgbToHex } from "@/utils/color-utils";
+import { randomHexColor } from "@/utils/text-colors";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
@@ -42,16 +42,6 @@ interface ColorSquare {
   animationDuration: number;
 }
 
-/**
- * Generates a random color in hexadecimal format
- * @returns A random hex color string (e.g., "#FF5733")
- */
-function generateRandomColor(): string {
-  const r = Math.floor(Math.random() * 256);
-  const g = Math.floor(Math.random() * 256);
-  const b = Math.floor(Math.random() * 256);
-  return rgbToHex(r, g, b);
-}
 
 /**
  * Generates uniform positions for color squares that avoid overlapping
@@ -224,7 +214,7 @@ export function ColorSquareDisplay() {
     for (let i = 0; i < numSquares; i++) {
       squares.push({
         id: i,
-        color: generateRandomColor(),
+        color: randomHexColor(),
         x: positions[i].x,
         y: positions[i].y,
         size: sizes[i],
