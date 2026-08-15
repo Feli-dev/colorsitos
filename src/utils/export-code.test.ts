@@ -23,7 +23,12 @@ const SHADES: PaletteShades = {
   950: "#102A4C",
 };
 
-const KINDS: ExportKind[] = ["tw4", "tw3", "chakra3", "chakra2", "codes"];
+const KINDS: ExportKind[] = ["tw4",
+  "tw3",
+  "chakra3",
+  "chakra2",
+  "cssvars",
+  "codes",];
 const FORMATS: ColorFormat[] = ["hex", "rgb", "hsl", "oklch"];
 
 describe("formatHex", () => {
@@ -69,9 +74,13 @@ describe("buildExportCode", () => {
     );
   });
 
-  // These 20 snapshots are the byte-identity contract for this refactor. They
-  // are recorded against the verbatim four-branch implementation; collapsing
-  // those branches must leave every one of them untouched.
+  // One snapshot per kind and format: what a user actually pastes.
+  //
+  // Originally recorded as a byte-identity contract for the refactor that
+  // collapsed the four framework branches into a lookup. The `tw4` four were
+  // re-recorded when that export moved from `:root` to `@theme` (#69) — a
+  // deliberate output change, and the only one so far. Everything else has
+  // stayed byte-identical since, which is the point of keeping them.
   describe.each(KINDS)("kind %s", (kind) => {
     it.each(FORMATS)("renders format %s identically", (format) => {
       expect(buildExportCode(kind, SHADES, "brand", format)).toMatchSnapshot();

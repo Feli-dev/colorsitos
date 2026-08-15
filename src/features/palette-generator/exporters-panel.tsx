@@ -44,6 +44,7 @@ export function ExportersPanel({ palette }: ExportersPanelProps) {
     { value: "tw3", label: "Tailwind v3" },
     { value: "chakra3", label: "Chakra v3" },
     { value: "chakra2", label: "Chakra v2" },
+    { value: "cssvars", label: "CSS Variables" },
     { value: "codes", label: t("export.justCodes") },
   ];
 
@@ -65,11 +66,17 @@ export function ExportersPanel({ palette }: ExportersPanelProps) {
   return (
     <Card className="w-full">
       <CardContent className="space-y-4 p-4 sm:p-6">
-        <div
-          className={`grid items-center justify-between gap-2 ${
-            active === "codes" ? "grid-cols-1" : "grid-cols-2"
-          }`}
-        >
+        {/*
+          Two equal grid columns forced each group into half the width. The
+          left one needs ~289px for its label plus the 200px trigger, got 273,
+          and overflowed its track — so the select overlapped the brand label
+          rather than the row growing or wrapping. Visible today on three of
+          the six export kinds; the longest label made it obvious.
+
+          Wrapping instead: the row looks the same when both groups fit, and
+          drops the brand field to a second line when they do not.
+        */}
+        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
           {/* Export type selector */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-2">
             <label className="text-sm text-muted-foreground whitespace-nowrap">

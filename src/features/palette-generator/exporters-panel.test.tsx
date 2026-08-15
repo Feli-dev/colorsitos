@@ -96,12 +96,30 @@ describe("ExportersPanel format switching", () => {
 });
 
 describe("ExportersPanel export kinds", () => {
-  it("switches to a Tailwind v4 variable block", async () => {
+  it("switches to a Tailwind v4 theme block", async () => {
     render(<ExportersPanel palette={palette} />);
 
     await chooseExport("Tailwind v4");
 
+    await waitFor(() => expect(code()).toHaveTextContent("--color-brand-500"));
+    // On :root instead of @theme this is valid CSS that generates no
+    // utilities at all, which is what #69 was.
+    expect(code().textContent).toContain("@theme");
+    expect(code().textContent).not.toContain(":root");
+    expect(code().textContent).toContain("bg-brand-500");
+  });
+
+  it("offers plain CSS variables as their own export", async () => {
+    render(<ExportersPanel palette={palette} />);
+
+    await chooseExport("CSS Variables");
+
+    // The `:root` output the Tailwind option used to give, kept under a name
+    // that does not promise Tailwind utilities.
     await waitFor(() => expect(code()).toHaveTextContent("--brand-500"));
+    expect(code().textContent).toContain(":root");
+    expect(code().textContent).not.toContain("@theme");
+    expect(code().textContent).not.toContain("--color-");
   });
 
   it("carries the chosen format into a framework export", async () => {
@@ -120,13 +138,13 @@ describe("ExportersPanel export kinds", () => {
     render(<ExportersPanel palette={palette} />);
 
     await chooseExport("Tailwind v4");
-    await waitFor(() => expect(code()).toHaveTextContent("--brand-500"));
+    await waitFor(() => expect(code()).toHaveTextContent("--color-brand-500"));
 
     const brandField = screen.getByLabelText("export.brandKey");
     await userEvent.clear(brandField);
     await userEvent.type(brandField, "acme");
 
-    await waitFor(() => expect(code()).toHaveTextContent("--acme-500"));
+    await waitFor(() => expect(code()).toHaveTextContent("--color-acme-500"));
   });
 
   it("hides the brand field on the bare codes export", async () => {
