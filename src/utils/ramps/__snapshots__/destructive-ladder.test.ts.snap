@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`360-hue sweep termination > terminates every brand hue at a defined rung and satisfies every invariant 1`] = `
+{
+  "0": 1080,
+  "1": 2623,
+  "2": 1357,
+  "3": 230,
+  "4": 110,
+}
+`;
