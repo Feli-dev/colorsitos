@@ -66,6 +66,11 @@
       "confirm": "Confirmar"
     }
   },
+  "contrastReport": {
+    "title": "Informe de contraste",
+    "pass": "Cumple AA",
+    "fail": "No cumple AA"
+  },
   "export": {
     "title": "Exportar códigos de color",
     "type": "Modo de exportación",

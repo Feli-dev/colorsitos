@@ -66,6 +66,11 @@
       "confirm": "Confirm"
     }
   },
+  "contrastReport": {
+    "title": "Contrast report",
+    "pass": "AA pass",
+    "fail": "AA fail"
+  },
   "export": {
     "title": "Export color codes",
     "type": "Export type",

@@ -1,6 +1,7 @@
 "use client";
 
 import { ColorPaletteComponent } from "@/components/shared/color-palette";
+import { ContrastReportPanel } from "@/features/palette-generator/contrast-report-panel";
 import { ExportersPanel } from "@/features/palette-generator/exporters-panel";
 import { PlaygroundDrawer } from "@/features/playground/playground-drawer";
 import { SavedPalettes } from "@/features/palette-generator/saved-palettes";
@@ -216,6 +217,7 @@ export function PaletteGenerator() {
                 palette={palette}
                 title={t("generator.generatedTitle")}
               />
+              <ContrastReportPanel palette={palette} />
               <div className="flex justify-between items-center">
                 <Dialog>
                   <DialogTrigger asChild>
