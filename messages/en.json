@@ -69,7 +69,13 @@
   "contrastReport": {
     "title": "Contrast report",
     "pass": "AA pass",
-    "fail": "AA fail"
+    "fail": "AA fail",
+    "rolePairs": {
+      "title": "Role-pair collision audit",
+      "ok": "OK",
+      "degraded": "Degraded",
+      "warning": "Warning"
+    }
   },
   "export": {
     "title": "Export color codes",

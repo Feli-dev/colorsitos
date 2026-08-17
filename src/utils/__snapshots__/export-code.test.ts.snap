@@ -360,6 +360,186 @@ exports[`buildExportCode > kind cssvars > renders format rgb identically 1`] = `
 }"
 `;
 
+exports[`buildExportCode > kind shadcn > renders format hex identically 1`] = `
+"/* globals.css */
+:root {
+  --background: #EBF8FF;
+  --foreground: #102A4C;
+  --card: #BEE3F8;
+  --card-foreground: #102A4C;
+  --popover: #BEE3F8;
+  --popover-foreground: #102A4C;
+  --primary: #2B6CB0;
+  --primary-foreground: #EBF8FF;
+  --secondary: #90CDF4;
+  --secondary-foreground: #1A365D;
+  --muted: #BEE3F8;
+  --muted-foreground: #2B6CB0;
+  --accent: #90CDF4;
+  --accent-foreground: #1A365D;
+  --destructive: #F80079;
+  --border: #90CDF4;
+  --input: #90CDF4;
+  --ring: #2B6CB0;
+}
+
+.dark {
+  --background: #102A4C;
+  --foreground: #EBF8FF;
+  --card: #1A365D;
+  --card-foreground: #EBF8FF;
+  --popover: #1A365D;
+  --popover-foreground: #EBF8FF;
+  --primary: #4299E1;
+  --primary-foreground: #102A4C;
+  --secondary: #2C5282;
+  --secondary-foreground: #BEE3F8;
+  --muted: #2A4365;
+  --muted-foreground: #4299E1;
+  --accent: #2C5282;
+  --accent-foreground: #BEE3F8;
+  --destructive: #F80079;
+  --border: #2A4365;
+  --input: #2A4365;
+  --ring: #4299E1;
+}"
+`;
+
+exports[`buildExportCode > kind shadcn > renders format hsl identically 1`] = `
+"/* globals.css */
+:root {
+  --background: hsl(201 100% 96%);
+  --foreground: hsl(214 65% 18%);
+  --card: hsl(202 81% 86%);
+  --card-foreground: hsl(214 65% 18%);
+  --popover: hsl(202 81% 86%);
+  --popover-foreground: hsl(214 65% 18%);
+  --primary: hsl(211 61% 43%);
+  --primary-foreground: hsl(201 100% 96%);
+  --secondary: hsl(203 82% 76%);
+  --secondary-foreground: hsl(215 56% 23%);
+  --muted: hsl(202 81% 86%);
+  --muted-foreground: hsl(211 61% 43%);
+  --accent: hsl(203 82% 76%);
+  --accent-foreground: hsl(215 56% 23%);
+  --destructive: hsl(331 100% 49%);
+  --border: hsl(203 82% 76%);
+  --input: hsl(203 82% 76%);
+  --ring: hsl(211 61% 43%);
+}
+
+.dark {
+  --background: hsl(214 65% 18%);
+  --foreground: hsl(201 100% 96%);
+  --card: hsl(215 56% 23%);
+  --card-foreground: hsl(201 100% 96%);
+  --popover: hsl(215 56% 23%);
+  --popover-foreground: hsl(201 100% 96%);
+  --primary: hsl(207 73% 57%);
+  --primary-foreground: hsl(214 65% 18%);
+  --secondary: hsl(213 49% 34%);
+  --secondary-foreground: hsl(202 81% 86%);
+  --muted: hsl(215 41% 28%);
+  --muted-foreground: hsl(207 73% 57%);
+  --accent: hsl(213 49% 34%);
+  --accent-foreground: hsl(202 81% 86%);
+  --destructive: hsl(331 100% 49%);
+  --border: hsl(215 41% 28%);
+  --input: hsl(215 41% 28%);
+  --ring: hsl(207 73% 57%);
+}"
+`;
+
+exports[`buildExportCode > kind shadcn > renders format oklch identically 1`] = `
+"/* globals.css */
+:root {
+  --background: oklch(0.971 0.0167 230.9);
+  --foreground: oklch(0.285 0.0703 256.2);
+  --card: oklch(0.896 0.0484 232.9);
+  --card-foreground: oklch(0.285 0.0703 256.2);
+  --popover: oklch(0.896 0.0484 232.9);
+  --popover-foreground: oklch(0.285 0.0703 256.2);
+  --primary: oklch(0.524 0.1259 252.3);
+  --primary-foreground: oklch(0.971 0.0167 230.9);
+  --secondary: oklch(0.821 0.0833 237.2);
+  --secondary-foreground: oklch(0.333 0.0772 257.1);
+  --muted: oklch(0.896 0.0484 232.9);
+  --muted-foreground: oklch(0.524 0.1259 252.3);
+  --accent: oklch(0.821 0.0833 237.2);
+  --accent-foreground: oklch(0.333 0.0772 257.1);
+  --destructive: oklch(0.631 0.2541 3.5);
+  --border: oklch(0.821 0.0833 237.2);
+  --input: oklch(0.821 0.0833 237.2);
+  --ring: oklch(0.524 0.1259 252.3);
+}
+
+.dark {
+  --background: oklch(0.285 0.0703 256.2);
+  --foreground: oklch(0.971 0.0167 230.9);
+  --card: oklch(0.333 0.0772 257.1);
+  --card-foreground: oklch(0.971 0.0167 230.9);
+  --popover: oklch(0.333 0.0772 257.1);
+  --popover-foreground: oklch(0.971 0.0167 230.9);
+  --primary: oklch(0.663 0.1358 246.8);
+  --primary-foreground: oklch(0.285 0.0703 256.2);
+  --secondary: oklch(0.435 0.091 255.2);
+  --secondary-foreground: oklch(0.896 0.0484 232.9);
+  --muted: oklch(0.379 0.0663 256.4);
+  --muted-foreground: oklch(0.663 0.1358 246.8);
+  --accent: oklch(0.435 0.091 255.2);
+  --accent-foreground: oklch(0.896 0.0484 232.9);
+  --destructive: oklch(0.631 0.2541 3.5);
+  --border: oklch(0.379 0.0663 256.4);
+  --input: oklch(0.379 0.0663 256.4);
+  --ring: oklch(0.663 0.1358 246.8);
+}"
+`;
+
+exports[`buildExportCode > kind shadcn > renders format rgb identically 1`] = `
+"/* globals.css */
+:root {
+  --background: rgb(235, 248, 255);
+  --foreground: rgb(16, 42, 76);
+  --card: rgb(190, 227, 248);
+  --card-foreground: rgb(16, 42, 76);
+  --popover: rgb(190, 227, 248);
+  --popover-foreground: rgb(16, 42, 76);
+  --primary: rgb(43, 108, 176);
+  --primary-foreground: rgb(235, 248, 255);
+  --secondary: rgb(144, 205, 244);
+  --secondary-foreground: rgb(26, 54, 93);
+  --muted: rgb(190, 227, 248);
+  --muted-foreground: rgb(43, 108, 176);
+  --accent: rgb(144, 205, 244);
+  --accent-foreground: rgb(26, 54, 93);
+  --destructive: rgb(248, 0, 121);
+  --border: rgb(144, 205, 244);
+  --input: rgb(144, 205, 244);
+  --ring: rgb(43, 108, 176);
+}
+
+.dark {
+  --background: rgb(16, 42, 76);
+  --foreground: rgb(235, 248, 255);
+  --card: rgb(26, 54, 93);
+  --card-foreground: rgb(235, 248, 255);
+  --popover: rgb(26, 54, 93);
+  --popover-foreground: rgb(235, 248, 255);
+  --primary: rgb(66, 153, 225);
+  --primary-foreground: rgb(16, 42, 76);
+  --secondary: rgb(44, 82, 130);
+  --secondary-foreground: rgb(190, 227, 248);
+  --muted: rgb(42, 67, 101);
+  --muted-foreground: rgb(66, 153, 225);
+  --accent: rgb(44, 82, 130);
+  --accent-foreground: rgb(190, 227, 248);
+  --destructive: rgb(248, 0, 121);
+  --border: rgb(42, 67, 101);
+  --input: rgb(42, 67, 101);
+  --ring: rgb(66, 153, 225);
+}"
+`;
+
 exports[`buildExportCode > kind tw3 > renders format hex identically 1`] = `
 "// tailwind.config.ts
 import type { Config } from 'tailwindcss';

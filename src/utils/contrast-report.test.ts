@@ -1,8 +1,24 @@
 import { describe, expect, it } from "vitest";
 
 import type { PaletteShades } from "@/types/colors";
+import { ROLE_KEYS, type RoleMap } from "@/utils/exporters/shadcn";
 import { getContrastRatio } from "./color-utils";
-import { buildContrastReport, evaluateContrastPairing } from "./contrast-report";
+import {
+  auditRolePairs,
+  buildContrastReport,
+  evaluateContrastPairing,
+} from "./contrast-report";
+
+/** A full RoleMap with every role filled by a neutral filler colour, so a
+ * test can override just the one or two roles it cares about. */
+function roleMapWith(overrides: Partial<Record<string, string>>): RoleMap {
+  const map = {} as RoleMap;
+  for (const key of ROLE_KEYS) {
+    const hex = overrides[key] ?? "#808080";
+    map[key] = { light: hex, dark: hex };
+  }
+  return map;
+}
 
 // A real generated ramp (brand blue), pinned as a fixture so results are
 // deterministic and traceable back to real hex values.
@@ -133,5 +149,34 @@ describe("buildContrastReport", () => {
     expect(report.pairings).toHaveLength(2);
     expect(flagged?.ratio).toBeCloseTo(expectedRatio);
     expect(flagged?.normalText.aa).toBe(expectedRatio >= 4.5);
+  });
+});
+
+describe("auditRolePairs", () => {
+  it("flags the primary/destructive pair when both derive from the same red-family hue", () => {
+    // Same red family: a red-brand primary next to a barely-rotated destructive.
+    const roles = roleMapWith({ primary: "#FF0000", destructive: "#F02020" });
+
+    const audit = auditRolePairs(roles);
+    const primaryDestructive = audit.find(
+      (entry) =>
+        entry.pair.includes("primary") && entry.pair.includes("destructive")
+    );
+
+    expect(primaryDestructive).toBeDefined();
+    expect(primaryDestructive?.severity).not.toBe("ok");
+  });
+
+  it("reports no collision when primary and destructive are >=60 degrees apart", () => {
+    // Blue primary vs red destructive: comfortably separated hues.
+    const roles = roleMapWith({ primary: "#3182CE", destructive: "#FF0000" });
+
+    const audit = auditRolePairs(roles);
+    const primaryDestructive = audit.find(
+      (entry) =>
+        entry.pair.includes("primary") && entry.pair.includes("destructive")
+    );
+
+    expect(primaryDestructive?.severity).toBe("ok");
   });
 });

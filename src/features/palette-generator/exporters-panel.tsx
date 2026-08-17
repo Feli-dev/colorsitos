@@ -45,6 +45,7 @@ export function ExportersPanel({ palette }: ExportersPanelProps) {
     { value: "chakra3", label: "Chakra v3" },
     { value: "chakra2", label: "Chakra v2" },
     { value: "cssvars", label: "CSS Variables" },
+    { value: "shadcn", label: "shadcn/ui" },
     { value: "codes", label: t("export.justCodes") },
   ];
 

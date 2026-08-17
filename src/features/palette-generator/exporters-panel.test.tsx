@@ -147,6 +147,17 @@ describe("ExportersPanel export kinds", () => {
     await waitFor(() => expect(code()).toHaveTextContent("--color-acme-500"));
   });
 
+  it("switches to a shadcn/ui theme with light and dark blocks", async () => {
+    render(<ExportersPanel palette={palette} />);
+
+    await chooseExport("shadcn/ui");
+
+    await waitFor(() => expect(code()).toHaveTextContent("--primary:"));
+    expect(code().textContent).toContain(":root {");
+    expect(code().textContent).toContain(".dark {");
+    expect(code().textContent).not.toContain("--destructive-foreground");
+  });
+
   it("hides the brand field on the bare codes export", async () => {
     render(<ExportersPanel palette={palette} />);
 

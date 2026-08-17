@@ -4,9 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { ColorPalette, ShadeStop } from "@/types/colors";
 import {
+  auditRolePairs,
   buildContrastReport,
   type ContrastPairingResult,
+  type RolePairAudit,
 } from "@/utils/contrast-report";
+import { deriveRolesFromSingleRamp } from "@/utils/exporters/shadcn";
 import { toPaletteShades } from "@/utils/palette-shades";
 import { useTranslations } from "next-intl";
 
@@ -48,19 +51,51 @@ export function ContrastReportPanel({ palette }: ContrastReportPanelProps) {
     }))
   );
 
+  // Roles derived the same way the shadcn exporter would, so this audit
+  // reflects exactly what a user copying the shadcn export gets.
+  const roles = deriveRolesFromSingleRamp(shades);
+  const rolePairAudit = auditRolePairs(roles);
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>{t("contrastReport.title")}</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-4">
         <ul className="space-y-2">
           {report.pairings.map((pairing) => (
             <ContrastPairingRow key={pairing.id} pairing={pairing} />
           ))}
         </ul>
+        <div className="space-y-2">
+          <p className="text-sm font-medium">
+            {t("contrastReport.rolePairs.title")}
+          </p>
+          <ul className="space-y-2">
+            {rolePairAudit.map((entry) => (
+              <RolePairAuditRow
+                key={entry.pair.join("-")}
+                entry={entry}
+              />
+            ))}
+          </ul>
+        </div>
       </CardContent>
     </Card>
+  );
+}
+
+function RolePairAuditRow({ entry }: { entry: RolePairAudit }) {
+  const t = useTranslations();
+  const variant = entry.severity === "ok" ? "secondary" : "destructive";
+
+  return (
+    <li className="flex items-center justify-between gap-2 text-sm">
+      <span className="font-mono">{entry.pair.join(" / ")}</span>
+      <Badge variant={variant}>
+        {t(`contrastReport.rolePairs.${entry.severity}`)}
+      </Badge>
+    </li>
   );
 }
 
