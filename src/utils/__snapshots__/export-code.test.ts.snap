@@ -377,7 +377,7 @@ exports[`buildExportCode > kind shadcn > renders format hex identically 1`] = `
   --muted-foreground: #2B6CB0;
   --accent: #90CDF4;
   --accent-foreground: #1A365D;
-  --destructive: #F80079;
+  --destructive: #6B110C;
   --border: #90CDF4;
   --input: #90CDF4;
   --ring: #2B6CB0;
@@ -398,7 +398,7 @@ exports[`buildExportCode > kind shadcn > renders format hex identically 1`] = `
   --muted-foreground: #4299E1;
   --accent: #2C5282;
   --accent-foreground: #BEE3F8;
-  --destructive: #F80079;
+  --destructive: #6B110C;
   --border: #2A4365;
   --input: #2A4365;
   --ring: #4299E1;
@@ -422,7 +422,7 @@ exports[`buildExportCode > kind shadcn > renders format hsl identically 1`] = `
   --muted-foreground: hsl(211 61% 43%);
   --accent: hsl(203 82% 76%);
   --accent-foreground: hsl(215 56% 23%);
-  --destructive: hsl(331 100% 49%);
+  --destructive: hsl(3 80% 23%);
   --border: hsl(203 82% 76%);
   --input: hsl(203 82% 76%);
   --ring: hsl(211 61% 43%);
@@ -443,7 +443,7 @@ exports[`buildExportCode > kind shadcn > renders format hsl identically 1`] = `
   --muted-foreground: hsl(207 73% 57%);
   --accent: hsl(213 49% 34%);
   --accent-foreground: hsl(202 81% 86%);
-  --destructive: hsl(331 100% 49%);
+  --destructive: hsl(3 80% 23%);
   --border: hsl(215 41% 28%);
   --input: hsl(215 41% 28%);
   --ring: hsl(207 73% 57%);
@@ -467,7 +467,7 @@ exports[`buildExportCode > kind shadcn > renders format oklch identically 1`] = 
   --muted-foreground: oklch(0.524 0.1259 252.3);
   --accent: oklch(0.821 0.0833 237.2);
   --accent-foreground: oklch(0.333 0.0772 257.1);
-  --destructive: oklch(0.631 0.2541 3.5);
+  --destructive: oklch(0.344 0.1242 28.8);
   --border: oklch(0.821 0.0833 237.2);
   --input: oklch(0.821 0.0833 237.2);
   --ring: oklch(0.524 0.1259 252.3);
@@ -488,7 +488,7 @@ exports[`buildExportCode > kind shadcn > renders format oklch identically 1`] = 
   --muted-foreground: oklch(0.663 0.1358 246.8);
   --accent: oklch(0.435 0.091 255.2);
   --accent-foreground: oklch(0.896 0.0484 232.9);
-  --destructive: oklch(0.631 0.2541 3.5);
+  --destructive: oklch(0.344 0.1242 28.8);
   --border: oklch(0.379 0.0663 256.4);
   --input: oklch(0.379 0.0663 256.4);
   --ring: oklch(0.663 0.1358 246.8);
@@ -512,7 +512,7 @@ exports[`buildExportCode > kind shadcn > renders format rgb identically 1`] = `
   --muted-foreground: rgb(43, 108, 176);
   --accent: rgb(144, 205, 244);
   --accent-foreground: rgb(26, 54, 93);
-  --destructive: rgb(248, 0, 121);
+  --destructive: rgb(107, 17, 12);
   --border: rgb(144, 205, 244);
   --input: rgb(144, 205, 244);
   --ring: rgb(43, 108, 176);
@@ -533,7 +533,7 @@ exports[`buildExportCode > kind shadcn > renders format rgb identically 1`] = `
   --muted-foreground: rgb(66, 153, 225);
   --accent: rgb(44, 82, 130);
   --accent-foreground: rgb(190, 227, 248);
-  --destructive: rgb(248, 0, 121);
+  --destructive: rgb(107, 17, 12);
   --border: rgb(42, 67, 101);
   --input: rgb(42, 67, 101);
   --ring: rgb(66, 153, 225);
