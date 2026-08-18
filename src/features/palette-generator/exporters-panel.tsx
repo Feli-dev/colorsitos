@@ -10,14 +10,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { ColorPalette } from "@/types/colors";
 import {
+  RAMP_ROLES,
+  type ColorPalette,
+  type RampPins,
+  type RampRole,
+} from "@/types/colors";
+import {
+  buildCombinedExportCode,
   buildExportCode,
   exportJustTheCodes,
   type ColorFormat,
   type ExportKind,
 } from "@/utils/export-code";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
+import { buildRampSet } from "@/utils/ramps/build-ramp-set";
 import { toPaletteShades } from "@/utils/palette-shades";
 import { Check, Copy } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -28,14 +35,25 @@ interface ExportOption {
   label: string;
 }
 
+/** Which portion of the ramp system a given export document covers (decision A). */
+type ExportShape = "single" | "system";
+
 interface ExportersPanelProps {
   palette: ColorPalette;
+  /**
+   * User-pinned ramp overrides (Feature 3), same flat shape `resolveRamps`
+   * reads. Optional so every existing caller keeps working unchanged --
+   * omitting it is equivalent to no ramp being pinned.
+   */
+  pins?: RampPins;
 }
 
-export function ExportersPanel({ palette }: ExportersPanelProps) {
+export function ExportersPanel({ palette, pins = {} }: ExportersPanelProps) {
   const t = useTranslations();
   const [brandKey, setBrandKey] = useState<string>("brand");
   const [active, setActive] = useState<ExportKind>("codes");
+  const [shape, setShape] = useState<ExportShape>("single");
+  const [selectedRamp, setSelectedRamp] = useState<RampRole>("brand");
   const { copy, copiedValue } = useCopyToClipboard();
   const [format, setFormat] = useState<ColorFormat>("hex");
 
@@ -45,20 +63,39 @@ export function ExportersPanel({ palette }: ExportersPanelProps) {
     { value: "chakra3", label: "Chakra v3" },
     { value: "chakra2", label: "Chakra v2" },
     { value: "cssvars", label: "CSS Variables" },
+    { value: "shadcn", label: "shadcn/ui" },
     { value: "codes", label: t("export.justCodes") },
   ];
 
-  const shades = useMemo(() => toPaletteShades(palette.shades), [palette]);
+  // The brand ramp's own shades, exactly as before this slice -- kept as the
+  // single source of truth for the "brand" selection so the default,
+  // back-compat path is byte-identical to pre-Slice-12 behavior.
+  const brandShades = useMemo(() => toPaletteShades(palette.shades), [palette]);
 
-  const justTheCodes = useMemo(
-    () => exportJustTheCodes(shades, format),
-    [shades, format]
+  const brandHex = brandShades[500];
+
+  // Pure and re-derived on every pins/brandHex change (same contract as
+  // DerivedRampsCard) -- never a stale snapshot of a ramp taken at pin time.
+  const rampSet = useMemo(() => buildRampSet(brandHex, pins), [brandHex, pins]);
+
+  const selectedShades = useMemo(
+    () => (selectedRamp === "brand" ? brandShades : rampSet[selectedRamp].shades),
+    [selectedRamp, brandShades, rampSet]
   );
 
-  const code = useMemo(
-    () => buildExportCode(active, shades, brandKey, format),
-    [active, brandKey, shades, format]
-  );
+  const justTheCodes = useMemo(() => {
+    if (shape === "system") {
+      return buildCombinedExportCode("codes", rampSet, brandKey, format);
+    }
+    return exportJustTheCodes(selectedShades, format);
+  }, [shape, rampSet, brandKey, format, selectedShades]);
+
+  const code = useMemo(() => {
+    if (shape === "system") {
+      return buildCombinedExportCode(active, rampSet, brandKey, format);
+    }
+    return buildExportCode(active, selectedShades, brandKey, format);
+  }, [shape, active, rampSet, brandKey, format, selectedShades]);
 
   const handleCopy = () => copy(code);
   const handleCopyCodes = () => copy(justTheCodes);
@@ -89,6 +126,7 @@ export function ExportersPanel({ palette }: ExportersPanelProps) {
               <SelectTrigger
                 size="default"
                 className="w-full sm:w-auto sm:min-w-[200px]"
+                aria-label={t("export.type")}
               >
                 <SelectValue />
               </SelectTrigger>
@@ -121,6 +159,59 @@ export function ExportersPanel({ palette }: ExportersPanelProps) {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Export shape (decision A): a single chosen ramp, or the whole
+            six-ramp system as one combined document. */}
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+            <label className="text-sm text-muted-foreground whitespace-nowrap">
+              {t("export.shape.label")}
+            </label>
+            <Select
+              value={shape}
+              onValueChange={(value: ExportShape) => setShape(value)}
+            >
+              <SelectTrigger
+                size="sm"
+                className="w-full sm:w-auto sm:min-w-[160px]"
+                aria-label={t("export.shape.label")}
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="single">{t("export.shape.single")}</SelectItem>
+                <SelectItem value="system">{t("export.shape.system")}</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {shape === "single" ? (
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+              <label className="text-sm text-muted-foreground whitespace-nowrap">
+                {t("export.ramp.label")}
+              </label>
+              <Select
+                value={selectedRamp}
+                onValueChange={(value: RampRole) => setSelectedRamp(value)}
+              >
+                <SelectTrigger
+                  size="sm"
+                  className="w-full sm:w-auto sm:min-w-[160px]"
+                  aria-label={t("export.ramp.label")}
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {RAMP_ROLES.map((role) => (
+                    <SelectItem key={role} value={role}>
+                      {t(`ramps.role.${role}`)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          ) : null}
         </div>
 
         {/* Format buttons */}

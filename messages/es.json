@@ -66,19 +66,68 @@
       "confirm": "Confirmar"
     }
   },
+  "contrastReport": {
+    "title": "Informe de contraste",
+    "pass": "Cumple AA",
+    "fail": "No cumple AA",
+    "rolePairs": {
+      "title": "Auditoría de colisión de roles",
+      "ok": "OK",
+      "degraded": "Degradado",
+      "warning": "Aviso"
+    }
+  },
   "export": {
     "title": "Exportar códigos de color",
     "type": "Modo de exportación",
     "brandKey": "Nombre de la clave (brand)",
     "copy": "Copiar",
     "justCodes": "Solo los códigos",
-    "copyCodes": "Copiar códigos"
+    "copyCodes": "Copiar códigos",
+    "ramp": {
+      "label": "Rampa"
+    },
+    "shape": {
+      "label": "Forma",
+      "single": "Una rampa",
+      "system": "Sistema completo"
+    }
   },
   "saved": {
     "title": "Paletas guardadas",
     "empty": "No hay paletas guardadas.",
     "load": "Cargar",
     "delete": "Eliminar"
+  },
+  "ramps": {
+    "title": "Rampas derivadas",
+    "expand": "Mostrar",
+    "collapse": "Ocultar",
+    "role": {
+      "brand": "Marca",
+      "neutral": "Neutro",
+      "accent": "Acento",
+      "success": "Éxito",
+      "warning": "Advertencia",
+      "danger": "Peligro"
+    },
+    "origin": {
+      "derived": "Derivado de la marca",
+      "pinned": "Fijado"
+    },
+    "pin": {
+      "override": "Personalizar",
+      "reset": "Restablecer a derivado",
+      "apply": "Aplicar",
+      "cancel": "Cancelar",
+      "inputLabel": "Color personalizado para"
+    },
+    "harmony": {
+      "label": "Armonía del acento",
+      "complementary": "Complementario",
+      "analogous": "Análogo",
+      "triadic": "Triádico"
+    }
   },
   "palette": {
     "copy": {

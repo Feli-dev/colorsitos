@@ -28,7 +28,8 @@ const KINDS: ExportKind[] = ["tw4",
   "chakra3",
   "chakra2",
   "cssvars",
-  "codes",];
+  "codes",
+  "shadcn",];
 const FORMATS: ColorFormat[] = ["hex", "rgb", "hsl", "oklch"];
 
 describe("formatHex", () => {
@@ -72,6 +73,21 @@ describe("buildExportCode", () => {
     expect(buildExportCode("tw3", SHADES, "primary", "hex")).toContain(
       "primary: {"
     );
+  });
+
+  it("renders a shadcn theme with both light and dark blocks, ignoring brandKey", () => {
+    const output = buildExportCode("shadcn", SHADES, "brand", "hex");
+
+    expect(output).toContain(":root {");
+    expect(output).toContain(".dark {");
+    expect(output).toContain("--primary:");
+    expect(output).not.toContain("--destructive-foreground");
+  });
+
+  it("formats shadcn theme values in the requested colour format", () => {
+    const output = buildExportCode("shadcn", SHADES, "brand", "hsl");
+
+    expect(output).toMatch(/--background: hsl\(/);
   });
 
   // One snapshot per kind and format: what a user actually pastes.

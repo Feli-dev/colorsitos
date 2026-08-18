@@ -1,6 +1,8 @@
 "use client";
 
 import { ColorPaletteComponent } from "@/components/shared/color-palette";
+import { ContrastReportPanel } from "@/features/palette-generator/contrast-report-panel";
+import { DerivedRampsCard } from "@/features/palette-generator/derived-ramps-card";
 import { ExportersPanel } from "@/features/palette-generator/exporters-panel";
 import { PlaygroundDrawer } from "@/features/playground/playground-drawer";
 import { SavedPalettes } from "@/features/palette-generator/saved-palettes";
@@ -17,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useColorQuery } from "@/hooks/use-color-query";
 import { useDynamicFavicon } from "@/hooks/use-dynamic-favicon";
+import { useRampPinsQuery } from "@/hooks/use-ramp-pins-query";
 import {
   useSavedPalettes,
   type SavedPalette,
@@ -47,6 +50,7 @@ export function PaletteGenerator() {
   const [error, setError] = useState<string>("");
   const [palette, setPalette] = useState<ColorPalette | null>(null);
   const { saved, save, remove } = useSavedPalettes();
+  const [pins, setPin] = useRampPinsQuery();
   const { setColorFavicon } = useDynamicFavicon();
   const isClient = useIsClient();
   const [colorFromUrl, updateColorUrl] = useColorQuery();
@@ -216,6 +220,7 @@ export function PaletteGenerator() {
                 palette={palette}
                 title={t("generator.generatedTitle")}
               />
+              <ContrastReportPanel palette={palette} />
               <div className="flex justify-between items-center">
                 <Dialog>
                   <DialogTrigger asChild>
@@ -227,7 +232,7 @@ export function PaletteGenerator() {
                     <DialogHeader>
                       <DialogTitle>{t("export.title")}</DialogTitle>
                     </DialogHeader>
-                    <ExportersPanel palette={palette} />
+                    <ExportersPanel palette={palette} pins={pins} />
                   </DialogContent>
                 </Dialog>
                 <div className="flex items-center gap-2">
@@ -261,6 +266,14 @@ export function PaletteGenerator() {
           )}
         </CardContent>
       </Card>
+
+      {palette ? (
+        <DerivedRampsCard
+          brandHex={palette.shades.find((s) => s.value === 500)!.hex}
+          pins={pins}
+          onPinChange={setPin}
+        />
+      ) : null}
 
       {isClient ? (
         <Card>

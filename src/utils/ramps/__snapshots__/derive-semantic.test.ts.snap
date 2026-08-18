@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`360-hue sweep — outcome histogram + hue invariance + cell membership > terminates every brand at a defined outcome and satisfies every invariant 1`] = `
+{
+  "collision": 5400,
+  "direct": 3600,
+  "separated-darker": 5400,
+  "separated-lighter": 1800,
+}
+`;

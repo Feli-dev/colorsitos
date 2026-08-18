@@ -37,3 +37,44 @@ export type PaletteComparison = {
   primary: ColorPalette | null;
   secondary: ColorPalette | null;
 };
+
+/**
+ * Feature 3 (multi-ramp palette): a full theme is six ramps composed on top
+ * of `PaletteShades` above -- that type is unchanged, every existing consumer
+ * keeps reading it directly. `brand` is always the user's own input; the
+ * other five are derived from it, or pinned to a user override.
+ */
+export const RAMP_ROLES = [
+  "brand",
+  "neutral",
+  "accent",
+  "success",
+  "warning",
+  "danger",
+] as const;
+
+export type RampRole = (typeof RAMP_ROLES)[number];
+
+/** Every role a user can pin/override. `brand` is the input, never pinned. */
+export type PinnableRole = Exclude<RampRole, "brand">;
+
+/** How a ramp's base colour was determined. */
+export type RampOrigin = "brand" | "derived" | "pinned";
+
+/** One ramp: its role, base colour, full shade scale, and origin. */
+export interface Ramp {
+  role: RampRole;
+  baseHex: string;
+  shades: PaletteShades;
+  origin: RampOrigin;
+}
+
+/** A complete theme: every role mapped to its ramp. */
+export type RampSet = Record<RampRole, Ramp>;
+
+/**
+ * User-chosen overrides, persisted FLAT (role -> hex), never nested under a
+ * `.shades` key -- this shape structurally rules out the
+ * `saved.ramps.accent.shades` crash class (decision B', M5).
+ */
+export type RampPins = Partial<Record<PinnableRole, string>>;

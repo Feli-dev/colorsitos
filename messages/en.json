@@ -66,19 +66,68 @@
       "confirm": "Confirm"
     }
   },
+  "contrastReport": {
+    "title": "Contrast report",
+    "pass": "AA pass",
+    "fail": "AA fail",
+    "rolePairs": {
+      "title": "Role-pair collision audit",
+      "ok": "OK",
+      "degraded": "Degraded",
+      "warning": "Warning"
+    }
+  },
   "export": {
     "title": "Export color codes",
     "type": "Export type",
     "brandKey": "Brand key name",
     "copy": "Copy",
     "justCodes": "Just the codes",
-    "copyCodes": "Copy codes"
+    "copyCodes": "Copy codes",
+    "ramp": {
+      "label": "Ramp"
+    },
+    "shape": {
+      "label": "Shape",
+      "single": "Single ramp",
+      "system": "Whole system"
+    }
   },
   "saved": {
     "title": "Saved palettes",
     "empty": "No saved palettes.",
     "load": "Load",
     "delete": "Delete"
+  },
+  "ramps": {
+    "title": "Derived ramps",
+    "expand": "Show",
+    "collapse": "Hide",
+    "role": {
+      "brand": "Brand",
+      "neutral": "Neutral",
+      "accent": "Accent",
+      "success": "Success",
+      "warning": "Warning",
+      "danger": "Danger"
+    },
+    "origin": {
+      "derived": "Derived from brand",
+      "pinned": "Pinned"
+    },
+    "pin": {
+      "override": "Override",
+      "reset": "Reset to derived",
+      "apply": "Apply",
+      "cancel": "Cancel",
+      "inputLabel": "Custom color for"
+    },
+    "harmony": {
+      "label": "Accent harmony",
+      "complementary": "Complementary",
+      "analogous": "Analogous",
+      "triadic": "Triadic"
+    }
   },
   "palette": {
     "copy": {

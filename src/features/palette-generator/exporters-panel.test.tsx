@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
 import type { ColorPalette } from "@/types/colors";
+import { buildRampSet } from "@/utils/ramps/build-ramp-set";
 import { ExportersPanel } from "./exporters-panel";
 
 vi.mock("next-intl", () => ({
@@ -40,8 +41,24 @@ const lines = () => code().textContent!.trim().split("\n");
  * only place this path gets exercised at all.
  */
 async function chooseExport(label: string) {
-  const trigger = screen.getByRole("combobox");
+  const trigger = screen.getByRole("combobox", { name: "export.type" });
   await userEvent.click(trigger);
+  await userEvent.click(await screen.findByRole("option", { name: label }));
+}
+
+const BRAND_HEX = "#3182CE";
+
+async function chooseRamp(label: string) {
+  await userEvent.click(
+    screen.getByRole("combobox", { name: "export.ramp.label" })
+  );
+  await userEvent.click(await screen.findByRole("option", { name: label }));
+}
+
+async function chooseShape(label: string) {
+  await userEvent.click(
+    screen.getByRole("combobox", { name: "export.shape.label" })
+  );
   await userEvent.click(await screen.findByRole("option", { name: label }));
 }
 
@@ -147,6 +164,17 @@ describe("ExportersPanel export kinds", () => {
     await waitFor(() => expect(code()).toHaveTextContent("--color-acme-500"));
   });
 
+  it("switches to a shadcn/ui theme with light and dark blocks", async () => {
+    render(<ExportersPanel palette={palette} />);
+
+    await chooseExport("shadcn/ui");
+
+    await waitFor(() => expect(code()).toHaveTextContent("--primary:"));
+    expect(code().textContent).toContain(":root {");
+    expect(code().textContent).toContain(".dark {");
+    expect(code().textContent).not.toContain("--destructive-foreground");
+  });
+
   it("hides the brand field on the bare codes export", async () => {
     render(<ExportersPanel palette={palette} />);
 
@@ -174,5 +202,128 @@ describe("ExportersPanel copying", () => {
 
     await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
     expect(writeText.mock.calls[0][0]).toBe(code().textContent);
+  });
+});
+
+describe("ExportersPanel ramp selector", () => {
+  it("defaults to the brand ramp", () => {
+    render(<ExportersPanel palette={palette} />);
+
+    expect(
+      screen.getByRole("combobox", { name: "export.ramp.label" })
+    ).toHaveTextContent("ramps.role.brand");
+  });
+
+  it("offers all six roles", async () => {
+    render(<ExportersPanel palette={palette} />);
+
+    await userEvent.click(
+      screen.getByRole("combobox", { name: "export.ramp.label" })
+    );
+
+    for (const role of [
+      "brand",
+      "neutral",
+      "accent",
+      "success",
+      "warning",
+      "danger",
+    ]) {
+      expect(
+        await screen.findByRole("option", { name: `ramps.role.${role}` })
+      ).toBeInTheDocument();
+    }
+  });
+
+  it("switching to a derived ramp shows its real derived hex, not the brand's", async () => {
+    // buildExportCode always keys by the brandKey field (unaffected by which
+    // ramp is selected -- that field renames the prefix, same as before this
+    // slice); the ramp selector changes which ramp's VALUES are exported.
+    render(<ExportersPanel palette={palette} />);
+    await chooseExport("CSS Variables");
+    const originalValue = (await waitFor(() =>
+      code().textContent!.match(/--brand-500: (#[0-9A-F]+);/)
+    ))![1];
+
+    await chooseRamp("ramps.role.neutral");
+
+    const expectedNeutral = buildRampSet(BRAND_HEX).neutral.shades[500];
+    expect(expectedNeutral).not.toBe(originalValue);
+    await waitFor(() =>
+      expect(code().textContent).toContain(`--brand-500: ${expectedNeutral}`)
+    );
+  });
+
+  it("reflects a pinned ramp's exact hex when pins are provided", async () => {
+    render(<ExportersPanel palette={palette} pins={{ accent: "#123456" }} />);
+    await chooseExport("CSS Variables");
+
+    await chooseRamp("ramps.role.accent");
+
+    await waitFor(() =>
+      expect(code().textContent).toContain("--brand-500: #123456")
+    );
+  });
+});
+
+describe("ExportersPanel shape selector", () => {
+  it("hides the ramp selector once whole system is picked", async () => {
+    render(<ExportersPanel palette={palette} />);
+
+    await chooseShape("export.shape.system");
+
+    expect(
+      screen.queryByRole("combobox", { name: "export.ramp.label" })
+    ).not.toBeInTheDocument();
+  });
+
+  it("renders one @theme block with all six fixed keys", async () => {
+    render(<ExportersPanel palette={palette} />);
+    await chooseExport("Tailwind v4");
+
+    await chooseShape("export.shape.system");
+
+    await waitFor(() =>
+      expect(code().textContent).toContain("--color-neutral-500")
+    );
+    expect(code().textContent!.match(/@theme \{/g)).toHaveLength(1);
+    for (const key of [
+      "brand",
+      "neutral",
+      "accent",
+      "success",
+      "warning",
+      "danger",
+    ]) {
+      expect(code().textContent).toContain(`--color-${key}-500`);
+    }
+  });
+
+  it("uses the brandKey field for the brand ramp's key, per decision H", async () => {
+    render(<ExportersPanel palette={palette} />);
+    await chooseExport("Tailwind v4");
+    await chooseShape("export.shape.system");
+    await waitFor(() =>
+      expect(code().textContent).toContain("--color-neutral-500")
+    );
+
+    const brandField = screen.getByLabelText("export.brandKey");
+    await userEvent.clear(brandField);
+    await userEvent.type(brandField, "acme");
+
+    await waitFor(() =>
+      expect(code().textContent).toContain("--color-acme-500")
+    );
+    expect(code().textContent).not.toContain("--color-brand-500");
+    expect(code().textContent).toContain("--color-neutral-500");
+  });
+
+  it("labels each ramp on the bare codes kind", async () => {
+    render(<ExportersPanel palette={palette} />);
+    // "codes" is the default active kind already.
+    await chooseShape("export.shape.system");
+
+    await waitFor(() => expect(code().textContent).toMatch(/^brand\n/));
+    expect(code().textContent).toContain("\n\nneutral\n");
   });
 });
