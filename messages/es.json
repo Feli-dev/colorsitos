@@ -83,7 +83,15 @@
     "brandKey": "Nombre de la clave (brand)",
     "copy": "Copiar",
     "justCodes": "Solo los códigos",
-    "copyCodes": "Copiar códigos"
+    "copyCodes": "Copiar códigos",
+    "ramp": {
+      "label": "Rampa"
+    },
+    "shape": {
+      "label": "Forma",
+      "single": "Una rampa",
+      "system": "Sistema completo"
+    }
   },
   "saved": {
     "title": "Paletas guardadas",
@@ -96,6 +104,7 @@
     "expand": "Mostrar",
     "collapse": "Ocultar",
     "role": {
+      "brand": "Marca",
       "neutral": "Neutro",
       "accent": "Acento",
       "success": "Éxito",
