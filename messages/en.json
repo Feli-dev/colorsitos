@@ -91,6 +91,22 @@
     "load": "Load",
     "delete": "Delete"
   },
+  "ramps": {
+    "title": "Derived ramps",
+    "expand": "Show",
+    "collapse": "Hide",
+    "role": {
+      "neutral": "Neutral",
+      "accent": "Accent",
+      "success": "Success",
+      "warning": "Warning",
+      "danger": "Danger"
+    },
+    "origin": {
+      "derived": "Derived from brand",
+      "pinned": "Pinned"
+    }
+  },
   "palette": {
     "copy": {
       "title": "Copy hex code",

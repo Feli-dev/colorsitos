@@ -91,6 +91,22 @@
     "load": "Cargar",
     "delete": "Eliminar"
   },
+  "ramps": {
+    "title": "Rampas derivadas",
+    "expand": "Mostrar",
+    "collapse": "Ocultar",
+    "role": {
+      "neutral": "Neutro",
+      "accent": "Acento",
+      "success": "Éxito",
+      "warning": "Advertencia",
+      "danger": "Peligro"
+    },
+    "origin": {
+      "derived": "Derivado de la marca",
+      "pinned": "Fijado"
+    }
+  },
   "palette": {
     "copy": {
       "title": "Copiar código hex",
