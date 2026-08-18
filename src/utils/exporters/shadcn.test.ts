@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import type { PaletteShades } from "@/types/colors";
+import type { PaletteShades, RampPins, RampSet } from "@/types/colors";
+import { buildRampSet } from "@/utils/ramps/build-ramp-set";
 import { deriveSemanticRamp } from "@/utils/ramps/derive-semantic";
 import { hsluvHue } from "@/utils/ramps/hsluv-hue";
 import { ANCHOR_HUE } from "@/utils/ramps/semantic-naming";
 import {
+  deriveRolesFromRampSet,
   deriveRolesFromSingleRamp,
   renderShadcnTheme,
   ROLE_CSS_VAR,
@@ -79,6 +81,97 @@ describe("deriveRolesFromSingleRamp", () => {
 
     expect(roles.background.light).not.toBe(roles.background.dark);
     expect(roles.foreground.light).not.toBe(roles.foreground.dark);
+  });
+});
+
+describe("deriveRolesFromRampSet", () => {
+  const BRAND_HEX = "#3182CE";
+  const rampSet: RampSet = buildRampSet(BRAND_HEX);
+
+  it("produces a value for every declared role", () => {
+    const roles = deriveRolesFromRampSet(rampSet);
+
+    for (const key of ROLE_KEYS) {
+      expect(roles[key].light).toMatch(/^#[0-9A-F]{6}$/i);
+      expect(roles[key].dark).toMatch(/^#[0-9A-F]{6}$/i);
+    }
+  });
+
+  it("uses the danger ramp's own baseHex for destructive, in both modes", () => {
+    const roles = deriveRolesFromRampSet(rampSet);
+
+    expect(roles.destructive.light).toBe(rampSet.danger.baseHex);
+    expect(roles.destructive.dark).toBe(rampSet.danger.baseHex);
+  });
+
+  it("respects a pinned danger hex instead of recomputing from the brand", () => {
+    const pins: RampPins = { danger: "#AA00AA" };
+    const pinnedSet = buildRampSet(BRAND_HEX, pins);
+
+    const roles = deriveRolesFromRampSet(pinnedSet);
+
+    expect(roles.destructive.light).toBe("#AA00AA");
+    expect(roles.destructive.light).not.toBe(
+      deriveSemanticRamp("danger", BRAND_HEX).fill
+    );
+  });
+
+  it("derives primary from the brand ramp, not the neutral ramp", () => {
+    const roles = deriveRolesFromRampSet(rampSet);
+
+    expect(roles.primary.light).toBe(rampSet.brand.shades[600]);
+    expect(roles.primary.dark).toBe(rampSet.brand.shades[400]);
+  });
+
+  it("derives accent from the accent ramp, not an approximation of the brand", () => {
+    const roles = deriveRolesFromRampSet(rampSet);
+
+    expect(roles.accent.light).toBe(rampSet.accent.shades[200]);
+    expect(roles.accent.light).not.toBe(rampSet.brand.shades[200]);
+  });
+
+  it("derives background/foreground from the neutral ramp, not the brand ramp", () => {
+    const roles = deriveRolesFromRampSet(rampSet);
+
+    expect(roles.background.light).toBe(rampSet.neutral.shades[50]);
+    expect(roles.background.light).not.toBe(rampSet.brand.shades[50]);
+  });
+});
+
+describe("Deriver replaceable without renderer change (spec: shadcn-export)", () => {
+  it("renderShadcnTheme's output shape is identical whichever deriver produced the RoleMap", () => {
+    const singleRoles = deriveRolesFromSingleRamp({
+      50: "#EBF8FF",
+      100: "#BEE3F8",
+      200: "#90CDF4",
+      300: "#63B3ED",
+      400: "#4299E1",
+      500: "#3182CE",
+      600: "#2B6CB0",
+      700: "#2C5282",
+      800: "#2A4365",
+      900: "#1A365D",
+      950: "#0F2942",
+    });
+    const rampSetRoles = deriveRolesFromRampSet(buildRampSet("#3182CE"));
+
+    for (const roles of [singleRoles, rampSetRoles]) {
+      const css = renderShadcnTheme(roles);
+
+      expect(css.match(/:root \{/g)).toHaveLength(1);
+      expect(css.match(/\.dark \{/g)).toHaveLength(1);
+      expect(css).not.toContain("--destructive-foreground");
+      expect(css).not.toMatch(/--chart-/);
+      expect(css).not.toMatch(/--sidebar-/);
+
+      const rootBlock = css.split(".dark {")[0];
+      const darkBlock = css.split(".dark {")[1];
+      for (const key of ROLE_KEYS) {
+        const cssVar = `--${ROLE_CSS_VAR[key]}:`;
+        expect(rootBlock).toContain(cssVar);
+        expect(darkBlock).toContain(cssVar);
+      }
+    }
   });
 });
 
