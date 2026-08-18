@@ -1,4 +1,4 @@
-import type { PaletteShades } from "@/types/colors";
+import type { PaletteShades, RampSet } from "@/types/colors";
 import { isLightColor } from "@/utils/color-utils";
 import { deriveSemanticRamp } from "@/utils/ramps/derive-semantic";
 
@@ -117,6 +117,53 @@ export function deriveRolesFromSingleRamp(shades: PaletteShades): RoleMap {
     destructive: { light: destructiveHex, dark: destructiveHex },
     border: { light: shades[200], dark: shades[800] },
     input: { light: shades[200], dark: shades[800] },
+    ring: { light: primaryLight, dark: primaryDark },
+  };
+}
+
+/**
+ * Derives a full `RoleMap` from a multi-ramp `RampSet` (Feature 3).
+ *
+ * The second deriver decision D's seam exists for: `renderShadcnTheme` does
+ * not change at all, and its output shape is identical to
+ * `deriveRolesFromSingleRamp`'s (proven by the "deriver replaceable without
+ * renderer change" test).
+ *
+ * Unlike the single-ramp deriver, real neutral/accent ramps back the
+ * surface/accent roles instead of approximating them from the brand ramp's
+ * own stops. `destructive` reads `ramps.danger.baseHex` directly (not a
+ * fresh `deriveSemanticRamp` call), so a pinned danger ramp is honoured
+ * automatically. `success`/`warning` have no slot in this repo's shadcn
+ * contract (`ROLE_KEYS` has none) and are not consumed here.
+ */
+export function deriveRolesFromRampSet(ramps: RampSet): RoleMap {
+  const { brand, neutral, accent, danger } = ramps;
+  const destructiveHex = danger.baseHex;
+
+  const primaryLight = brand.shades[600];
+  const primaryDark = brand.shades[400];
+
+  return {
+    background: { light: neutral.shades[50], dark: neutral.shades[950] },
+    foreground: { light: neutral.shades[950], dark: neutral.shades[50] },
+    card: { light: neutral.shades[100], dark: neutral.shades[900] },
+    cardForeground: { light: neutral.shades[950], dark: neutral.shades[50] },
+    popover: { light: neutral.shades[100], dark: neutral.shades[900] },
+    popoverForeground: { light: neutral.shades[950], dark: neutral.shades[50] },
+    primary: { light: primaryLight, dark: primaryDark },
+    primaryForeground: {
+      light: foregroundFor(primaryLight, brand.shades),
+      dark: foregroundFor(primaryDark, brand.shades),
+    },
+    secondary: { light: brand.shades[200], dark: brand.shades[700] },
+    secondaryForeground: { light: brand.shades[900], dark: brand.shades[100] },
+    muted: { light: neutral.shades[100], dark: neutral.shades[800] },
+    mutedForeground: { light: neutral.shades[600], dark: neutral.shades[400] },
+    accent: { light: accent.shades[200], dark: accent.shades[700] },
+    accentForeground: { light: accent.shades[900], dark: accent.shades[100] },
+    destructive: { light: destructiveHex, dark: destructiveHex },
+    border: { light: neutral.shades[200], dark: neutral.shades[800] },
+    input: { light: neutral.shades[200], dark: neutral.shades[800] },
     ring: { light: primaryLight, dark: primaryDark },
   };
 }
