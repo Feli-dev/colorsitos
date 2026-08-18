@@ -1,15 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { ColorPaletteComponent } from "@/components/shared/color-palette";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { SHADE_STOPS, type PinnableRole, type RampPins } from "@/types/colors";
+import {
+  SHADE_STOPS,
+  type PinnableRole,
+  type Ramp,
+  type RampPins,
+} from "@/types/colors";
 import { createColorPalette } from "@/utils/color-utils";
+import { generateColorPalette } from "@/utils/palette-generator";
 import { buildRampSet } from "@/utils/ramps/build-ramp-set";
+import {
+  DEFAULT_HARMONY_RULE,
+  deriveAccentBase,
+  type HarmonyRule,
+} from "@/utils/ramps/derive-accent";
+import { AccentHarmonyPicker } from "./accent-harmony-picker";
+import { RampPinControl } from "./ramp-pin-control";
 
 const DERIVED_ROLES: readonly PinnableRole[] = [
   "neutral",
@@ -30,14 +42,30 @@ export interface DerivedRampsCardProps {
  * `buildRampSet` derives from `brandHex`, collapsed by default so the
  * existing generator surface is unaffected until a user opens it.
  *
- * `onPinChange` is not wired to any control yet -- Slice 10 adds the pin
- * controls that call it. Accepting it now keeps this component's props
- * stable across both slices (design decision 6).
+ * Overriding a role's colour pins it (it stops following the brand); the
+ * accent harmony picker appears only once the user touches accent's own
+ * control, and the rule it picks is never persisted (design requirement) --
+ * it only affects the ramp actually shown while accent stays unpinned.
  */
-export function DerivedRampsCard({ brandHex, pins }: DerivedRampsCardProps) {
+export function DerivedRampsCard({
+  brandHex,
+  pins,
+  onPinChange,
+}: DerivedRampsCardProps) {
   const t = useTranslations();
   const [expanded, setExpanded] = useState(false);
-  const rampSet = buildRampSet(brandHex, pins);
+  const [accentTouched, setAccentTouched] = useState(false);
+  const [harmonyRule, setHarmonyRule] = useState<HarmonyRule>(
+    DEFAULT_HARMONY_RULE
+  );
+
+  const rampSet = useMemo(() => buildRampSet(brandHex, pins), [brandHex, pins]);
+
+  const accentRamp: Ramp = useMemo(() => {
+    if (pins.accent) return rampSet.accent;
+    const baseHex = deriveAccentBase(brandHex, harmonyRule);
+    return { ...rampSet.accent, baseHex, shades: generateColorPalette(baseHex) };
+  }, [rampSet.accent, pins.accent, brandHex, harmonyRule]);
 
   return (
     <Card>
@@ -58,23 +86,35 @@ export function DerivedRampsCard({ brandHex, pins }: DerivedRampsCardProps) {
       {expanded ? (
         <CardContent className="space-y-6">
           {DERIVED_ROLES.map((role) => {
-            const ramp = rampSet[role];
+            const ramp = role === "accent" ? accentRamp : rampSet[role];
             const roleLabel = t(`ramps.role.${role}`);
             const palette = createColorPalette(
               role,
               roleLabel,
               SHADE_STOPS.map((value) => ({ value, hex: ramp.shades[value] }))
             );
-            const originKey = ramp.origin === "pinned" ? "pinned" : "derived";
 
             return (
-              <div key={role} className="space-y-2">
-                <div className="flex items-center gap-2">
+              <div key={role} className="space-y-2" data-testid={`ramp-${role}`}>
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="text-sm font-medium">{roleLabel}</span>
-                  <Badge variant="outline">
-                    {t(`ramps.origin.${originKey}`)}
-                  </Badge>
+                  <RampPinControl
+                    role={role}
+                    roleLabel={roleLabel}
+                    ramp={ramp}
+                    onPin={(hex) => onPinChange(role, hex)}
+                    onReset={() => onPinChange(role, null)}
+                    onTouch={
+                      role === "accent" ? () => setAccentTouched(true) : undefined
+                    }
+                  />
                 </div>
+                {role === "accent" && accentTouched ? (
+                  <AccentHarmonyPicker
+                    value={harmonyRule}
+                    onChange={setHarmonyRule}
+                  />
+                ) : null}
                 <ColorPaletteComponent palette={palette} />
               </div>
             );

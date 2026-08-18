@@ -105,6 +105,19 @@
     "origin": {
       "derived": "Derived from brand",
       "pinned": "Pinned"
+    },
+    "pin": {
+      "override": "Override",
+      "reset": "Reset to derived",
+      "apply": "Apply",
+      "cancel": "Cancel",
+      "inputLabel": "Custom color for"
+    },
+    "harmony": {
+      "label": "Accent harmony",
+      "complementary": "Complementary",
+      "analogous": "Analogous",
+      "triadic": "Triadic"
     }
   },
   "palette": {
