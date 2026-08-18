@@ -1,4 +1,6 @@
 import type { PaletteShades, ShadeStop } from "@/types/colors";
+import type { RoleKey, RoleMap } from "@/utils/exporters/shadcn";
+import { circularDelta, hsluvHue } from "@/utils/ramps/hsluv-hue";
 import { getContrastRatio } from "./color-utils";
 
 /** WCAG 2.x pass/fail at each of the three defined thresholds. */
@@ -94,4 +96,50 @@ export function buildContrastReport(
   }));
 
   return { label, pairings };
+}
+
+export type RolePairSeverity = "ok" | "degraded" | "warning";
+
+export interface RolePairAudit {
+  pair: [RoleKey, RoleKey];
+  deltaH: number;
+  severity: RolePairSeverity;
+}
+
+/**
+ * Role pairs worth auditing for hue collision. `primary`/`destructive` is the
+ * named high-risk pair (a red-family brand can otherwise read as "the brand,
+ * but for delete buttons too") — see the shadcn-export capability's
+ * destructive hue-separation ladder, which this audit double-checks against.
+ */
+const AUDITED_ROLE_PAIRS: ReadonlyArray<[RoleKey, RoleKey]> = [
+  ["primary", "destructive"],
+];
+
+/** Same thresholds the destructive ladder itself uses (decision 2). */
+const HUE_OK_THRESHOLD = 60;
+const HUE_DEGRADED_THRESHOLD = 30;
+
+/**
+ * Flags semantic role pairs whose hues are too close to reliably tell apart.
+ * Diagnostic only, like `buildContrastReport` — it never mutates `roles`.
+ */
+export function auditRolePairs(
+  roles: RoleMap,
+  mode: "light" | "dark" = "light"
+): RolePairAudit[] {
+  return AUDITED_ROLE_PAIRS.map(([roleA, roleB]) => {
+    const deltaH = circularDelta(
+      hsluvHue(roles[roleA][mode]),
+      hsluvHue(roles[roleB][mode])
+    );
+    const severity: RolePairSeverity =
+      deltaH >= HUE_OK_THRESHOLD
+        ? "ok"
+        : deltaH >= HUE_DEGRADED_THRESHOLD
+          ? "degraded"
+          : "warning";
+
+    return { pair: [roleA, roleB], deltaH, severity };
+  });
 }

@@ -14,6 +14,12 @@ import {
   exportCssVariablesUsage,
 } from "./exporters/css-variables";
 import { exportChakraV3 } from "./exporters/chakra-v3";
+import {
+  deriveRolesFromSingleRamp,
+  renderShadcnTheme,
+  ROLE_KEYS,
+  type RoleMap,
+} from "./exporters/shadcn";
 import { exportTailwindV3 } from "./exporters/tailwind-v3";
 import {
   exportTailwindV4Theme,
@@ -26,7 +32,8 @@ export type ExportKind =
   | "chakra3"
   | "chakra2"
   | "cssvars"
-  | "codes";
+  | "codes"
+  | "shadcn";
 export type ColorFormat = "hex" | "rgb" | "hsl" | "oklch";
 
 /** Renders a hex colour in the format the user picked. */
@@ -79,7 +86,7 @@ type FrameworkExporter = (brandKey: string, shades: PaletteShades) => string;
  * example to the variable block.
  */
 const FRAMEWORK_EXPORTERS: Record<
-  Exclude<ExportKind, "codes">,
+  Exclude<ExportKind, "codes" | "shadcn">,
   FrameworkExporter
 > = {
   tw4: (brandKey, shades) =>
@@ -95,6 +102,25 @@ const FRAMEWORK_EXPORTERS: Record<
   chakra2: exportChakraV2,
 };
 
+/**
+ * Formats every role's light/dark hex through `formatHex`.
+ *
+ * `deriveRolesFromSingleRamp` needs real hex to run the destructive ladder
+ * and contrast checks, so — unlike the other exporters — shadcn derives its
+ * roles first and formats the *result*, rather than formatting the input
+ * shades before deriving from them.
+ */
+function formatRoleMap(roles: RoleMap, format: ColorFormat): RoleMap {
+  const formatted = {} as RoleMap;
+  for (const key of ROLE_KEYS) {
+    formatted[key] = {
+      light: formatHex(roles[key].light, format),
+      dark: formatHex(roles[key].dark, format),
+    };
+  }
+  return formatted;
+}
+
 export function buildExportCode(
   kind: ExportKind,
   shades: PaletteShades,
@@ -102,6 +128,11 @@ export function buildExportCode(
   format: ColorFormat
 ): string {
   if (kind === "codes") return exportJustTheCodes(shades, format);
+
+  if (kind === "shadcn") {
+    const roles = deriveRolesFromSingleRamp(shades);
+    return renderShadcnTheme(formatRoleMap(roles, format));
+  }
 
   const exporter = FRAMEWORK_EXPORTERS[kind];
   if (!exporter) return "";

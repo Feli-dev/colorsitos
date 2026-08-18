@@ -69,7 +69,13 @@
   "contrastReport": {
     "title": "Informe de contraste",
     "pass": "Cumple AA",
-    "fail": "No cumple AA"
+    "fail": "No cumple AA",
+    "rolePairs": {
+      "title": "Auditoría de colisión de roles",
+      "ok": "OK",
+      "degraded": "Degradado",
+      "warning": "Aviso"
+    }
   },
   "export": {
     "title": "Exportar códigos de color",
