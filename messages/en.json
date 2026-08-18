@@ -83,7 +83,15 @@
     "brandKey": "Brand key name",
     "copy": "Copy",
     "justCodes": "Just the codes",
-    "copyCodes": "Copy codes"
+    "copyCodes": "Copy codes",
+    "ramp": {
+      "label": "Ramp"
+    },
+    "shape": {
+      "label": "Shape",
+      "single": "Single ramp",
+      "system": "Whole system"
+    }
   },
   "saved": {
     "title": "Saved palettes",
@@ -96,6 +104,7 @@
     "expand": "Show",
     "collapse": "Hide",
     "role": {
+      "brand": "Brand",
       "neutral": "Neutral",
       "accent": "Accent",
       "success": "Success",

@@ -232,7 +232,7 @@ export function PaletteGenerator() {
                     <DialogHeader>
                       <DialogTitle>{t("export.title")}</DialogTitle>
                     </DialogHeader>
-                    <ExportersPanel palette={palette} />
+                    <ExportersPanel palette={palette} pins={pins} />
                   </DialogContent>
                 </Dialog>
                 <div className="flex items-center gap-2">
