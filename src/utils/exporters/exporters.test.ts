@@ -5,10 +5,17 @@ import { exportChakraV3 } from "./chakra-v3";
 import type { PaletteShades } from "@/types/colors";
 import { exportTailwindV3 } from "./tailwind-v3";
 import {
+  cssVariablesFragment,
   exportCssVariables,
   exportCssVariablesUsage,
+  wrapCssVariables,
 } from "./css-variables";
-import { exportTailwindV4Theme, exportTailwindV4Usage } from "./tailwind-v4";
+import {
+  exportTailwindV4Theme,
+  exportTailwindV4Usage,
+  tailwindV4Fragment,
+  wrapTailwindV4Theme,
+} from "./tailwind-v4";
 
 const SHADES: PaletteShades = {
   50: "#EBF8FF",
@@ -180,6 +187,66 @@ describe("exportChakraV2", () => {
   it("exports an extendTheme default", () => {
     expect(output).toContain("import { extendTheme } from '@chakra-ui/react';");
     expect(output.trimEnd()).toMatch(/export default theme;$/);
+  });
+});
+
+describe("tailwindV4Fragment / wrapTailwindV4Theme (Slice 11 fragment extraction)", () => {
+  it("wrap(fragment(...)) reproduces exportTailwindV4Theme byte-for-byte", () => {
+    // Approval test: this is the exact behavior exportTailwindV4Theme already
+    // has (see the "exportTailwindV4Theme" describe block above) -- the
+    // refactor must not change a single byte of it.
+    expect(wrapTailwindV4Theme(tailwindV4Fragment("brand", SHADES))).toBe(
+      exportTailwindV4Theme("brand", SHADES)
+    );
+  });
+
+  it("the fragment is only the variable lines, with no @theme wrapper", () => {
+    const fragment = tailwindV4Fragment("brand", SHADES);
+
+    expect(fragment).not.toContain("@theme");
+    expect(fragment).not.toContain("@import");
+    expect(fragment).toContain("--color-brand-500: #3182CE;");
+  });
+
+  it("joining two fragments inside one wrap produces a single @theme block with both keys", () => {
+    const merged = wrapTailwindV4Theme(
+      [
+        tailwindV4Fragment("brand", SHADES),
+        tailwindV4Fragment("neutral", SHADES),
+      ].join("\n\n")
+    );
+
+    expect(merged.match(/@theme \{/g)).toHaveLength(1);
+    expect(merged).toContain("--color-brand-500: #3182CE;");
+    expect(merged).toContain("--color-neutral-500: #3182CE;");
+  });
+});
+
+describe("cssVariablesFragment / wrapCssVariables (Slice 11 fragment extraction)", () => {
+  it("wrap(fragment(...)) reproduces exportCssVariables byte-for-byte", () => {
+    expect(wrapCssVariables(cssVariablesFragment("brand", SHADES))).toBe(
+      exportCssVariables("brand", SHADES)
+    );
+  });
+
+  it("the fragment is only the variable lines, with no :root wrapper", () => {
+    const fragment = cssVariablesFragment("brand", SHADES);
+
+    expect(fragment).not.toContain(":root");
+    expect(fragment).toContain("--brand-500: #3182CE;");
+  });
+
+  it("joining two fragments inside one wrap produces a single :root block with both keys", () => {
+    const merged = wrapCssVariables(
+      [
+        cssVariablesFragment("brand", SHADES),
+        cssVariablesFragment("accent", SHADES),
+      ].join("\n\n")
+    );
+
+    expect(merged.match(/:root \{/g)).toHaveLength(1);
+    expect(merged).toContain("--brand-500: #3182CE;");
+    expect(merged).toContain("--accent-500: #3182CE;");
   });
 });
 
