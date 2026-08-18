@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
+import { deriveAccentBase } from "@/utils/ramps/derive-accent";
 import { buildRampSet } from "@/utils/ramps/build-ramp-set";
 import { DerivedRampsCard } from "./derived-ramps-card";
 
@@ -72,6 +73,104 @@ describe("DerivedRampsCard", () => {
     expect(screen.getByText("ramps.origin.pinned")).toBeInTheDocument();
     expect(
       screen.getByLabelText(new RegExp(`500 ${pinnedHex}$`, "i"))
+    ).toBeInTheDocument();
+  });
+});
+
+describe("DerivedRampsCard pinning", () => {
+  it("offers an override control for every expanded role", async () => {
+    render(<DerivedRampsCard brandHex={BRAND_A} pins={{}} onPinChange={noop} />);
+    await userEvent.click(screen.getByText("ramps.expand"));
+
+    expect(screen.getAllByText("ramps.pin.override")).toHaveLength(5);
+  });
+
+  it("overriding a role's hex calls onPinChange with that role and the normalized hex", async () => {
+    const onPinChange = vi.fn();
+    render(
+      <DerivedRampsCard brandHex={BRAND_A} pins={{}} onPinChange={onPinChange} />
+    );
+    await userEvent.click(screen.getByText("ramps.expand"));
+
+    const neutralSection = screen.getByTestId("ramp-neutral");
+    await userEvent.click(within(neutralSection).getByText("ramps.pin.override"));
+    const field = within(neutralSection).getByRole("textbox");
+    await userEvent.clear(field);
+    await userEvent.type(field, "AABBCC");
+    await userEvent.click(within(neutralSection).getByText("ramps.pin.apply"));
+
+    expect(onPinChange).toHaveBeenCalledWith("neutral", "#AABBCC");
+  });
+
+  it("resetting a pinned role calls onPinChange with null", async () => {
+    const onPinChange = vi.fn();
+    render(
+      <DerivedRampsCard
+        brandHex={BRAND_A}
+        pins={{ danger: "#654321" }}
+        onPinChange={onPinChange}
+      />
+    );
+    await userEvent.click(screen.getByText("ramps.expand"));
+
+    const dangerSection = screen.getByTestId("ramp-danger");
+    await userEvent.click(within(dangerSection).getByText("ramps.pin.reset"));
+
+    expect(onPinChange).toHaveBeenCalledWith("danger", null);
+  });
+});
+
+describe("DerivedRampsCard accent harmony", () => {
+  it("hides the harmony picker until accent is touched", async () => {
+    render(<DerivedRampsCard brandHex={BRAND_A} pins={{}} onPinChange={noop} />);
+    await userEvent.click(screen.getByText("ramps.expand"));
+
+    expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
+
+    const accentSection = screen.getByTestId("ramp-accent");
+    await userEvent.click(within(accentSection).getByText("ramps.pin.override"));
+
+    expect(screen.getByRole("combobox")).toBeInTheDocument();
+  });
+
+  it("updates the displayed unpinned accent hex when a harmony rule is picked", async () => {
+    render(<DerivedRampsCard brandHex={BRAND_A} pins={{}} onPinChange={noop} />);
+    await userEvent.click(screen.getByText("ramps.expand"));
+
+    const accentSection = screen.getByTestId("ramp-accent");
+    await userEvent.click(within(accentSection).getByText("ramps.pin.override"));
+
+    await userEvent.click(screen.getByRole("combobox"));
+    await userEvent.click(
+      await screen.findByRole("option", { name: "ramps.harmony.analogous" })
+    );
+
+    const analogousHex = deriveAccentBase(BRAND_A, "analogous");
+    expect(
+      within(accentSection).getByLabelText(new RegExp(`500 ${analogousHex}$`, "i"))
+    ).toBeInTheDocument();
+  });
+
+  it("ignores the harmony rule once accent is pinned", async () => {
+    const pinnedHex = "#00FF00";
+    render(
+      <DerivedRampsCard
+        brandHex={BRAND_A}
+        pins={{ accent: pinnedHex }}
+        onPinChange={noop}
+      />
+    );
+    await userEvent.click(screen.getByText("ramps.expand"));
+
+    const accentSection = screen.getByTestId("ramp-accent");
+    await userEvent.click(within(accentSection).getByText("ramps.pin.override"));
+    await userEvent.click(screen.getByRole("combobox"));
+    await userEvent.click(
+      await screen.findByRole("option", { name: "ramps.harmony.triadic" })
+    );
+
+    expect(
+      within(accentSection).getByLabelText(new RegExp(`500 ${pinnedHex}$`, "i"))
     ).toBeInTheDocument();
   });
 });
