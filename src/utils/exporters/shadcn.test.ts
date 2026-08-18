@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 
 import type { PaletteShades } from "@/types/colors";
-import { deriveDestructive } from "@/utils/ramps/destructive-ladder";
+import { deriveSemanticRamp } from "@/utils/ramps/derive-semantic";
+import { hsluvHue } from "@/utils/ramps/hsluv-hue";
+import { ANCHOR_HUE } from "@/utils/ramps/semantic-naming";
 import {
   deriveRolesFromSingleRamp,
   renderShadcnTheme,
@@ -46,12 +48,18 @@ describe("deriveRolesFromSingleRamp", () => {
     }
   });
 
-  it("derives destructive via the hue-separation ladder from slice 3, not a fixed hex", () => {
+  it("derives destructive via deriveSemanticRamp('danger', ...), not a fixed hex", () => {
     const roles = deriveRolesFromSingleRamp(BLUE_SHADES);
-    const expected = deriveDestructive(BLUE_SHADES[500]).hex;
+    const expected = deriveSemanticRamp("danger", BLUE_SHADES[500]).fill;
 
     expect(roles.destructive.light).toBe(expected);
     expect(roles.destructive.dark).toBe(expected);
+  });
+
+  it("destructive's hue is invariant (decision B') regardless of which brand it derived from", () => {
+    const roles = deriveRolesFromSingleRamp(BLUE_SHADES);
+
+    expect(Math.abs(hsluvHue(roles.destructive.light) - ANCHOR_HUE.danger)).toBeLessThan(1);
   });
 
   it("derives a different destructive hue for a different brand, proving it is not hardcoded", () => {

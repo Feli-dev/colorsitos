@@ -1,6 +1,6 @@
 import type { PaletteShades } from "@/types/colors";
 import { isLightColor } from "@/utils/color-utils";
-import { deriveDestructive } from "@/utils/ramps/destructive-ladder";
+import { deriveSemanticRamp } from "@/utils/ramps/derive-semantic";
 
 /**
  * shadcn/ui exporter — decision D's two seams.
@@ -91,7 +91,7 @@ function foregroundFor(hex: string, shades: PaletteShades): string {
  * `renderShadcnTheme` (decision D).
  */
 export function deriveRolesFromSingleRamp(shades: PaletteShades): RoleMap {
-  const destructiveHex = deriveDestructive(shades[500]).hex;
+  const destructiveHex = deriveSemanticRamp("danger", shades[500]).fill;
 
   const primaryLight = shades[600];
   const primaryDark = shades[400];
