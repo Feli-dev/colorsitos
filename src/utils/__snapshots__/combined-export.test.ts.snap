@@ -1,0 +1,549 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`buildCombinedExportCode -- snapshots (new file, never the original 24) > kind chakra2 renders a stable combined document 1`] = `
+"import { extendTheme } from '@chakra-ui/react';
+
+const theme = extendTheme({
+  colors: {
+    brand: {
+      50: '#AAAAA0',
+      100: '#AAAAA1',
+      200: '#AAAAA2',
+      300: '#AAAAA3',
+      400: '#AAAAA4',
+      500: '#AAAAA5',
+      600: '#AAAAA6',
+      700: '#AAAAA7',
+      800: '#AAAAA8',
+      900: '#AAAAA9',
+    },
+    neutral: {
+      50: '#BBBBB0',
+      100: '#BBBBB1',
+      200: '#BBBBB2',
+      300: '#BBBBB3',
+      400: '#BBBBB4',
+      500: '#BBBBB5',
+      600: '#BBBBB6',
+      700: '#BBBBB7',
+      800: '#BBBBB8',
+      900: '#BBBBB9',
+    },
+    accent: {
+      50: '#CCCCC0',
+      100: '#CCCCC1',
+      200: '#CCCCC2',
+      300: '#CCCCC3',
+      400: '#CCCCC4',
+      500: '#CCCCC5',
+      600: '#CCCCC6',
+      700: '#CCCCC7',
+      800: '#CCCCC8',
+      900: '#CCCCC9',
+    },
+    success: {
+      50: '#DDDDD0',
+      100: '#DDDDD1',
+      200: '#DDDDD2',
+      300: '#DDDDD3',
+      400: '#DDDDD4',
+      500: '#DDDDD5',
+      600: '#DDDDD6',
+      700: '#DDDDD7',
+      800: '#DDDDD8',
+      900: '#DDDDD9',
+    },
+    warning: {
+      50: '#EEEEE0',
+      100: '#EEEEE1',
+      200: '#EEEEE2',
+      300: '#EEEEE3',
+      400: '#EEEEE4',
+      500: '#EEEEE5',
+      600: '#EEEEE6',
+      700: '#EEEEE7',
+      800: '#EEEEE8',
+      900: '#EEEEE9',
+    },
+    danger: {
+      50: '#FFFFF0',
+      100: '#FFFFF1',
+      200: '#FFFFF2',
+      300: '#FFFFF3',
+      400: '#FFFFF4',
+      500: '#FFFFF5',
+      600: '#FFFFF6',
+      700: '#FFFFF7',
+      800: '#FFFFF8',
+      900: '#FFFFF9',
+    }
+  }
+});
+
+export default theme;"
+`;
+
+exports[`buildCombinedExportCode -- snapshots (new file, never the original 24) > kind chakra3 renders a stable combined document 1`] = `
+"import { defineStyleConfig, extendTheme } from '@chakra-ui/react';
+
+const theme = extendTheme({
+  tokens: {
+    colors: {
+      brand: {
+      50: '#AAAAA0',
+      100: '#AAAAA1',
+      200: '#AAAAA2',
+      300: '#AAAAA3',
+      400: '#AAAAA4',
+      500: '#AAAAA5',
+      600: '#AAAAA6',
+      700: '#AAAAA7',
+      800: '#AAAAA8',
+      900: '#AAAAA9',
+      950: '#AAAAAA',
+      },
+      neutral: {
+      50: '#BBBBB0',
+      100: '#BBBBB1',
+      200: '#BBBBB2',
+      300: '#BBBBB3',
+      400: '#BBBBB4',
+      500: '#BBBBB5',
+      600: '#BBBBB6',
+      700: '#BBBBB7',
+      800: '#BBBBB8',
+      900: '#BBBBB9',
+      950: '#BBBBBA',
+      },
+      accent: {
+      50: '#CCCCC0',
+      100: '#CCCCC1',
+      200: '#CCCCC2',
+      300: '#CCCCC3',
+      400: '#CCCCC4',
+      500: '#CCCCC5',
+      600: '#CCCCC6',
+      700: '#CCCCC7',
+      800: '#CCCCC8',
+      900: '#CCCCC9',
+      950: '#CCCCCA',
+      },
+      success: {
+      50: '#DDDDD0',
+      100: '#DDDDD1',
+      200: '#DDDDD2',
+      300: '#DDDDD3',
+      400: '#DDDDD4',
+      500: '#DDDDD5',
+      600: '#DDDDD6',
+      700: '#DDDDD7',
+      800: '#DDDDD8',
+      900: '#DDDDD9',
+      950: '#DDDDDA',
+      },
+      warning: {
+      50: '#EEEEE0',
+      100: '#EEEEE1',
+      200: '#EEEEE2',
+      300: '#EEEEE3',
+      400: '#EEEEE4',
+      500: '#EEEEE5',
+      600: '#EEEEE6',
+      700: '#EEEEE7',
+      800: '#EEEEE8',
+      900: '#EEEEE9',
+      950: '#EEEEEA',
+      },
+      danger: {
+      50: '#FFFFF0',
+      100: '#FFFFF1',
+      200: '#FFFFF2',
+      300: '#FFFFF3',
+      400: '#FFFFF4',
+      500: '#FFFFF5',
+      600: '#FFFFF6',
+      700: '#FFFFF7',
+      800: '#FFFFF8',
+      900: '#FFFFF9',
+      950: '#FFFFFA',
+      }
+    }
+  }
+});
+
+export default theme;"
+`;
+
+exports[`buildCombinedExportCode -- snapshots (new file, never the original 24) > kind codes renders a stable combined document 1`] = `
+"brand
+#AAAAA0
+#AAAAA1
+#AAAAA2
+#AAAAA3
+#AAAAA4
+#AAAAA5
+#AAAAA6
+#AAAAA7
+#AAAAA8
+#AAAAA9
+#AAAAAA
+
+neutral
+#BBBBB0
+#BBBBB1
+#BBBBB2
+#BBBBB3
+#BBBBB4
+#BBBBB5
+#BBBBB6
+#BBBBB7
+#BBBBB8
+#BBBBB9
+#BBBBBA
+
+accent
+#CCCCC0
+#CCCCC1
+#CCCCC2
+#CCCCC3
+#CCCCC4
+#CCCCC5
+#CCCCC6
+#CCCCC7
+#CCCCC8
+#CCCCC9
+#CCCCCA
+
+success
+#DDDDD0
+#DDDDD1
+#DDDDD2
+#DDDDD3
+#DDDDD4
+#DDDDD5
+#DDDDD6
+#DDDDD7
+#DDDDD8
+#DDDDD9
+#DDDDDA
+
+warning
+#EEEEE0
+#EEEEE1
+#EEEEE2
+#EEEEE3
+#EEEEE4
+#EEEEE5
+#EEEEE6
+#EEEEE7
+#EEEEE8
+#EEEEE9
+#EEEEEA
+
+danger
+#FFFFF0
+#FFFFF1
+#FFFFF2
+#FFFFF3
+#FFFFF4
+#FFFFF5
+#FFFFF6
+#FFFFF7
+#FFFFF8
+#FFFFF9
+#FFFFFA"
+`;
+
+exports[`buildCombinedExportCode -- snapshots (new file, never the original 24) > kind cssvars renders a stable combined document 1`] = `
+"/* globals.css */
+:root {
+  --brand-50: #AAAAA0;
+  --brand-100: #AAAAA1;
+  --brand-200: #AAAAA2;
+  --brand-300: #AAAAA3;
+  --brand-400: #AAAAA4;
+  --brand-500: #AAAAA5;
+  --brand-600: #AAAAA6;
+  --brand-700: #AAAAA7;
+  --brand-800: #AAAAA8;
+  --brand-900: #AAAAA9;
+  --brand-950: #AAAAAA;
+
+  --neutral-50: #BBBBB0;
+  --neutral-100: #BBBBB1;
+  --neutral-200: #BBBBB2;
+  --neutral-300: #BBBBB3;
+  --neutral-400: #BBBBB4;
+  --neutral-500: #BBBBB5;
+  --neutral-600: #BBBBB6;
+  --neutral-700: #BBBBB7;
+  --neutral-800: #BBBBB8;
+  --neutral-900: #BBBBB9;
+  --neutral-950: #BBBBBA;
+
+  --accent-50: #CCCCC0;
+  --accent-100: #CCCCC1;
+  --accent-200: #CCCCC2;
+  --accent-300: #CCCCC3;
+  --accent-400: #CCCCC4;
+  --accent-500: #CCCCC5;
+  --accent-600: #CCCCC6;
+  --accent-700: #CCCCC7;
+  --accent-800: #CCCCC8;
+  --accent-900: #CCCCC9;
+  --accent-950: #CCCCCA;
+
+  --success-50: #DDDDD0;
+  --success-100: #DDDDD1;
+  --success-200: #DDDDD2;
+  --success-300: #DDDDD3;
+  --success-400: #DDDDD4;
+  --success-500: #DDDDD5;
+  --success-600: #DDDDD6;
+  --success-700: #DDDDD7;
+  --success-800: #DDDDD8;
+  --success-900: #DDDDD9;
+  --success-950: #DDDDDA;
+
+  --warning-50: #EEEEE0;
+  --warning-100: #EEEEE1;
+  --warning-200: #EEEEE2;
+  --warning-300: #EEEEE3;
+  --warning-400: #EEEEE4;
+  --warning-500: #EEEEE5;
+  --warning-600: #EEEEE6;
+  --warning-700: #EEEEE7;
+  --warning-800: #EEEEE8;
+  --warning-900: #EEEEE9;
+  --warning-950: #EEEEEA;
+
+  --danger-50: #FFFFF0;
+  --danger-100: #FFFFF1;
+  --danger-200: #FFFFF2;
+  --danger-300: #FFFFF3;
+  --danger-400: #FFFFF4;
+  --danger-500: #FFFFF5;
+  --danger-600: #FFFFF6;
+  --danger-700: #FFFFF7;
+  --danger-800: #FFFFF8;
+  --danger-900: #FFFFF9;
+  --danger-950: #FFFFFA;
+}"
+`;
+
+exports[`buildCombinedExportCode -- snapshots (new file, never the original 24) > kind shadcn renders a stable combined document 1`] = `
+"/* globals.css */
+:root {
+  --background: #BBBBB0;
+  --foreground: #BBBBBA;
+  --card: #BBBBB1;
+  --card-foreground: #BBBBBA;
+  --popover: #BBBBB1;
+  --popover-foreground: #BBBBBA;
+  --primary: #AAAAA6;
+  --primary-foreground: #AAAAAA;
+  --secondary: #AAAAA2;
+  --secondary-foreground: #AAAAA9;
+  --muted: #BBBBB1;
+  --muted-foreground: #BBBBB6;
+  --accent: #CCCCC2;
+  --accent-foreground: #CCCCC9;
+  --destructive: #FFFFF5;
+  --border: #BBBBB2;
+  --input: #BBBBB2;
+  --ring: #AAAAA6;
+}
+
+.dark {
+  --background: #BBBBBA;
+  --foreground: #BBBBB0;
+  --card: #BBBBB9;
+  --card-foreground: #BBBBB0;
+  --popover: #BBBBB9;
+  --popover-foreground: #BBBBB0;
+  --primary: #AAAAA4;
+  --primary-foreground: #AAAAAA;
+  --secondary: #AAAAA7;
+  --secondary-foreground: #AAAAA1;
+  --muted: #BBBBB8;
+  --muted-foreground: #BBBBB4;
+  --accent: #CCCCC7;
+  --accent-foreground: #CCCCC1;
+  --destructive: #FFFFF5;
+  --border: #BBBBB8;
+  --input: #BBBBB8;
+  --ring: #AAAAA4;
+}"
+`;
+
+exports[`buildCombinedExportCode -- snapshots (new file, never the original 24) > kind tw3 renders a stable combined document 1`] = `
+"// tailwind.config.ts
+import type { Config } from 'tailwindcss';
+
+export default {
+  content: ['src/**/*.{ts,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+        50: '#AAAAA0',
+        100: '#AAAAA1',
+        200: '#AAAAA2',
+        300: '#AAAAA3',
+        400: '#AAAAA4',
+        500: '#AAAAA5',
+        600: '#AAAAA6',
+        700: '#AAAAA7',
+        800: '#AAAAA8',
+        900: '#AAAAA9',
+        950: '#AAAAAA',
+        },
+        neutral: {
+        50: '#BBBBB0',
+        100: '#BBBBB1',
+        200: '#BBBBB2',
+        300: '#BBBBB3',
+        400: '#BBBBB4',
+        500: '#BBBBB5',
+        600: '#BBBBB6',
+        700: '#BBBBB7',
+        800: '#BBBBB8',
+        900: '#BBBBB9',
+        950: '#BBBBBA',
+        },
+        accent: {
+        50: '#CCCCC0',
+        100: '#CCCCC1',
+        200: '#CCCCC2',
+        300: '#CCCCC3',
+        400: '#CCCCC4',
+        500: '#CCCCC5',
+        600: '#CCCCC6',
+        700: '#CCCCC7',
+        800: '#CCCCC8',
+        900: '#CCCCC9',
+        950: '#CCCCCA',
+        },
+        success: {
+        50: '#DDDDD0',
+        100: '#DDDDD1',
+        200: '#DDDDD2',
+        300: '#DDDDD3',
+        400: '#DDDDD4',
+        500: '#DDDDD5',
+        600: '#DDDDD6',
+        700: '#DDDDD7',
+        800: '#DDDDD8',
+        900: '#DDDDD9',
+        950: '#DDDDDA',
+        },
+        warning: {
+        50: '#EEEEE0',
+        100: '#EEEEE1',
+        200: '#EEEEE2',
+        300: '#EEEEE3',
+        400: '#EEEEE4',
+        500: '#EEEEE5',
+        600: '#EEEEE6',
+        700: '#EEEEE7',
+        800: '#EEEEE8',
+        900: '#EEEEE9',
+        950: '#EEEEEA',
+        },
+        danger: {
+        50: '#FFFFF0',
+        100: '#FFFFF1',
+        200: '#FFFFF2',
+        300: '#FFFFF3',
+        400: '#FFFFF4',
+        500: '#FFFFF5',
+        600: '#FFFFF6',
+        700: '#FFFFF7',
+        800: '#FFFFF8',
+        900: '#FFFFF9',
+        950: '#FFFFFA',
+        }
+      }
+    }
+  }
+} satisfies Config;"
+`;
+
+exports[`buildCombinedExportCode -- snapshots (new file, never the original 24) > kind tw4 renders a stable combined document 1`] = `
+"/* globals.css */
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: #AAAAA0;
+  --color-brand-100: #AAAAA1;
+  --color-brand-200: #AAAAA2;
+  --color-brand-300: #AAAAA3;
+  --color-brand-400: #AAAAA4;
+  --color-brand-500: #AAAAA5;
+  --color-brand-600: #AAAAA6;
+  --color-brand-700: #AAAAA7;
+  --color-brand-800: #AAAAA8;
+  --color-brand-900: #AAAAA9;
+  --color-brand-950: #AAAAAA;
+
+  --color-neutral-50: #BBBBB0;
+  --color-neutral-100: #BBBBB1;
+  --color-neutral-200: #BBBBB2;
+  --color-neutral-300: #BBBBB3;
+  --color-neutral-400: #BBBBB4;
+  --color-neutral-500: #BBBBB5;
+  --color-neutral-600: #BBBBB6;
+  --color-neutral-700: #BBBBB7;
+  --color-neutral-800: #BBBBB8;
+  --color-neutral-900: #BBBBB9;
+  --color-neutral-950: #BBBBBA;
+
+  --color-accent-50: #CCCCC0;
+  --color-accent-100: #CCCCC1;
+  --color-accent-200: #CCCCC2;
+  --color-accent-300: #CCCCC3;
+  --color-accent-400: #CCCCC4;
+  --color-accent-500: #CCCCC5;
+  --color-accent-600: #CCCCC6;
+  --color-accent-700: #CCCCC7;
+  --color-accent-800: #CCCCC8;
+  --color-accent-900: #CCCCC9;
+  --color-accent-950: #CCCCCA;
+
+  --color-success-50: #DDDDD0;
+  --color-success-100: #DDDDD1;
+  --color-success-200: #DDDDD2;
+  --color-success-300: #DDDDD3;
+  --color-success-400: #DDDDD4;
+  --color-success-500: #DDDDD5;
+  --color-success-600: #DDDDD6;
+  --color-success-700: #DDDDD7;
+  --color-success-800: #DDDDD8;
+  --color-success-900: #DDDDD9;
+  --color-success-950: #DDDDDA;
+
+  --color-warning-50: #EEEEE0;
+  --color-warning-100: #EEEEE1;
+  --color-warning-200: #EEEEE2;
+  --color-warning-300: #EEEEE3;
+  --color-warning-400: #EEEEE4;
+  --color-warning-500: #EEEEE5;
+  --color-warning-600: #EEEEE6;
+  --color-warning-700: #EEEEE7;
+  --color-warning-800: #EEEEE8;
+  --color-warning-900: #EEEEE9;
+  --color-warning-950: #EEEEEA;
+
+  --color-danger-50: #FFFFF0;
+  --color-danger-100: #FFFFF1;
+  --color-danger-200: #FFFFF2;
+  --color-danger-300: #FFFFF3;
+  --color-danger-400: #FFFFF4;
+  --color-danger-500: #FFFFF5;
+  --color-danger-600: #FFFFF6;
+  --color-danger-700: #FFFFF7;
+  --color-danger-800: #FFFFF8;
+  --color-danger-900: #FFFFF9;
+  --color-danger-950: #FFFFFA;
+}"
+`;
