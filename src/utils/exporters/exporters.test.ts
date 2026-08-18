@@ -1,9 +1,21 @@
 import { describe, expect, it } from "vitest";
 
-import { exportChakraV2 } from "./chakra-v2";
-import { exportChakraV3 } from "./chakra-v3";
+import {
+  chakraV2Fragment,
+  exportChakraV2,
+  wrapChakraV2,
+} from "./chakra-v2";
+import {
+  chakraV3Fragment,
+  exportChakraV3,
+  wrapChakraV3,
+} from "./chakra-v3";
 import type { PaletteShades } from "@/types/colors";
-import { exportTailwindV3 } from "./tailwind-v3";
+import {
+  exportTailwindV3,
+  tailwindV3Fragment,
+  wrapTailwindV3,
+} from "./tailwind-v3";
 import {
   cssVariablesFragment,
   exportCssVariables,
@@ -262,5 +274,91 @@ describe("exportChakraV3", () => {
 
   it("keeps the 950 shade that v2 strips", () => {
     expect(output).toContain(`950: '${SHADES[950]}',`);
+  });
+});
+
+describe("tailwindV3Fragment / wrapTailwindV3 (Slice 11 fragment extraction)", () => {
+  it("wrap(fragment(...)) reproduces exportTailwindV3 byte-for-byte", () => {
+    expect(wrapTailwindV3(tailwindV3Fragment("brand", SHADES))).toBe(
+      exportTailwindV3("brand", SHADES)
+    );
+  });
+
+  it("the fragment is a self-contained named group with no trailing comma", () => {
+    const fragment = tailwindV3Fragment("brand", SHADES);
+
+    expect(fragment.trimEnd().endsWith("}")).toBe(true);
+    expect(fragment).not.toContain("satisfies Config");
+    expect(fragment).toContain("brand: {");
+  });
+
+  it("joining two fragments with ',\\n' inside one wrap keeps a single extend.colors object with both keys", () => {
+    const merged = wrapTailwindV3(
+      [
+        tailwindV3Fragment("brand", SHADES),
+        tailwindV3Fragment("neutral", SHADES),
+      ].join(",\n")
+    );
+
+    expect(merged.match(/colors: \{/g)).toHaveLength(1);
+    expect(merged).toContain("brand: {");
+    expect(merged).toContain("neutral: {");
+    // Exactly one comma sits between the two groups, not after the last.
+    expect(merged.trimEnd().endsWith("} satisfies Config;")).toBe(true);
+  });
+});
+
+describe("chakraV2Fragment / wrapChakraV2 (Slice 11 fragment extraction)", () => {
+  it("wrap(fragment(...)) reproduces exportChakraV2 byte-for-byte", () => {
+    expect(wrapChakraV2(chakraV2Fragment("brand", SHADES))).toBe(
+      exportChakraV2("brand", SHADES)
+    );
+  });
+
+  it("the fragment drops 950 just like exportChakraV2 does", () => {
+    const fragment = chakraV2Fragment("brand", SHADES);
+
+    expect(fragment).toContain(`900: '${SHADES[900]}',`);
+    expect(fragment).not.toContain("950:");
+  });
+
+  it("joining two fragments inside one wrap keeps a single colors object with both keys", () => {
+    const merged = wrapChakraV2(
+      [
+        chakraV2Fragment("brand", SHADES),
+        chakraV2Fragment("accent", SHADES),
+      ].join(",\n")
+    );
+
+    expect(merged.match(/colors: \{/g)).toHaveLength(1);
+    expect(merged).toContain("brand: {");
+    expect(merged).toContain("accent: {");
+  });
+});
+
+describe("chakraV3Fragment / wrapChakraV3 (Slice 11 fragment extraction)", () => {
+  it("wrap(fragment(...)) reproduces exportChakraV3 byte-for-byte", () => {
+    expect(wrapChakraV3(chakraV3Fragment("brand", SHADES))).toBe(
+      exportChakraV3("brand", SHADES)
+    );
+  });
+
+  it("the fragment keeps the 950 shade that v2 strips", () => {
+    expect(chakraV3Fragment("brand", SHADES)).toContain(
+      `950: '${SHADES[950]}',`
+    );
+  });
+
+  it("joining two fragments inside one wrap keeps a single tokens.colors object with both keys", () => {
+    const merged = wrapChakraV3(
+      [
+        chakraV3Fragment("brand", SHADES),
+        chakraV3Fragment("danger", SHADES),
+      ].join(",\n")
+    );
+
+    expect(merged.match(/tokens: \{\n {4}colors: \{/g)).toHaveLength(1);
+    expect(merged).toContain("brand: {");
+    expect(merged).toContain("danger: {");
   });
 });
