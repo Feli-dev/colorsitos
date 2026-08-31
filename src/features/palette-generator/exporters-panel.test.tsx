@@ -327,3 +327,30 @@ describe("ExportersPanel shape selector", () => {
     expect(code().textContent).toContain("\n\nneutral\n");
   });
 });
+
+describe("ExportersPanel code block height", () => {
+  /**
+   * jsdom computes no layout, so the real symptom — a card taller than the
+   * viewport — is not observable here. What is observable is the pair that
+   * causes it: a scroll container needs both a height cap and an overflow
+   * rule, and this block had only the second. Asserting the pair is the only
+   * regression guard available short of a browser test.
+   */
+  it("caps the code block's height so it scrolls instead of growing", () => {
+    render(<ExportersPanel palette={palette} />);
+
+    const pre = code().parentElement!;
+
+    expect(pre.tagName).toBe("PRE");
+    expect(pre.className).toContain("max-h-[60vh]");
+    expect(pre.className).toContain("overflow-auto");
+  });
+
+  it("keeps the cap when the whole system is exported", async () => {
+    render(<ExportersPanel palette={palette} />);
+    await chooseShape("export.shape.system");
+
+    await waitFor(() => expect(code().textContent).toMatch(/^brand\n/));
+    expect(code().parentElement!.className).toContain("max-h-[60vh]");
+  });
+});

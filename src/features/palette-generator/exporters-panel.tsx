@@ -265,7 +265,16 @@ export function ExportersPanel({ palette, pins = {} }: ExportersPanelProps) {
               <Copy className="h-4 w-4 animate-in zoom-in-95 fade-in duration-200 ease-out" />
             )}
           </Button>
-          <pre className="rounded-md border bg-card p-3 sm:p-4 pr-12 overflow-auto text-xs sm:text-sm">
+          {/*
+            `overflow-auto` alone did nothing here: with no max-height the
+            <pre> is free to grow to its content, so the whole-system export
+            (six ramps x eleven stops) stretched the card past the viewport
+            and left no way to reach the controls above it. Capping the height
+            is what turns the existing overflow into a real inner scroll. The
+            copy button sits on the wrapper, not the <pre>, so it stays put
+            while the code scrolls under it.
+          */}
+          <pre className="rounded-md border bg-card p-3 sm:p-4 pr-12 max-h-[60vh] overflow-auto text-xs sm:text-sm">
             <code>{active === "codes" ? justTheCodes : code}</code>
           </pre>
         </div>
