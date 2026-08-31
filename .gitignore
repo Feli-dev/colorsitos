@@ -17,6 +17,7 @@
 /.atl/*
 !/.atl/screenshot.sh
 !/.atl/generate-favicon.mjs
+/.codegraph/
 
 # next.js
 /.next/
