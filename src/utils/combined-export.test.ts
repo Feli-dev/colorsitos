@@ -123,11 +123,11 @@ describe("buildCombinedExportCode -- chakra3 (single tokens.colors object, keeps
   it("produces exactly one tokens.colors object with all six named groups", () => {
     const output = buildCombinedExportCode("chakra3", RAMPS, "brand", "hex");
 
-    expect(output.match(/tokens: \{\n {4}colors: \{/g)).toHaveLength(1);
+    expect(output.match(/tokens: \{\n {6}colors: \{/g)).toHaveLength(1);
     for (const key of ["brand", "neutral", "accent", "success", "warning", "danger"]) {
       expect(output).toContain(`${key}: {`);
     }
-    expect(output).toContain(`950: '${RAMPS.danger.shades[950]}',`);
+    expect(output).toContain(`950: { value: '${RAMPS.danger.shades[950]}' },`);
   });
 });
 

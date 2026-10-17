@@ -5,30 +5,32 @@ import type { PaletteShades } from "@/types/colors";
  * own) and a wrap (the one `tokens.colors` object every fragment sits
  * inside), so a whole-system export (Feature 3) can join several ramps'
  * groups with `",\n"` and wrap them once. `exportChakraV3` itself is
- * `wrapChakraV3(chakraV3Fragment(...))`, byte-identical to before.
+ * `wrapChakraV3(chakraV3Fragment(...))`, byte-identical to a direct render.
  */
 export function chakraV3Fragment(key: string, shades: PaletteShades): string {
   const entries = Object.entries(shades)
-    .map(([k, v]) => `      ${k}: '${v}',`)
+    .map(([k, v]) => `          ${k}: { value: '${v}' },`)
     .join("\n");
 
-  return `      ${key}: {
+  return `        ${key}: {
 ${entries}
-      }`;
+        }`;
 }
 
 export function wrapChakraV3(fragment: string): string {
-  return `import { defineStyleConfig, extendTheme } from '@chakra-ui/react';
+  return `import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
 
-const theme = extendTheme({
-  tokens: {
-    colors: {
+const config = defineConfig({
+  theme: {
+    tokens: {
+      colors: {
 ${fragment}
+      }
     }
   }
 });
 
-export default theme;`;
+export const system = createSystem(defaultConfig, config);`;
 }
 
 export function exportChakraV3(

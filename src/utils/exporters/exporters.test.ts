@@ -265,15 +265,29 @@ describe("cssVariablesFragment / wrapCssVariables (Slice 11 fragment extraction)
 describe("exportChakraV3", () => {
   const output = exportChakraV3("brand", SHADES);
 
-  it("nests all eleven shades under tokens.colors", () => {
-    expect(output).toContain("tokens: {\n    colors: {\n      brand: {");
+  it("emits the v3 createSystem API, never the removed v2 one", () => {
+    expect(output).toContain(
+      "import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';"
+    );
+    expect(output).toContain("const config = defineConfig({");
+    expect(output).toContain(
+      "export const system = createSystem(defaultConfig, config);"
+    );
+    expect(output).not.toContain("extendTheme");
+    expect(output).not.toContain("defineStyleConfig");
+  });
+
+  it("nests all eleven shades under theme.tokens.colors as { value } tokens", () => {
+    expect(output).toContain(
+      "theme: {\n    tokens: {\n      colors: {\n        brand: {"
+    );
     for (const [stop, hex] of Object.entries(SHADES)) {
-      expect(output).toContain(`${stop}: '${hex}',`);
+      expect(output).toContain(`${stop}: { value: '${hex}' },`);
     }
   });
 
   it("keeps the 950 shade that v2 strips", () => {
-    expect(output).toContain(`950: '${SHADES[950]}',`);
+    expect(output).toContain(`950: { value: '${SHADES[950]}' },`);
   });
 });
 
@@ -345,7 +359,7 @@ describe("chakraV3Fragment / wrapChakraV3 (Slice 11 fragment extraction)", () =>
 
   it("the fragment keeps the 950 shade that v2 strips", () => {
     expect(chakraV3Fragment("brand", SHADES)).toContain(
-      `950: '${SHADES[950]}',`
+      `950: { value: '${SHADES[950]}' },`
     );
   });
 
@@ -357,7 +371,7 @@ describe("chakraV3Fragment / wrapChakraV3 (Slice 11 fragment extraction)", () =>
       ].join(",\n")
     );
 
-    expect(merged.match(/tokens: \{\n {4}colors: \{/g)).toHaveLength(1);
+    expect(merged.match(/tokens: \{\n {6}colors: \{/g)).toHaveLength(1);
     expect(merged).toContain("brand: {");
     expect(merged).toContain("danger: {");
   });
