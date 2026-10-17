@@ -24,7 +24,7 @@ export default function Home() {
         </div>
 
         {/* Palette Generator */}
-        <div>
+        <div className="w-full">
           <PaletteGenerator />
         </div>
       </div>

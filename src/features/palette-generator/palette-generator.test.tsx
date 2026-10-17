@@ -218,3 +218,13 @@ describe("PaletteGenerator validation", () => {
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 });
+
+describe("PaletteGenerator layout", () => {
+  it("adds no horizontal padding of its own; the page column already provides it", () => {
+    // The page wraps the generator in `px-4 sm:px-6`, so a second `px-6` on the
+    // generator doubled the mobile gutter and overflowed 390px viewports.
+    const { container } = renderWith("");
+
+    expect(container.firstElementChild).not.toHaveClass("px-6");
+  });
+});
