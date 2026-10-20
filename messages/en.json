@@ -48,11 +48,13 @@
     "createNewTheme": "Create new theme",
     "colorPicker": {
       "title": "Color Picker",
+      "description": "Choose a color with the picker, then apply it.",
       "cancel": "Cancel",
       "apply": "Apply"
     },
     "imagePicker": {
       "title": "Extract Color from Image",
+      "description": "Select a color from an image, by upload, drop or paste.",
       "dropZone": {
         "title": "Drop an image here",
         "subtitle": "or click to select a file",
@@ -79,6 +81,7 @@
   },
   "export": {
     "title": "Export color codes",
+    "description": "Copy the palette as code in the format you choose.",
     "type": "Export type",
     "brandKey": "Brand key name",
     "copy": "Copy",

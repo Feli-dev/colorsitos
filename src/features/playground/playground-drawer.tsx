@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   Drawer,
   DrawerContent,
+  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -40,6 +41,9 @@ export function PlaygroundDrawer({ palette, trigger }: PlaygroundDrawerProps) {
             <Sparkles className="h-5 w-5" />
             {t("title")} - {palette.name}
           </DrawerTitle>
+          <DrawerDescription className="sr-only">
+            {t("description")}
+          </DrawerDescription>
         </DrawerHeader>
         <div className="px-6 pb-6 overflow-y-auto">
           <div className="space-y-8 max-w-6xl mx-auto">
