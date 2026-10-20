@@ -36,8 +36,11 @@ Env note: Node 26's global `localStorage` shadows jsdom's, failing ~26 unrelated
 
 - T1 (3c9ee41) — RED: 6 failing (`exportChakraV3 > emits the v3 createSystem API...`, `> nests all eleven shades ... as { value } tokens`, `> keeps the 950 shade`, fragment 950, joined-fragments, `combined-export chakra3 ... one tokens.colors object`). GREEN: `src/utils` 295/295; 5 chakra3 snapshots regenerated.
 - T2 (846b493) — RED: `Navbar > paints a translucent, blurred background...` failed (no `bg-background/80`). GREEN after adding `border-b border-border/40 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60`. jsdom has no layout, so the test asserts classes only.
-- T3 (5004e76) — RED: `Home layout > lets the generator's wrapper span the column` and `PaletteGenerator layout > adds no horizontal padding of its own` failed. GREEN after wrapper `w-full` and dropping `px-6 md:px-0` from the generator. jsdom cannot measure scrollWidth; the 390px check is NOT browser-verified yet.
+- T3 (5004e76) — RED: `Home layout > lets the generator's wrapper span the column` and `PaletteGenerator layout > adds no horizontal padding of its own` failed. GREEN after wrapper `w-full` and dropping `px-6 md:px-0` from the generator. Browser-verified in Brave against a local `next start` build: overflow 0px at 390px and 360px.
+- Browser (Brave, local build): navbar computed bg `oklab(1 0 0 / 0.6)` + `blur(8px)`, content no longer shows through in light or dark; Chakra v3 export renders `createSystem`/`defineConfig` with `{ value }` tokens. Generator card now fills the `max-w-4xl` column on desktop (832px).
+- Pre-existing, out of scope: 16px desktop horizontal overflow from the hero's decorative blob (`-right-4`), also present in production.
+- Native review: medium risk, consent granted, one reliability lens approved with informational suggestions only; acknowledged.
 - Checks: typecheck clean; lint clean; `npm test` 40 files / 463 tests pass; `npm run build` succeeds.
 
 ## Next step
-Browser-verify 390px scrollWidth and navbar blur, then PR.
+Open PR and merge. Follow-ups: hero blob desktop overflow; export copy button aria-label; DialogContent description.
