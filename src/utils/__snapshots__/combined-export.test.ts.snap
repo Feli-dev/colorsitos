@@ -84,94 +84,96 @@ export default theme;"
 `;
 
 exports[`buildCombinedExportCode -- snapshots (new file, never the original 24) > kind chakra3 renders a stable combined document 1`] = `
-"import { defineStyleConfig, extendTheme } from '@chakra-ui/react';
+"import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
 
-const theme = extendTheme({
-  tokens: {
-    colors: {
-      brand: {
-      50: '#AAAAA0',
-      100: '#AAAAA1',
-      200: '#AAAAA2',
-      300: '#AAAAA3',
-      400: '#AAAAA4',
-      500: '#AAAAA5',
-      600: '#AAAAA6',
-      700: '#AAAAA7',
-      800: '#AAAAA8',
-      900: '#AAAAA9',
-      950: '#AAAAAA',
-      },
-      neutral: {
-      50: '#BBBBB0',
-      100: '#BBBBB1',
-      200: '#BBBBB2',
-      300: '#BBBBB3',
-      400: '#BBBBB4',
-      500: '#BBBBB5',
-      600: '#BBBBB6',
-      700: '#BBBBB7',
-      800: '#BBBBB8',
-      900: '#BBBBB9',
-      950: '#BBBBBA',
-      },
-      accent: {
-      50: '#CCCCC0',
-      100: '#CCCCC1',
-      200: '#CCCCC2',
-      300: '#CCCCC3',
-      400: '#CCCCC4',
-      500: '#CCCCC5',
-      600: '#CCCCC6',
-      700: '#CCCCC7',
-      800: '#CCCCC8',
-      900: '#CCCCC9',
-      950: '#CCCCCA',
-      },
-      success: {
-      50: '#DDDDD0',
-      100: '#DDDDD1',
-      200: '#DDDDD2',
-      300: '#DDDDD3',
-      400: '#DDDDD4',
-      500: '#DDDDD5',
-      600: '#DDDDD6',
-      700: '#DDDDD7',
-      800: '#DDDDD8',
-      900: '#DDDDD9',
-      950: '#DDDDDA',
-      },
-      warning: {
-      50: '#EEEEE0',
-      100: '#EEEEE1',
-      200: '#EEEEE2',
-      300: '#EEEEE3',
-      400: '#EEEEE4',
-      500: '#EEEEE5',
-      600: '#EEEEE6',
-      700: '#EEEEE7',
-      800: '#EEEEE8',
-      900: '#EEEEE9',
-      950: '#EEEEEA',
-      },
-      danger: {
-      50: '#FFFFF0',
-      100: '#FFFFF1',
-      200: '#FFFFF2',
-      300: '#FFFFF3',
-      400: '#FFFFF4',
-      500: '#FFFFF5',
-      600: '#FFFFF6',
-      700: '#FFFFF7',
-      800: '#FFFFF8',
-      900: '#FFFFF9',
-      950: '#FFFFFA',
+const config = defineConfig({
+  theme: {
+    tokens: {
+      colors: {
+        brand: {
+          50: { value: '#AAAAA0' },
+          100: { value: '#AAAAA1' },
+          200: { value: '#AAAAA2' },
+          300: { value: '#AAAAA3' },
+          400: { value: '#AAAAA4' },
+          500: { value: '#AAAAA5' },
+          600: { value: '#AAAAA6' },
+          700: { value: '#AAAAA7' },
+          800: { value: '#AAAAA8' },
+          900: { value: '#AAAAA9' },
+          950: { value: '#AAAAAA' },
+        },
+        neutral: {
+          50: { value: '#BBBBB0' },
+          100: { value: '#BBBBB1' },
+          200: { value: '#BBBBB2' },
+          300: { value: '#BBBBB3' },
+          400: { value: '#BBBBB4' },
+          500: { value: '#BBBBB5' },
+          600: { value: '#BBBBB6' },
+          700: { value: '#BBBBB7' },
+          800: { value: '#BBBBB8' },
+          900: { value: '#BBBBB9' },
+          950: { value: '#BBBBBA' },
+        },
+        accent: {
+          50: { value: '#CCCCC0' },
+          100: { value: '#CCCCC1' },
+          200: { value: '#CCCCC2' },
+          300: { value: '#CCCCC3' },
+          400: { value: '#CCCCC4' },
+          500: { value: '#CCCCC5' },
+          600: { value: '#CCCCC6' },
+          700: { value: '#CCCCC7' },
+          800: { value: '#CCCCC8' },
+          900: { value: '#CCCCC9' },
+          950: { value: '#CCCCCA' },
+        },
+        success: {
+          50: { value: '#DDDDD0' },
+          100: { value: '#DDDDD1' },
+          200: { value: '#DDDDD2' },
+          300: { value: '#DDDDD3' },
+          400: { value: '#DDDDD4' },
+          500: { value: '#DDDDD5' },
+          600: { value: '#DDDDD6' },
+          700: { value: '#DDDDD7' },
+          800: { value: '#DDDDD8' },
+          900: { value: '#DDDDD9' },
+          950: { value: '#DDDDDA' },
+        },
+        warning: {
+          50: { value: '#EEEEE0' },
+          100: { value: '#EEEEE1' },
+          200: { value: '#EEEEE2' },
+          300: { value: '#EEEEE3' },
+          400: { value: '#EEEEE4' },
+          500: { value: '#EEEEE5' },
+          600: { value: '#EEEEE6' },
+          700: { value: '#EEEEE7' },
+          800: { value: '#EEEEE8' },
+          900: { value: '#EEEEE9' },
+          950: { value: '#EEEEEA' },
+        },
+        danger: {
+          50: { value: '#FFFFF0' },
+          100: { value: '#FFFFF1' },
+          200: { value: '#FFFFF2' },
+          300: { value: '#FFFFF3' },
+          400: { value: '#FFFFF4' },
+          500: { value: '#FFFFF5' },
+          600: { value: '#FFFFF6' },
+          700: { value: '#FFFFF7' },
+          800: { value: '#FFFFF8' },
+          900: { value: '#FFFFF9' },
+          950: { value: '#FFFFFA' },
+        }
       }
     }
   }
 });
 
-export default theme;"
+export const system = createSystem(defaultConfig, config);"
 `;
 
 exports[`buildCombinedExportCode -- snapshots (new file, never the original 24) > kind codes renders a stable combined document 1`] = `

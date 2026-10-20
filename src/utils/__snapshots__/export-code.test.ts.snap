@@ -93,107 +93,115 @@ export default theme;"
 `;
 
 exports[`buildExportCode > kind chakra3 > renders format hex identically 1`] = `
-"import { defineStyleConfig, extendTheme } from '@chakra-ui/react';
+"import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
 
-const theme = extendTheme({
-  tokens: {
-    colors: {
-      brand: {
-      50: '#EBF8FF',
-      100: '#BEE3F8',
-      200: '#90CDF4',
-      300: '#63B3ED',
-      400: '#4299E1',
-      500: '#3182CE',
-      600: '#2B6CB0',
-      700: '#2C5282',
-      800: '#2A4365',
-      900: '#1A365D',
-      950: '#102A4C',
+const config = defineConfig({
+  theme: {
+    tokens: {
+      colors: {
+        brand: {
+          50: { value: '#EBF8FF' },
+          100: { value: '#BEE3F8' },
+          200: { value: '#90CDF4' },
+          300: { value: '#63B3ED' },
+          400: { value: '#4299E1' },
+          500: { value: '#3182CE' },
+          600: { value: '#2B6CB0' },
+          700: { value: '#2C5282' },
+          800: { value: '#2A4365' },
+          900: { value: '#1A365D' },
+          950: { value: '#102A4C' },
+        }
       }
     }
   }
 });
 
-export default theme;"
+export const system = createSystem(defaultConfig, config);"
 `;
 
 exports[`buildExportCode > kind chakra3 > renders format hsl identically 1`] = `
-"import { defineStyleConfig, extendTheme } from '@chakra-ui/react';
+"import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
 
-const theme = extendTheme({
-  tokens: {
-    colors: {
-      brand: {
-      50: 'hsl(201 100% 96%)',
-      100: 'hsl(202 81% 86%)',
-      200: 'hsl(203 82% 76%)',
-      300: 'hsl(205 79% 66%)',
-      400: 'hsl(207 73% 57%)',
-      500: 'hsl(209 62% 50%)',
-      600: 'hsl(211 61% 43%)',
-      700: 'hsl(213 49% 34%)',
-      800: 'hsl(215 41% 28%)',
-      900: 'hsl(215 56% 23%)',
-      950: 'hsl(214 65% 18%)',
+const config = defineConfig({
+  theme: {
+    tokens: {
+      colors: {
+        brand: {
+          50: { value: 'hsl(201 100% 96%)' },
+          100: { value: 'hsl(202 81% 86%)' },
+          200: { value: 'hsl(203 82% 76%)' },
+          300: { value: 'hsl(205 79% 66%)' },
+          400: { value: 'hsl(207 73% 57%)' },
+          500: { value: 'hsl(209 62% 50%)' },
+          600: { value: 'hsl(211 61% 43%)' },
+          700: { value: 'hsl(213 49% 34%)' },
+          800: { value: 'hsl(215 41% 28%)' },
+          900: { value: 'hsl(215 56% 23%)' },
+          950: { value: 'hsl(214 65% 18%)' },
+        }
       }
     }
   }
 });
 
-export default theme;"
+export const system = createSystem(defaultConfig, config);"
 `;
 
 exports[`buildExportCode > kind chakra3 > renders format oklch identically 1`] = `
-"import { defineStyleConfig, extendTheme } from '@chakra-ui/react';
+"import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
 
-const theme = extendTheme({
-  tokens: {
-    colors: {
-      brand: {
-      50: 'oklch(0.971 0.0167 230.9)',
-      100: 'oklch(0.896 0.0484 232.9)',
-      200: 'oklch(0.821 0.0833 237.2)',
-      300: 'oklch(0.739 0.1154 242.1)',
-      400: 'oklch(0.663 0.1358 246.8)',
-      500: 'oklch(0.595 0.1398 250.3)',
-      600: 'oklch(0.524 0.1259 252.3)',
-      700: 'oklch(0.435 0.091 255.2)',
-      800: 'oklch(0.379 0.0663 256.4)',
-      900: 'oklch(0.333 0.0772 257.1)',
-      950: 'oklch(0.285 0.0703 256.2)',
+const config = defineConfig({
+  theme: {
+    tokens: {
+      colors: {
+        brand: {
+          50: { value: 'oklch(0.971 0.0167 230.9)' },
+          100: { value: 'oklch(0.896 0.0484 232.9)' },
+          200: { value: 'oklch(0.821 0.0833 237.2)' },
+          300: { value: 'oklch(0.739 0.1154 242.1)' },
+          400: { value: 'oklch(0.663 0.1358 246.8)' },
+          500: { value: 'oklch(0.595 0.1398 250.3)' },
+          600: { value: 'oklch(0.524 0.1259 252.3)' },
+          700: { value: 'oklch(0.435 0.091 255.2)' },
+          800: { value: 'oklch(0.379 0.0663 256.4)' },
+          900: { value: 'oklch(0.333 0.0772 257.1)' },
+          950: { value: 'oklch(0.285 0.0703 256.2)' },
+        }
       }
     }
   }
 });
 
-export default theme;"
+export const system = createSystem(defaultConfig, config);"
 `;
 
 exports[`buildExportCode > kind chakra3 > renders format rgb identically 1`] = `
-"import { defineStyleConfig, extendTheme } from '@chakra-ui/react';
+"import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
 
-const theme = extendTheme({
-  tokens: {
-    colors: {
-      brand: {
-      50: 'rgb(235, 248, 255)',
-      100: 'rgb(190, 227, 248)',
-      200: 'rgb(144, 205, 244)',
-      300: 'rgb(99, 179, 237)',
-      400: 'rgb(66, 153, 225)',
-      500: 'rgb(49, 130, 206)',
-      600: 'rgb(43, 108, 176)',
-      700: 'rgb(44, 82, 130)',
-      800: 'rgb(42, 67, 101)',
-      900: 'rgb(26, 54, 93)',
-      950: 'rgb(16, 42, 76)',
+const config = defineConfig({
+  theme: {
+    tokens: {
+      colors: {
+        brand: {
+          50: { value: 'rgb(235, 248, 255)' },
+          100: { value: 'rgb(190, 227, 248)' },
+          200: { value: 'rgb(144, 205, 244)' },
+          300: { value: 'rgb(99, 179, 237)' },
+          400: { value: 'rgb(66, 153, 225)' },
+          500: { value: 'rgb(49, 130, 206)' },
+          600: { value: 'rgb(43, 108, 176)' },
+          700: { value: 'rgb(44, 82, 130)' },
+          800: { value: 'rgb(42, 67, 101)' },
+          900: { value: 'rgb(26, 54, 93)' },
+          950: { value: 'rgb(16, 42, 76)' },
+        }
       }
     }
   }
 });
 
-export default theme;"
+export const system = createSystem(defaultConfig, config);"
 `;
 
 exports[`buildExportCode > kind codes > renders format hex identically 1`] = `
