@@ -255,6 +255,7 @@ export function ExportersPanel({ palette, pins = {} }: ExportersPanelProps) {
           <Button
             type="button"
             onClick={active === "codes" ? handleCopyCodes : handleCopy}
+            aria-label={t("export.copyCode")}
             variant="outline"
             size="sm"
             className="absolute top-2 right-2 z-10 h-8 w-8 p-0 hover:bg-background/80 transition-colors duration-200"

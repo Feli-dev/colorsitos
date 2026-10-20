@@ -84,6 +84,7 @@
     "copy": "Copiar",
     "justCodes": "Solo los códigos",
     "copyCodes": "Copiar códigos",
+    "copyCode": "Copiar código",
     "ramp": {
       "label": "Rampa"
     },
