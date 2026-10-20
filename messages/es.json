@@ -48,11 +48,13 @@
     "createNewTheme": "Crear nuevo theme",
     "colorPicker": {
       "title": "Selector de Color",
+      "description": "Elige un color con el selector y luego aplícalo.",
       "cancel": "Cancelar",
       "apply": "Aplicar"
     },
     "imagePicker": {
       "title": "Extraer Color de Imagen",
+      "description": "Selecciona un color a partir de una imagen, subiéndola, soltándola o pegándola.",
       "dropZone": {
         "title": "Arrastra una imagen aquí",
         "subtitle": "o haz clic para seleccionar un archivo",
@@ -79,11 +81,13 @@
   },
   "export": {
     "title": "Exportar códigos de color",
+    "description": "Copia la paleta como código en el formato que elijas.",
     "type": "Modo de exportación",
     "brandKey": "Nombre de la clave (brand)",
     "copy": "Copiar",
     "justCodes": "Solo los códigos",
     "copyCodes": "Copiar códigos",
+    "copyCode": "Copiar código",
     "ramp": {
       "label": "Rampa"
     },

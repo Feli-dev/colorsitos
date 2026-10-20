@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -367,6 +368,9 @@ export const ImageColorPicker = forwardRef<
         <DialogContent className="max-w-[90vw] md:max-w-2xl max-h-[90vh] flex flex-col">
           <DialogHeader className="flex-shrink-0">
             <DialogTitle>{title}</DialogTitle>
+            <DialogDescription className="sr-only">
+              {t("generator.imagePicker.description")}
+            </DialogDescription>
           </DialogHeader>
 
           <div className="flex-1 flex flex-col gap-4 overflow-hidden">

@@ -13,6 +13,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -231,6 +232,9 @@ export function PaletteGenerator() {
                   <DialogContent className="min-w-fit">
                     <DialogHeader>
                       <DialogTitle>{t("export.title")}</DialogTitle>
+                      <DialogDescription className="sr-only">
+                        {t("export.description")}
+                      </DialogDescription>
                     </DialogHeader>
                     <ExportersPanel palette={palette} pins={pins} />
                   </DialogContent>

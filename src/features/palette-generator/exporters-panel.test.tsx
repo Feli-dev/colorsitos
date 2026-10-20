@@ -354,3 +354,12 @@ describe("ExportersPanel code block height", () => {
     expect(code().parentElement!.className).toContain("max-h-[60vh]");
   });
 });
+
+describe("ExportersPanel copy button", () => {
+  it("is reachable by its accessible name", () => {
+    render(<ExportersPanel palette={palette} />);
+    expect(
+      screen.getByRole("button", { name: "export.copyCode" })
+    ).toBeInTheDocument();
+  });
+});
