@@ -91,7 +91,7 @@ const Hero = () => {
   ];
 
   return (
-    <section className="font-grotesk h-[100dvh] py-16 md:py-24 flex items-center justify-center">
+    <section className="relative overflow-x-clip font-grotesk h-[100dvh] py-16 md:py-24 flex items-center justify-center">
       <div className="max-w-screen md:max-w-6xl mx-auto px-4 md:px-0">
         {/* Main content */}
         <div className="text-center mb-12 md:mb-16">
